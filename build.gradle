@@ -1,0 +1,55 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.2.0-beta01'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    // Sdk and tools
+    // Support library and architecture components support minSdk 14 and above.
+    minSdkVersion = 16
+    targetSdkVersion = 26
+    compileSdkVersion = 26
+    buildToolsVersion = '27.0.3'
+
+    // App dependencies
+    supportLibraryVersion = '27.1.1'
+    junitVersion = '4.12'
+    lifecycleVersion = '1.1.1'
+    constraintVersion = '1.1.2'
+
+    // App test dependencies
+    runnerVersion = '1.0.2'
+    espressoVersion = '3.0.2'
+
+    //第三方库
+    eventbusVersion = '3.1.1'
+    rxjavaVersion = '2.1.16'
+    rxandroidVersion = '2.0.2'
+    multidexVersion = '1.0.3'
+    rxbindingVersion = '2.1.1'
+    roomVersion = "1.1.1"
+    gsonVersion = "2.8.2"
+}

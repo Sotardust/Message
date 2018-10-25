@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">message</string>
+
+    <string name="call_number"> 拨号号码：%1$s </string>
+    <string name="call_name"> 拨号人名称：%1$s </string>
+    <string name="receiver_number"> 接收号码：%1$s </string>
+    <string name="call_time"> 拨号时间：%1$s </string>
+    <string name="address"> 拨号人地址：%1$s </string>
+    <string name="times"> 共 %1$d 次 </string>
+    <string name="total_time"> 通话总时长：%1$s </string>
+    <string name="single_time"> 通话时长：%1$s </string>
+    <string name="dial_times"> 拨打 %1$d 次数 </string>
+    <string name="receiver_times"> 接通 %1$d 次 </string>
+    <string name="missed_times"> 未接 %1$d 次 </string>
+    <string name="refuse_times"> 拒接 %1$d 次 </string>
+</resources>
