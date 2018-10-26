@@ -12,7 +12,7 @@ import com.dai.message.adapter.util.ViewHolder;
 import com.dai.message.base.BaseAdapter;
 import com.dai.message.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.RecycleItemAllCallsBinding;
-import com.dai.message.repository.model.AllCalls;
+import com.dai.message.repository.entity.AllCallsEntity;
 
 import java.util.List;
 
@@ -21,17 +21,17 @@ import java.util.List;
  * <p>
  * created by dht on 2018/7/3 18:28
  */
-public class AllCallsAdapter extends BaseAdapter<AllCalls> {
+public class CallRecordAdapter extends BaseAdapter<AllCallsEntity> {
 
-    private static final String TAG = "AllCallsAdapter";
+    private static final String TAG = "CallRecordAdapter";
 
-    public AllCallsAdapter(@NonNull RecycleItemClickCallBack callBack) {
+    public CallRecordAdapter(@NonNull RecycleItemClickCallBack callBack) {
         this.callBack = callBack;
     }
 
 
     @Override
-    public void setChangeList(List<AllCalls> mList) {
+    public void setChangeList(List<AllCallsEntity> mList) {
         this.mList = mList;
         notifyDataSetChanged();
     }
@@ -49,7 +49,7 @@ public class AllCallsAdapter extends BaseAdapter<AllCalls> {
     @SuppressWarnings("unchecked")
     @Override
     public void onBindVH(@NonNull RecyclerView.ViewHolder holder, int position) {
-        ((ViewHolder<RecycleItemAllCallsBinding>) holder).mBinding.setAllCalls(mList.get(position));
+        ((ViewHolder<RecycleItemAllCallsBinding>) holder).mBinding.setAllCallsEntity(mList.get(position));
         ((ViewHolder<RecycleItemAllCallsBinding>) holder).mBinding.setIndex(position);
         ((ViewHolder<RecycleItemAllCallsBinding>) holder).mBinding.executePendingBindings();
     }

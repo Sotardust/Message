@@ -16,26 +16,26 @@ import com.dai.message.adapter.CallRecordAdapter;
 import com.dai.message.adapter.util.VerticalDecoration;
 import com.dai.message.base.BaseFragment;
 import com.dai.message.callback.RecycleItemClickCallBack;
-import com.dai.message.databinding.FragmentAllCallsBinding;
 import com.dai.message.repository.entity.AllCallsEntity;
+import com.dai.message.databinding.FragmentAnsweredBinding;
 
 import java.util.ArrayList;
 
-public class AllCallsFragment extends BaseFragment {
+public class AnsweredFragment extends BaseFragment {
 
-    private AllCallsViewModel mViewModel;
+    private AnsweredViewModel mViewModel;
 
-    private FragmentAllCallsBinding mBinding;
 
-    public static AllCallsFragment newInstance() {
-        return new AllCallsFragment();
+    private FragmentAnsweredBinding mBinding;
+
+    public static AnsweredFragment newInstance() {
+        return new AnsweredFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_all_calls, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_answered, container, false);
 
         return mBinding.getRoot();
     }
@@ -43,8 +43,8 @@ public class AllCallsFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(AllCallsViewModel.class);
-        mBinding.setAllCallsViewModel(mViewModel);
+        mViewModel = ViewModelProviders.of(this).get(AnsweredViewModel.class);
+        mBinding.setAnsweredViewModel(mViewModel);
         bindViews();
         // TODO: Use the ViewModel
     }
@@ -54,7 +54,7 @@ public class AllCallsFragment extends BaseFragment {
         super.bindViews();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         final CallRecordAdapter callRecordAdapter = new CallRecordAdapter(recycleItemClickCallBack);
-        mViewModel.getAllCallsList().observe(this, new Observer<ArrayList<AllCallsEntity>>() {
+        mViewModel.getAnsweredCallsList().observe(this, new Observer<ArrayList<AllCallsEntity>>() {
             @Override
             public void onChanged(@Nullable ArrayList<AllCallsEntity> allCallEntities) {
                 callRecordAdapter.setChangeList(allCallEntities);

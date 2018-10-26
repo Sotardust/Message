@@ -1,54 +1,77 @@
-package com.dai.message.repository.model;
+package com.dai.message.repository.entity;
+
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 
 /**
+ * 记录所有通话记录
  * created by Administrator on 2018/10/24 18:32
  */
-public class AllCalls {
-
+@Entity(tableName = "allCalls")
+public class AllCallsEntity {
 
     /*姓名*/
+    @ColumnInfo(name = "name")
     private String name;
 
     /*拨号方手机号*/
+    @PrimaryKey()
+    @ColumnInfo(name = "id")
+    @NonNull
     private String callNumber;
 
     /*接收方手机号*/
+    @ColumnInfo(name = "receiver_number")
     private String receiverNumber;
 
     /*地址*/
+    @ColumnInfo(name = "address")
     private String address;
 
     /*拨打时间*/
+    @ColumnInfo(name = "call_time")
     private String callTime;
 
     /*通话总时长*/
+    @ColumnInfo(name = "total_time")
     private int TotalTime = 0;
 
     /*单次通话时长*/
+    @ColumnInfo(name = "single_name")
     private int singleTime;
 
     /*类型*/
+    @ColumnInfo(name = "type")
     private String type;
 
     /*拨打类型*/
+    @ColumnInfo(name = "call_type")
     private int callType;
 
     /*拨打次数*/
+    @ColumnInfo(name = "dial_times")
     private int dialTimes = 0;
 
     /*接通次数*/
+    @ColumnInfo(name = "receiver_times")
     private int receiverTimes = 0;
 
     /*未接次数*/
+    @ColumnInfo(name = "missed_times")
     private int missedTimes = 0;
 
     /*拒接次数*/
+    @ColumnInfo(name = "refuse_times")
     private int refuseTimes = 0;
 
     /*是否发送成功*/
+    @ColumnInfo(name = "is_send_successful", index = false)
     private boolean isSendSuccessful;
 
-    public AllCalls() {
+    public AllCallsEntity() {
     }
 
     public String getName() {

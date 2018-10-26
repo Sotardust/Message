@@ -25,7 +25,7 @@ public class MainFragment extends BaseFragment {
 
     private MainViewModel mViewModel;
 
-    private String[] titles = {"全部来电", "未接来电", "已接来电", "待补充"};
+    private String[] titles = {"未接来电", "已接来电", "拨打电话", "拒接来电", "全部来电"};
 
     private MainFragmentBinding mBinding;
 
@@ -54,12 +54,12 @@ public class MainFragment extends BaseFragment {
     public void bindViews() {
         super.bindViews();
         List<Fragment> mFragmentList = new ArrayList<>();
+        mFragmentList.add(MissedCallsFragment.newInstance());
+        mFragmentList.add(AnsweredFragment.newInstance());
+        mFragmentList.add(DialFragment.newInstance());
+        mFragmentList.add(RefuseFragment.newInstance());
         mFragmentList.add(AllCallsFragment.newInstance());
-        mFragmentList.add(AllCallsFragment.newInstance());
-        mFragmentList.add(AllCallsFragment.newInstance());
-        mFragmentList.add(AllCallsFragment.newInstance());
-//        mFragmentList.add(mineFragment);
-//        mFragmentList.add(transceiverFragment);
+
         mBinding.baseViewPager.setAdapter(new BaseFragmentPageAdapter(getChildFragmentManager(), mFragmentList, titles));
         mBinding.baseViewPager.setCurrentItem(0);
         mBinding.baseViewPager.setOffscreenPageLimit(2);

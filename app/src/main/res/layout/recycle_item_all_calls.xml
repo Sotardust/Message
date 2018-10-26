@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="allCalls"
-            type="com.dai.message.repository.model.AllCalls" />
+            name="allCallsEntity"
+            type="com.dai.message.repository.entity.AllCallsEntity" />
 
         <variable
             name="index"
@@ -21,14 +21,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorWhite"
-        android:onClick="@{() ->  callBack.onItemClickListener(allCalls,index)}"
+        android:onClick="@{() ->  callBack.onItemClickListener(allCallsEntity,index)}"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:text="@{@string/call_name(allCalls.getName())}"
+            android:text="@{@string/call_name(allCallsEntity.getName())}"
             android:textColor="@color/black" />
 
         <LinearLayout
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="@{@string/call_number(allCalls.getCallNumber())}"
+                android:text="@{@string/call_number(allCallsEntity.getCallNumber())}"
                 android:textColor="@color/black" />
 
             <TextView
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="@{@string/receiver_number(allCalls.getReceiverNumber())}"
+                android:text="@{@string/receiver_number(allCallsEntity.getReceiverNumber())}"
                 android:textColor="@color/black" />
         </LinearLayout>
 
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="@{@string/call_time(allCalls.getCallTime())}"
+                android:text="@{@string/call_time(allCallsEntity.getCallTime())}"
                 android:textColor="@color/black" />
 
             <TextView
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="@{@string/address(allCalls.getAddress())}"
+                android:text="@{@string/address(allCallsEntity.getAddress())}"
                 android:textColor="@color/black" />
         </LinearLayout>
 
@@ -90,7 +90,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="@{@string/times(allCalls.getTimes())}"
+                android:text="@{@string/times(allCallsEntity.getTimes())}"
                 android:textColor="@color/black" />
 
             <TextView
@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="@{@string/total_time(allCalls.getTotalTime())}"
+                android:text="@{@string/total_time(allCallsEntity.getTotalTime())}"
                 android:textColor="@color/black" />
         </LinearLayout>
 
@@ -115,7 +115,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="@{@string/dial_times(allCalls.getDialTimes())}"
+                android:text="@{@string/dial_times(allCallsEntity.getDialTimes())}"
                 android:textColor="@color/black" />
 
             <TextView
@@ -124,7 +124,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="@{@string/receiver_times(allCalls.getReceiverTimes())}"
+                android:text="@{@string/receiver_times(allCallsEntity.getReceiverTimes())}"
                 android:textColor="@color/black" />
 
             <TextView
@@ -133,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="@{@string/missed_times(allCalls.getMissedTimes())}"
+                android:text="@{@string/missed_times(allCallsEntity.getMissedTimes())}"
                 android:textColor="@color/black" />
 
             <TextView
@@ -141,7 +141,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="@{@string/refuse_times(allCalls.getRefuseTimes())}"
+                android:text="@{@string/refuse_times(allCallsEntity.getRefuseTimes())}"
                 android:textColor="@color/black" />
         </LinearLayout>
 
