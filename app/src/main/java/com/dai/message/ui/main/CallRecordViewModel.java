@@ -1,6 +1,7 @@
 package com.dai.message.ui.main;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.content.ContentResolver;
@@ -8,8 +9,10 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.CallLog;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
@@ -30,12 +33,13 @@ public class CallRecordViewModel extends AndroidViewModel {
     private static final String TAG = "CallRecordViewModel";
 
     protected Application application;
-    protected SimpleDateFormat format;
-    protected ArrayList<AllCallsEntity> allCallList;
+    private SimpleDateFormat format;
+    private ArrayList<AllCallsEntity> allCallList;
 
     protected AllCallsRepository repository;
 
-    public CallRecordViewModel(@NonNull Application application) {
+
+    CallRecordViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
@@ -48,33 +52,47 @@ public class CallRecordViewModel extends AndroidViewModel {
     /**
      * 查找全部通话记录
      */
+
+    @SuppressLint({"MissingPermission", "HardwareIds", "NewApi"})
     private void findLocalAllCalls() {
 
         if (allCallList.size() != 0) allCallList.clear();
-
         ContentResolver cr = application.getApplicationContext().getContentResolver();
         Uri uri = CallLog.Calls.CONTENT_URI;
-
-        if (ActivityCompat.checkSelfPermission(application, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(application, Manifest.permission.READ_PHONE_NUMBERS) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(application, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-        }
         TelephonyManager tm = (TelephonyManager) application.getSystemService(Context.TELEPHONY_SERVICE);
-        String phoneNumber1 = null;
-        if (tm != null) {
-            phoneNumber1 = tm.getLine1Number();
-        }
-        Log.d(TAG, "findLocalAllCalls: phoneNumber1 = " + phoneNumber1);
-        String[] projection = new String[]{CallLog.Calls.CACHED_NAME, CallLog.Calls.NUMBER, CallLog.Calls.DATE,
-                CallLog.Calls.TYPE, CallLog.Calls.NUMBER_PRESENTATION, CallLog.Calls.DURATION, CallLog.Calls.IS_READ};
+        String number1 = null;
+        try {
+            if (tm != null) {
+                number1 = tm.getLine1Number();
+                Log.d(TAG, " number1 = " + number1 +
+                        " 手机号个数：" + tm.getPhoneCount() +
+                        " getSimSerialNumber：" + tm.getSimSerialNumber() +
+                        " getSubscriberId：" + tm.getSubscriberId() +
+                        " getDeviceSoftwareVersion：" + tm.getDeviceSoftwareVersion()+
+                        " getImei(1)：" + tm.getImei(1)+
+                        " getImei(2)：" + tm.getImei(2)+
+                        " getMeid(1)：" + tm.getMeid(1)+
+                        " getMeid(2)：" + tm.getMeid(2)+
+                        " getSimState(1)：" + tm.getSimState(1)+
+                        " getSimState(2)：" + tm.getSimState(2)+
+                        " getDeviceId(1)：" + tm.getDeviceId(1)+
+                        " getDeviceId(2)：" + tm.getDeviceId(2)
+                );
+            }
+            @SuppressLint("InlinedApi")
+            String[] projection = new String[]{CallLog.Calls.CACHED_NAME, CallLog.Calls.NUMBER, CallLog.Calls.DATE,
+                    CallLog.Calls.TYPE, CallLog.Calls.NUMBER_PRESENTATION, CallLog.Calls.DURATION, CallLog.Calls.IS_READ};
 
+            Cursor cursor = cr.query(uri, projection, null, null, null);
+            if (cursor == null) return;
+            while (cursor.moveToNext()) {
+                allCallList.add(getAllCalls(cursor));
+            }
+            cursor.close();
+        } catch (Exception e) {
 
-        Cursor cursor = cr.query(uri, projection, null, null, null);
-        if (cursor == null) return;
-        while (cursor.moveToNext()) {
-            allCallList.add(getAllCalls(cursor));
         }
-        cursor.close();
+
 
     }
 

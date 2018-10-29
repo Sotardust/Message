@@ -21,8 +21,6 @@ public class DialViewModel extends CallRecordViewModel {
     }
 
 
-
-
     public MutableLiveData<ArrayList<AllCallsEntity>> getDialCallsList() {
         if (mDialCallsList == null) {
             mDialCallsList = new MutableLiveData<>();
