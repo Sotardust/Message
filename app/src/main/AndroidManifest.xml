@@ -5,7 +5,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
-    <!-- <uses-permission android:name="android.permission.WRITE_CALL_LOG" /> -->
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -13,6 +15,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!-- 微信 ：AppID：wx4b46660f04a64bc4 -->
+    <!-- 微信 ：AppSecret：2bb298412c9aa9bcefbb35000627b72e -->
     <application
         android:name=".MessageApplication"
         android:allowBackup="true"

@@ -1,4 +1,4 @@
-package com.dai.message.ui.main;
+package com.dai.message.ui.main.dial;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;

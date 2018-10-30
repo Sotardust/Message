@@ -7,7 +7,7 @@
 
         <variable
             name="allCallsViewModel"
-            type="com.dai.message.ui.main.AllCallsViewModel" />
+            type="com.dai.message.ui.main.allcalls.AllCallsViewModel" />
     </data>
 
     <LinearLayout

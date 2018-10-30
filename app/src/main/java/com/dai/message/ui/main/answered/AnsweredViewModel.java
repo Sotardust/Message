@@ -1,12 +1,15 @@
-package com.dai.message.ui.main;
+package com.dai.message.ui.main.answered;
 
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
+import com.dai.message.callback.CallBack;
 import com.dai.message.repository.entity.AllCallsEntity;
+import com.dai.message.ui.main.CallRecordViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AnsweredViewModel extends CallRecordViewModel {
     /**
@@ -21,17 +24,23 @@ public class AnsweredViewModel extends CallRecordViewModel {
     public MutableLiveData<ArrayList<AllCallsEntity>> getAnsweredCallsList() {
         if (mAnsweredCallsList == null) {
             mAnsweredCallsList = new MutableLiveData<>();
-            mAnsweredCallsList.setValue(distinctAnsweredCalls());
+            distinctAnsweredCalls();
         }
         return mAnsweredCallsList;
     }
+
     /**
      * 获取已接来电通话记录
      * 已接类型：1
      *
      * @return AllCalls实体集合
      */
-    private ArrayList<AllCallsEntity> distinctAnsweredCalls() {
-        return distinctAllCalls(1);
+    private void distinctAnsweredCalls() {
+        repository.getCallsEntities(new CallBack<List<AllCallsEntity>>() {
+            @Override
+            public void onChangeData(List<AllCallsEntity> data) {
+                mAnsweredCallsList.setValue((ArrayList<AllCallsEntity>) data);
+            }
+        }, "1");
     }
 }

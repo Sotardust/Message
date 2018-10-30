@@ -1,28 +1,25 @@
 package com.dai.message.ui.main;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.CallLog;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.dai.message.callback.CallBack;
 import com.dai.message.repository.AllCallsRepository;
 import com.dai.message.repository.entity.AllCallsEntity;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -33,20 +30,24 @@ public class CallRecordViewModel extends AndroidViewModel {
     private static final String TAG = "CallRecordViewModel";
 
     protected Application application;
-    private SimpleDateFormat format;
+    protected SimpleDateFormat format;
     private ArrayList<AllCallsEntity> allCallList;
 
     protected AllCallsRepository repository;
 
+    private static boolean IS_FIRST = true;
 
-    CallRecordViewModel(@NonNull Application application) {
+
+    public CallRecordViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
         format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-        allCallList = new ArrayList<>();
         repository = new AllCallsRepository(application);
-        findLocalAllCalls();
-        setAllCallsOtherData();
+        allCallList = new ArrayList<>();
+        if (IS_FIRST) {
+            findLocalAllCalls();
+            setAllCallsOtherData();
+        }
     }
 
     /**
@@ -56,7 +57,6 @@ public class CallRecordViewModel extends AndroidViewModel {
     @SuppressLint({"MissingPermission", "HardwareIds", "NewApi"})
     private void findLocalAllCalls() {
 
-        if (allCallList.size() != 0) allCallList.clear();
         ContentResolver cr = application.getApplicationContext().getContentResolver();
         Uri uri = CallLog.Calls.CONTENT_URI;
         TelephonyManager tm = (TelephonyManager) application.getSystemService(Context.TELEPHONY_SERVICE);
@@ -66,16 +66,17 @@ public class CallRecordViewModel extends AndroidViewModel {
                 number1 = tm.getLine1Number();
                 Log.d(TAG, " number1 = " + number1 +
                         " 手机号个数：" + tm.getPhoneCount() +
+                        " getGroupIdLevel1：" + tm.getGroupIdLevel1() +
                         " getSimSerialNumber：" + tm.getSimSerialNumber() +
                         " getSubscriberId：" + tm.getSubscriberId() +
-                        " getDeviceSoftwareVersion：" + tm.getDeviceSoftwareVersion()+
-                        " getImei(1)：" + tm.getImei(1)+
-                        " getImei(2)：" + tm.getImei(2)+
-                        " getMeid(1)：" + tm.getMeid(1)+
-                        " getMeid(2)：" + tm.getMeid(2)+
-                        " getSimState(1)：" + tm.getSimState(1)+
-                        " getSimState(2)：" + tm.getSimState(2)+
-                        " getDeviceId(1)：" + tm.getDeviceId(1)+
+                        " getDeviceSoftwareVersion：" + tm.getDeviceSoftwareVersion() +
+                        " getImei(1)：" + tm.getImei(1) +
+                        " getImei(2)：" + tm.getImei(2) +
+                        " getMeid(1)：" + tm.getMeid(1) +
+                        " getMeid(2)：" + tm.getMeid(2) +
+                        " getSimState(1)：" + tm.getSimState(1) +
+                        " getSimState(2)：" + tm.getSimState(2) +
+                        " getDeviceId(1)：" + tm.getDeviceId(1) +
                         " getDeviceId(2)：" + tm.getDeviceId(2)
                 );
             }
@@ -90,7 +91,8 @@ public class CallRecordViewModel extends AndroidViewModel {
             }
             cursor.close();
         } catch (Exception e) {
-
+            e.printStackTrace();
+            Log.e(TAG, "findLocalAllCalls: e", e);
         }
 
 
@@ -146,32 +148,33 @@ public class CallRecordViewModel extends AndroidViewModel {
 
     /**
      * 去重 自定义0 为获取全部通话记录
+     * 1/2/3/4/5 接听/拨打/未接//拒接
      *
-     * @param callType 1/2/3/4/5 接听/拨打/未接//拒接
      * @return AllCalls实体集合
      */
-    ArrayList<AllCallsEntity> distinctAllCalls(int callType) {
-        final ArrayList<String> numberList = new ArrayList<>();
-        final ArrayList<AllCallsEntity> list = new ArrayList<>();
-        final HashMap<String, AllCallsEntity> allCallsHM = new HashMap<>();
-        for (AllCallsEntity allCallsEntity : allCallList) {
-            if (callType != 0 && allCallsEntity.getCallType() != callType) continue;
+    protected void distinctAllCalls(CallBack<List<AllCallsEntity>> callBack) {
 
-            if (numberList.contains(allCallsEntity.getCallNumber())) {
-                AllCallsEntity calls = allCallsHM.get(allCallsEntity.getCallNumber());
-                calls.setTotalTime(calls.getSingleTime() + allCallsEntity.getSingleTime());
-                calls.setRefuseTimes(calls.getRefuseTimes() + allCallsEntity.getRefuseTimes());
-                calls.setMissedTimes(calls.getMissedTimes() + allCallsEntity.getMissedTimes());
-                calls.setReceiverTimes(calls.getReceiverTimes() + allCallsEntity.getReceiverTimes());
-                calls.setDialTimes(calls.getDialTimes() + allCallsEntity.getDialTimes());
-            } else {
-                numberList.add(allCallsEntity.getCallNumber());
-                allCallsHM.put(allCallsEntity.getCallNumber(), allCallsEntity);
+        if (IS_FIRST) {
+            final ArrayList<String> numberList = new ArrayList<>();
+            final HashMap<String, AllCallsEntity> allCallsHM = new HashMap<>();
+            for (AllCallsEntity allCallsEntity : allCallList) {
+                if (numberList.contains(allCallsEntity.getCallNumber())) {
+                    AllCallsEntity calls = allCallsHM.get(allCallsEntity.getCallNumber());
+                    calls.setTotalTime(calls.getSingleTime() + allCallsEntity.getSingleTime());
+                    calls.setRefuseTimes(calls.getRefuseTimes() + allCallsEntity.getRefuseTimes());
+                    calls.setMissedTimes(calls.getMissedTimes() + allCallsEntity.getMissedTimes());
+                    calls.setReceiverTimes(calls.getReceiverTimes() + allCallsEntity.getReceiverTimes());
+                    calls.setDialTimes(calls.getDialTimes() + allCallsEntity.getDialTimes());
+                } else {
+                    numberList.add(allCallsEntity.getCallNumber());
+                    allCallsHM.put(allCallsEntity.getCallNumber(), allCallsEntity);
+                }
             }
+            for (String s : allCallsHM.keySet()) {
+                repository.addAllCallsEntity(allCallsHM.get(s));
+            }
+            IS_FIRST = !IS_FIRST;
         }
-        for (String s : allCallsHM.keySet()) {
-            list.add(allCallsHM.get(s));
-        }
-        return list;
+        repository.getAllCallsEntities(callBack);
     }
 }

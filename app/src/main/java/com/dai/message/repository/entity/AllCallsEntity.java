@@ -18,9 +18,9 @@ public class AllCallsEntity {
     private String name;
 
     /*拨号方手机号*/
+    @NonNull
     @PrimaryKey()
     @ColumnInfo(name = "id")
-    @NonNull
     private String callNumber;
 
     /*接收方手机号*/

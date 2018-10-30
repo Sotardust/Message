@@ -17,6 +17,11 @@ import android.view.ViewGroup;
 import com.dai.message.R;
 import com.dai.message.adapter.BaseFragmentPageAdapter;
 import com.dai.message.base.BaseFragment;
+import com.dai.message.ui.main.allcalls.AllCallsFragment;
+import com.dai.message.ui.main.answered.AnsweredFragment;
+import com.dai.message.ui.main.dial.DialFragment;
+import com.dai.message.ui.main.missedcalls.MissedCallsFragment;
+import com.dai.message.ui.main.refuse.RefuseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
