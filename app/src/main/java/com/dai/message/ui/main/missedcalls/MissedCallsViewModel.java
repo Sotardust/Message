@@ -5,10 +5,10 @@ import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.dai.message.MessageApplication;
 import com.dai.message.callback.CallBack;
 import com.dai.message.repository.entity.AllCallsEntity;
 import com.dai.message.ui.main.CallRecordViewModel;
+import com.dai.message.util.LogUtil;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXTextObject;
@@ -21,7 +21,7 @@ import java.util.List;
 
 public class MissedCallsViewModel extends CallRecordViewModel {
 
-
+    private static final String TAG = "MissedCallsViewModel";
     private IWXAPI iwxapi;
 
     public MissedCallsViewModel(@NonNull Application application) {
@@ -73,7 +73,7 @@ public class MissedCallsViewModel extends CallRecordViewModel {
      * @param text
      */
     public void sendMessageToWeChat(String text) {
-
+        LogUtil.writeInfo(TAG, "", text);
         WXTextObject textObject = new WXTextObject();
         textObject.text = "测试数据分享到微信";
 

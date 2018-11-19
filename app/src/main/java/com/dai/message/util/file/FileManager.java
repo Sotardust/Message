@@ -14,19 +14,19 @@ import java.util.ArrayList;
  * Created by Administrator on 2018/6/26.
  */
 
-public class FileManager  {
+public class FileManager {
 
     private static final String TAG = "FileManager";
-    private static  FileManager instance;
+    private static FileManager instance;
 
-    private FileManager(){
+    private FileManager() {
         initDirectory();
     }
 
-    public static FileManager getInstance(){
-        if (instance ==null){
-            synchronized (FileManager.class){
-                if (instance ==null){
+    public static FileManager getInstance() {
+        if (instance == null) {
+            synchronized (FileManager.class) {
+                if (instance == null) {
                     instance = new FileManager();
                 }
             }
@@ -37,7 +37,7 @@ public class FileManager  {
     /**
      * 初始化文件目录
      */
-    private void initDirectory(){
+    private void initDirectory() {
         createDirectory();
     }
 
@@ -59,10 +59,12 @@ public class FileManager  {
 
     /**
      * 创建新文件
+     *
      * @param path 文件路径
      * @return 文件对象
      */
     public File createNewFile(String path) {
+        LogUtil.writeInfo(TAG, "createNewFile", path);
         File file = new File(path);
         try {
             if (!file.exists()) {

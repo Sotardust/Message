@@ -15,6 +15,8 @@ import android.util.Log;
 import com.dai.message.callback.CallBack;
 import com.dai.message.repository.AllCallsRepository;
 import com.dai.message.repository.entity.AllCallsEntity;
+import com.dai.message.util.AllCallsType;
+import com.dai.message.util.CallType;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -109,7 +111,7 @@ public class CallRecordViewModel extends AndroidViewModel {
         allCallsEntity.setName(cursor.getString(0) == null ? "未知" : cursor.getString(0));
         allCallsEntity.setCallNumber(cursor.getString(1));
         allCallsEntity.setCallTime(format.format(cursor.getLong(2)));
-        allCallsEntity.setCallType(cursor.getInt(3));
+        allCallsEntity.setCallType(CallType.getCallType(cursor.getInt(3)));
         allCallsEntity.setSingleTime(cursor.getInt(5));
         return allCallsEntity;
     }
@@ -121,25 +123,21 @@ public class CallRecordViewModel extends AndroidViewModel {
     private void setAllCallsOtherData() {
         for (AllCallsEntity allCallsEntity : allCallList) {
             switch (allCallsEntity.getCallType()) {
-                case 1:
-                    allCallsEntity.setType("接听");
+                case ANSWER:
+                    allCallsEntity.setType(AllCallsType.ANSWER);
                     allCallsEntity.setReceiverTimes(allCallsEntity.getReceiverTimes() + 1);
                     break;
-                case 2:
-                    allCallsEntity.setType("拨打");
+                case DIAL:
+                    allCallsEntity.setType(AllCallsType.DIAL);
                     allCallsEntity.setDialTimes(allCallsEntity.getDialTimes() + 1);
                     break;
-                case 3:
+                case MISSED:
                     allCallsEntity.setMissedTimes(allCallsEntity.getMissedTimes() + 1);
-                    allCallsEntity.setType("未接");
+                    allCallsEntity.setType(AllCallsType.MISSED);
                     break;
-                case 4:
-                    break;
-                case 5:
-                    allCallsEntity.setType("拒接");
+                case REJECT:
+                    allCallsEntity.setType(AllCallsType.REJECT);
                     allCallsEntity.setRefuseTimes(allCallsEntity.getRefuseTimes() + 1);
-                    break;
-                case 6:
                     break;
             }
             allCallsEntity.setTotalTime(allCallsEntity.getTotalTime() + allCallsEntity.getSingleTime());

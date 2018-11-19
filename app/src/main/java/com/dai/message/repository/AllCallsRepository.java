@@ -8,6 +8,7 @@ import com.dai.message.callback.ObservableCallback;
 import com.dai.message.callback.ObserverCallback;
 import com.dai.message.repository.dao.AllCallsDao;
 import com.dai.message.repository.entity.AllCallsEntity;
+import com.dai.message.util.LogUtil;
 import com.dai.message.util.rxjava.RxJavaObservable;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public class AllCallsRepository {
      */
     @SuppressWarnings("unchecked")
     public void addAllCallsEntity(final AllCallsEntity entity) {
+        LogUtil.writeInfo(TAG, "addAllCallsEntity", entity.toString());
         RxJavaObservable.getInstance().execute(new ObservableCallback<String>() {
             @Override
             public void subscribe(ObservableEmitter<String> emitter) throws Exception {
@@ -77,6 +79,7 @@ public class AllCallsRepository {
      */
     @SuppressWarnings("unchecked")
     public void getCallsEntities(final CallBack<List<AllCallsEntity>> callBack, final String callType) {
+        LogUtil.writeInfo(TAG, "getCallsEntities", callType);
         RxJavaObservable.getInstance().execute(new ObservableCallback<List<AllCallsEntity>>() {
             @Override
             public void subscribe(ObservableEmitter<List<AllCallsEntity>> emitter) throws Exception {

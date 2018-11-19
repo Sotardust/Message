@@ -52,6 +52,7 @@ public class LogUtil {
     //输入正常信息
     public static void writeInfo(String tag, String msg, String info) {
         write(tag, msg + info);
+
     }
 
     //输入异常信息

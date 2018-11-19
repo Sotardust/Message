@@ -4,10 +4,12 @@ package com.dai.message.repository;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
 import com.dai.message.repository.dao.AllCallsDao;
 import com.dai.message.repository.entity.AllCallsEntity;
+import com.dai.message.util.CallType;
 
 /**
  * created by dht on 2018/7/4 16:37

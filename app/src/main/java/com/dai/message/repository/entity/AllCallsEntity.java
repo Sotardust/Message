@@ -3,14 +3,20 @@ package com.dai.message.repository.entity;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
+
+import com.dai.message.util.CallType;
+import com.dai.message.util.CallTypeConverter;
 
 
 /**
  * 记录所有通话记录
+ * <p>
  * created by Administrator on 2018/10/24 18:32
  */
 @Entity(tableName = "allCalls")
+
 public class AllCallsEntity {
 
     /*姓名*/
@@ -49,7 +55,8 @@ public class AllCallsEntity {
 
     /*拨打类型*/
     @ColumnInfo(name = "call_type")
-    private int callType;
+    @TypeConverters(CallTypeConverter.class)
+    private CallType callType;
 
     /*拨打次数*/
     @ColumnInfo(name = "dial_times")
@@ -138,11 +145,11 @@ public class AllCallsEntity {
         this.singleTime = singleTime;
     }
 
-    public int getCallType() {
+    public CallType getCallType() {
         return callType;
     }
 
-    public void setCallType(int callType) {
+    public void setCallType(CallType callType) {
         this.callType = callType;
     }
 
