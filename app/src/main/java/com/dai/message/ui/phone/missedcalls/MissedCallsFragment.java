@@ -1,4 +1,4 @@
-package com.dai.message.ui.main.allcalls;
+package com.dai.message.ui.phone.missedcalls;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -16,26 +16,25 @@ import com.dai.message.adapter.CallRecordAdapter;
 import com.dai.message.adapter.util.VerticalDecoration;
 import com.dai.message.base.BaseFragment;
 import com.dai.message.callback.RecycleItemClickCallBack;
-import com.dai.message.databinding.FragmentAllCallsBinding;
 import com.dai.message.repository.entity.AllCallsEntity;
+import com.dai.message.databinding.FragmentMissedCallsBinding;
 
 import java.util.ArrayList;
 
-public class AllCallsFragment extends BaseFragment {
+public class MissedCallsFragment extends BaseFragment {
 
-    private AllCallsViewModel mViewModel;
+    private MissedCallsViewModel mViewModel;
 
-    private FragmentAllCallsBinding mBinding;
+    private FragmentMissedCallsBinding mBinding;
 
-    public static AllCallsFragment newInstance() {
-        return new AllCallsFragment();
+    public static MissedCallsFragment newInstance() {
+        return new MissedCallsFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_all_calls, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_missed_calls, container, false);
 
         return mBinding.getRoot();
     }
@@ -43,8 +42,8 @@ public class AllCallsFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(AllCallsViewModel.class);
-        mBinding.setAllCallsViewModel(mViewModel);
+        mViewModel = ViewModelProviders.of(this).get(MissedCallsViewModel.class);
+        mBinding.setMissedCallsViewModel(mViewModel);
         bindViews();
         // TODO: Use the ViewModel
     }
@@ -54,7 +53,7 @@ public class AllCallsFragment extends BaseFragment {
         super.bindViews();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         final CallRecordAdapter callRecordAdapter = new CallRecordAdapter(recycleItemClickCallBack);
-        mViewModel.getAllCallsList().observe(this, new Observer<ArrayList<AllCallsEntity>>() {
+        mViewModel.getMissedCallsList().observe(this, new Observer<ArrayList<AllCallsEntity>>() {
             @Override
             public void onChanged(@Nullable ArrayList<AllCallsEntity> allCallEntities) {
                 callRecordAdapter.setChangeList(allCallEntities);
@@ -69,6 +68,9 @@ public class AllCallsFragment extends BaseFragment {
         @Override
         public void onItemClickListener(AllCallsEntity allCallsEntity, int position) {
             super.onItemClickListener(allCallsEntity, position);
+
+            mViewModel.sendMessageToWeChat(allCallsEntity.getCallNumber());
         }
     };
+
 }

@@ -6,7 +6,7 @@
 
         <variable
             name="missedCallsViewModel"
-            type="com.dai.message.ui.main.missedcalls.MissedCallsViewModel" />
+            type="com.dai.message.ui.phone.missedcalls.MissedCallsViewModel" />
     </data>
 
     <LinearLayout

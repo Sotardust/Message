@@ -1,19 +1,25 @@
-package com.dai.message.ui.main.refuse;
+package com.dai.message.ui.phone.refuse;
 
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
+import com.dai.message.base.BaseAndroidViewModel;
 import com.dai.message.callback.CallBack;
+import com.dai.message.repository.AllCallsRepository;
 import com.dai.message.repository.entity.AllCallsEntity;
 import com.dai.message.ui.main.CallRecordViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RefuseViewModel extends CallRecordViewModel {
+public class RefuseViewModel extends BaseAndroidViewModel {
+
+    private AllCallsRepository repository;
+
     public RefuseViewModel(@NonNull Application application) {
         super(application);
+        repository = new AllCallsRepository(application);
     }
 
     /**
@@ -29,6 +35,7 @@ public class RefuseViewModel extends CallRecordViewModel {
         }
         return mRefuseCallsList;
     }
+
     /**
      * 获取未接来电通话记录
      * 拒接类型：5

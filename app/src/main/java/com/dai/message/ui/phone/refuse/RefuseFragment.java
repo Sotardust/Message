@@ -1,4 +1,4 @@
-package com.dai.message.ui.main.refuse;
+package com.dai.message.ui.phone.refuse;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;

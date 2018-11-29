@@ -1,26 +1,29 @@
-package com.dai.message.ui.main.dial;
+package com.dai.message.ui.phone.dial;
 
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
+import com.dai.message.base.BaseAndroidViewModel;
 import com.dai.message.callback.CallBack;
+import com.dai.message.repository.AllCallsRepository;
 import com.dai.message.repository.entity.AllCallsEntity;
 import com.dai.message.ui.main.CallRecordViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DialViewModel extends CallRecordViewModel {
+public class DialViewModel extends BaseAndroidViewModel {
 
     /**
      * 设置LiveData 监听设置列表数据变化
      */
     private MutableLiveData<ArrayList<AllCallsEntity>> mDialCallsList;
-
+    private AllCallsRepository repository;
 
     public DialViewModel(@NonNull Application application) {
         super(application);
+        repository = new AllCallsRepository(application);
     }
 
 

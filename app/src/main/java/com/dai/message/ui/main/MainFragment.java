@@ -17,11 +17,11 @@ import android.view.ViewGroup;
 import com.dai.message.R;
 import com.dai.message.adapter.BaseFragmentPageAdapter;
 import com.dai.message.base.BaseFragment;
-import com.dai.message.ui.main.allcalls.AllCallsFragment;
-import com.dai.message.ui.main.answered.AnsweredFragment;
-import com.dai.message.ui.main.dial.DialFragment;
-import com.dai.message.ui.main.missedcalls.MissedCallsFragment;
-import com.dai.message.ui.main.refuse.RefuseFragment;
+import com.dai.message.ui.phone.allcalls.AllCallsFragment;
+import com.dai.message.ui.phone.answered.AnsweredFragment;
+import com.dai.message.ui.phone.dial.DialFragment;
+import com.dai.message.ui.phone.missedcalls.MissedCallsFragment;
+import com.dai.message.ui.phone.refuse.RefuseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +67,7 @@ public class MainFragment extends BaseFragment {
 
         mBinding.baseViewPager.setAdapter(new BaseFragmentPageAdapter(getChildFragmentManager(), mFragmentList, titles));
         mBinding.baseViewPager.setCurrentItem(0);
-        mBinding.baseViewPager.setOffscreenPageLimit(2);
+        mBinding.baseViewPager.setOffscreenPageLimit(5);
         mBinding.tabLayout.setupWithViewPager(mBinding.baseViewPager);
         mBinding.baseViewPager.addOnPageChangeListener(new OnPageChangerCallback() {
             @Override

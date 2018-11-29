@@ -1,13 +1,14 @@
-package com.dai.message.ui.main.missedcalls;
+package com.dai.message.ui.phone.missedcalls;
 
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.dai.message.base.BaseAndroidViewModel;
 import com.dai.message.callback.CallBack;
+import com.dai.message.repository.AllCallsRepository;
 import com.dai.message.repository.entity.AllCallsEntity;
-import com.dai.message.ui.main.CallRecordViewModel;
 import com.dai.message.util.LogUtil;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -19,14 +20,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MissedCallsViewModel extends CallRecordViewModel {
+public class MissedCallsViewModel extends BaseAndroidViewModel {
 
     private static final String TAG = "MissedCallsViewModel";
     private IWXAPI iwxapi;
 
+    private AllCallsRepository repository;
+
     public MissedCallsViewModel(@NonNull Application application) {
         super(application);
         iwxapi = getIwxapi(application.getApplicationContext());
+        repository = new AllCallsRepository(application);
     }
 
     /**
