@@ -2,7 +2,6 @@ package com.dai.message.ui.phone.missedcalls;
 
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.dai.message.base.BaseAndroidViewModel;
@@ -10,11 +9,6 @@ import com.dai.message.callback.CallBack;
 import com.dai.message.repository.AllCallsRepository;
 import com.dai.message.repository.entity.AllCallsEntity;
 import com.dai.message.util.LogUtil;
-import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
-import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
-import com.tencent.mm.opensdk.modelmsg.WXTextObject;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +17,13 @@ import java.util.List;
 public class MissedCallsViewModel extends BaseAndroidViewModel {
 
     private static final String TAG = "MissedCallsViewModel";
-    private IWXAPI iwxapi;
+//    private IWXAPI iwxapi;
 
     private AllCallsRepository repository;
 
     public MissedCallsViewModel(@NonNull Application application) {
         super(application);
-        iwxapi = getIwxapi(application.getApplicationContext());
+//        iwxapi = getIwxapi(application.getApplicationContext());
         repository = new AllCallsRepository(application);
     }
 
@@ -47,14 +41,14 @@ public class MissedCallsViewModel extends BaseAndroidViewModel {
         return mMissedCallsList;
     }
 
-
-    private IWXAPI getIwxapi(Context context) {
-        //微信AppID
-        final String APP_ID = "wx4b46660f04a64bc4";
-        IWXAPI iwxapi = WXAPIFactory.createWXAPI(context, APP_ID, true);
-        iwxapi.registerApp(APP_ID);
-        return iwxapi;
-    }
+//
+//    private IWXAPI getIwxapi(Context context) {
+//        //微信AppID
+//        final String APP_ID = "wx4b46660f04a64bc4";
+//        IWXAPI iwxapi = WXAPIFactory.createWXAPI(context, APP_ID, true);
+//        iwxapi.registerApp(APP_ID);
+//        return iwxapi;
+//    }
 
     /**
      * 获取未接来电通话记录
@@ -78,20 +72,20 @@ public class MissedCallsViewModel extends BaseAndroidViewModel {
      */
     public void sendMessageToWeChat(String text) {
         LogUtil.writeInfo(TAG, "", text);
-        WXTextObject textObject = new WXTextObject();
-        textObject.text = "测试数据分享到微信";
-
-        WXMediaMessage msg = new WXMediaMessage();
-        msg.mediaObject = textObject;
-        msg.description = "***测试数据分享到微信***";
-
-        SendMessageToWX.Req req = new SendMessageToWX.Req();
-//        req.transaction = String.valueOf(format.format(System.currentTimeMillis()));
-        req.transaction = "text";
-        req.message = msg;
-//        req.scene = SendMessageToWX.Req.WXSceneTimeline;
-        req.scene = SendMessageToWX.Req.WXSceneSession;
-        iwxapi.sendReq(req);
+//        WXTextObject textObject = new WXTextObject();
+//        textObject.text = "测试数据分享到微信";
+//
+//        WXMediaMessage msg = new WXMediaMessage();
+//        msg.mediaObject = textObject;
+//        msg.description = "***测试数据分享到微信***";
+//
+//        SendMessageToWX.Req req = new SendMessageToWX.Req();
+////        req.transaction = String.valueOf(format.format(System.currentTimeMillis()));
+//        req.transaction = "text";
+//        req.message = msg;
+////        req.scene = SendMessageToWX.Req.WXSceneTimeline;
+//        req.scene = SendMessageToWX.Req.WXSceneSession;
+//        iwxapi.sendReq(req);
 
     }
 }

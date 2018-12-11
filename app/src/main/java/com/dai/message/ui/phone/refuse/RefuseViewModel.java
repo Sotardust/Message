@@ -8,7 +8,6 @@ import com.dai.message.base.BaseAndroidViewModel;
 import com.dai.message.callback.CallBack;
 import com.dai.message.repository.AllCallsRepository;
 import com.dai.message.repository.entity.AllCallsEntity;
-import com.dai.message.ui.main.CallRecordViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +38,8 @@ public class RefuseViewModel extends BaseAndroidViewModel {
     /**
      * 获取未接来电通话记录
      * 拒接类型：5
-     *
-     * @return AllCalls实体集合
+     * <p>
+     * AllCalls实体集合
      */
     private void distinctRefuseCalls() {
         repository.getCallsEntities(new CallBack<List<AllCallsEntity>>() {

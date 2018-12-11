@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import com.dai.message.R;
 import com.dai.message.adapter.BaseFragmentPageAdapter;
 import com.dai.message.base.BaseFragment;
+import com.dai.message.ui.phone.SecondaryLinkageFragment;
 import com.dai.message.ui.phone.allcalls.AllCallsFragment;
 import com.dai.message.ui.phone.answered.AnsweredFragment;
 import com.dai.message.ui.phone.dial.DialFragment;
@@ -30,7 +31,7 @@ public class MainFragment extends BaseFragment {
 
     private MainViewModel mViewModel;
 
-    private String[] titles = {"未接来电", "已接来电", "拨打电话", "拒接来电", "全部来电"};
+    private String[] titles = {"未接来电", "已接来电", "拨打电话", "拒接来电", "全部来电", "二级联动"};
 
     private MainFragmentBinding mBinding;
 
@@ -64,10 +65,11 @@ public class MainFragment extends BaseFragment {
         mFragmentList.add(DialFragment.newInstance());
         mFragmentList.add(RefuseFragment.newInstance());
         mFragmentList.add(AllCallsFragment.newInstance());
+        mFragmentList.add(SecondaryLinkageFragment.newInstance());
 
         mBinding.baseViewPager.setAdapter(new BaseFragmentPageAdapter(getChildFragmentManager(), mFragmentList, titles));
         mBinding.baseViewPager.setCurrentItem(0);
-        mBinding.baseViewPager.setOffscreenPageLimit(5);
+        mBinding.baseViewPager.setOffscreenPageLimit(6);
         mBinding.tabLayout.setupWithViewPager(mBinding.baseViewPager);
         mBinding.baseViewPager.addOnPageChangeListener(new OnPageChangerCallback() {
             @Override

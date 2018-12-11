@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--<item android:state_active="true">-->
+    <!--<shape android:shape="rectangle">-->
+    <!--<solid android:color="@color/colorAccent" />-->
+    <!--</shape>-->
+    <!--</item>-->
+    <!--<item android:state_active="false">-->
+    <!--<shape android:shape="rectangle"> &lt;!&ndash; 透明色 &ndash;&gt;-->
+    <!--<solid android:color="@color/colorWhite" />-->
+    <!--</shape>-->
+    <!--</item>-->
+
+    <item android:drawable="@drawable/bound_recycle_item_blue" android:state_selected="true" />
+    <item android:drawable="@drawable/bound_recycle_item" android:state_selected="false" />
+
+</selector>

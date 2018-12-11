@@ -2,6 +2,8 @@ package com.dai.message.base;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 
 
@@ -28,14 +30,15 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<RecyclerView.V
         return onCreateVH(parent, viewType);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         onBindVH(holder, position);
     }
 
     @Override
     public int getItemCount() {
-        return mList == null ? 0 : mList.size();
+        return mList.size();
     }
 
     /**

@@ -18,6 +18,7 @@ import com.dai.message.base.BaseFragment;
 import com.dai.message.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.FragmentAllCallsBinding;
 import com.dai.message.repository.entity.AllCallsEntity;
+import com.dai.message.ui.ViewModelFactory;
 
 import java.util.ArrayList;
 
@@ -43,7 +44,8 @@ public class AllCallsFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(AllCallsViewModel.class);
+        ViewModelFactory mViewModelFactory = ViewModelFactory.getInstance(weakReference.get());
+        mViewModel = ViewModelProviders.of(this,mViewModelFactory).get(AllCallsViewModel.class);
         mBinding.setAllCallsViewModel(mViewModel);
         bindViews();
         // TODO: Use the ViewModel

@@ -1,5 +1,6 @@
 package com.dai.message.base;
 
+import android.app.Application;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.dai.message.MainActivity;
+
+import java.lang.ref.WeakReference;
 
 
 /**
@@ -24,6 +29,18 @@ public class BaseFragment extends Fragment implements ITitleBarManager {
     protected TextView mTitleBarTitleName;
     protected Button mTitleBarAdvancedSet;
     protected Button mTitleBarVideoCtr;
+
+    protected static WeakReference<Application> weakReference;
+
+    /**
+     * 在主界面中注册获取 Application
+     *
+     * @param application Application
+     */
+    public static void install(Application application) {
+
+        weakReference = new WeakReference<>(application);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

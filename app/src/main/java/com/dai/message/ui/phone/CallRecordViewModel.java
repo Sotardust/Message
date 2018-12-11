@@ -1,4 +1,4 @@
-package com.dai.message.ui.main;
+package com.dai.message.ui.phone;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
@@ -32,13 +32,12 @@ public class CallRecordViewModel extends AndroidViewModel {
     private static final String TAG = "CallRecordViewModel";
 
     protected Application application;
-    protected SimpleDateFormat format;
+    private SimpleDateFormat format;
     private ArrayList<AllCallsEntity> allCallList;
 
     protected AllCallsRepository repository;
 
     private static boolean IS_FIRST = true;
-
 
     public CallRecordViewModel(@NonNull Application application) {
         super(application);
@@ -59,43 +58,43 @@ public class CallRecordViewModel extends AndroidViewModel {
     @SuppressLint({"MissingPermission", "HardwareIds", "NewApi"})
     private void findLocalAllCalls() {
 
-        ContentResolver cr = application.getApplicationContext().getContentResolver();
-        Uri uri = CallLog.Calls.CONTENT_URI;
-        TelephonyManager tm = (TelephonyManager) application.getSystemService(Context.TELEPHONY_SERVICE);
-        String number1 = null;
-        try {
-            if (tm != null) {
-                number1 = tm.getLine1Number();
-                Log.d(TAG, " number1 = " + number1 +
-                        " 手机号个数：" + tm.getPhoneCount() +
-                        " getGroupIdLevel1：" + tm.getGroupIdLevel1() +
-                        " getSimSerialNumber：" + tm.getSimSerialNumber() +
-                        " getSubscriberId：" + tm.getSubscriberId() +
-                        " getDeviceSoftwareVersion：" + tm.getDeviceSoftwareVersion() +
-                        " getImei(1)：" + tm.getImei(1) +
-                        " getImei(2)：" + tm.getImei(2) +
-                        " getMeid(1)：" + tm.getMeid(1) +
-                        " getMeid(2)：" + tm.getMeid(2) +
-                        " getSimState(1)：" + tm.getSimState(1) +
-                        " getSimState(2)：" + tm.getSimState(2) +
-                        " getDeviceId(1)：" + tm.getDeviceId(1) +
-                        " getDeviceId(2)：" + tm.getDeviceId(2)
-                );
-            }
-            @SuppressLint("InlinedApi")
-            String[] projection = new String[]{CallLog.Calls.CACHED_NAME, CallLog.Calls.NUMBER, CallLog.Calls.DATE,
-                    CallLog.Calls.TYPE, CallLog.Calls.NUMBER_PRESENTATION, CallLog.Calls.DURATION, CallLog.Calls.IS_READ};
-
-            Cursor cursor = cr.query(uri, projection, null, null, null);
-            if (cursor == null) return;
-            while (cursor.moveToNext()) {
-                allCallList.add(getAllCalls(cursor));
-            }
-            cursor.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e(TAG, "findLocalAllCalls: e", e);
-        }
+//        ContentResolver cr = application.getApplicationContext().getContentResolver();
+//        Uri uri = CallLog.Calls.CONTENT_URI;
+//        TelephonyManager tm = (TelephonyManager) application.getSystemService(Context.TELEPHONY_SERVICE);
+//        String number1;
+//        try {
+//            if (tm != null) {
+//                number1 = tm.getLine1Number();
+//                Log.d(TAG, " number1 = " + number1 +
+//                        " 手机号个数：" + tm.getPhoneCount() +
+//                        " getGroupIdLevel1：" + tm.getGroupIdLevel1() +
+//                        " getSimSerialNumber：" + tm.getSimSerialNumber() +
+//                        " getSubscriberId：" + tm.getSubscriberId() +
+//                        " getDeviceSoftwareVersion：" + tm.getDeviceSoftwareVersion() +
+//                        " getImei(1)：" + tm.getImei(1) +
+//                        " getImei(2)：" + tm.getImei(2) +
+//                        " getMeid(1)：" + tm.getMeid(1) +
+//                        " getMeid(2)：" + tm.getMeid(2) +
+//                        " getSimState(1)：" + tm.getSimState(1) +
+//                        " getSimState(2)：" + tm.getSimState(2) +
+//                        " getDeviceId(1)：" + tm.getDeviceId(1) +
+//                        " getDeviceId(2)：" + tm.getDeviceId(2)
+//                );
+//            }
+//            @SuppressLint("InlinedApi")
+//            String[] projection = new String[]{CallLog.Calls.CACHED_NAME, CallLog.Calls.NUMBER, CallLog.Calls.DATE,
+//                    CallLog.Calls.TYPE, CallLog.Calls.NUMBER_PRESENTATION, CallLog.Calls.DURATION, CallLog.Calls.IS_READ};
+//
+//            Cursor cursor = cr.query(uri, projection, null, null, null);
+//            if (cursor == null) return;
+//            while (cursor.moveToNext()) {
+//                allCallList.add(getAllCalls(cursor));
+//            }
+//            cursor.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Log.e(TAG, "findLocalAllCalls: e", e);
+//        }
 
 
     }
@@ -148,7 +147,7 @@ public class CallRecordViewModel extends AndroidViewModel {
      * 去重 自定义0 为获取全部通话记录
      * 1/2/3/4/5 接听/拨打/未接//拒接
      *
-     * @return AllCalls实体集合
+     * @param callBack AllCalls 实体集合
      */
     protected void distinctAllCalls(CallBack<List<AllCallsEntity>> callBack) {
 

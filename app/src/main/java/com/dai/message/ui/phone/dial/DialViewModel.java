@@ -8,7 +8,6 @@ import com.dai.message.base.BaseAndroidViewModel;
 import com.dai.message.callback.CallBack;
 import com.dai.message.repository.AllCallsRepository;
 import com.dai.message.repository.entity.AllCallsEntity;
-import com.dai.message.ui.main.CallRecordViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

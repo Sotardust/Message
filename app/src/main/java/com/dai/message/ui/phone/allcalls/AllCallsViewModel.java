@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 
 import com.dai.message.callback.CallBack;
 import com.dai.message.repository.entity.AllCallsEntity;
-import com.dai.message.ui.main.CallRecordViewModel;
+import com.dai.message.ui.phone.CallRecordViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
