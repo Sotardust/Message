@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.dai.message.R;
 import com.dai.message.adapter.LinkageAdapter;
@@ -56,8 +57,10 @@ public class SecondaryLinkageFragment extends BaseFragment {
     public void bindViews() {
         super.bindViews();
 
+//        mBinding.flowLayout.set
+
         ArrayList<String> list = new ArrayList<>();
-        ArrayList<String> nextlist1 = new ArrayList<>();
+        final ArrayList<String> nextlist1 = new ArrayList<>();
         ArrayList<String> nextlist2 = new ArrayList<>();
         ArrayList<String> nextlist3 = new ArrayList<>();
         ArrayList<String> nextlist4 = new ArrayList<>();
@@ -79,17 +82,30 @@ public class SecondaryLinkageFragment extends BaseFragment {
         nextlist1.add("测试一");
         nextlist1.add("测试一二三四五六");
 
-        nextlist1.add("测试测试测");
-        nextlist1.add("说什么好呢");
-        nextlist1.add("遇见");
-        nextlist1.add("光年之外");
-        nextlist1.add("光年之外");
+//        nextlist1.add("测试测试测");
+//        nextlist1.add("说什么好呢");
+//        nextlist1.add("遇见");
+//        nextlist1.add("光年之外");
+//        nextlist1.add("光年之外");
+//
+//        nextlist1.add("我有我爱我");
+//        nextlist1.add("红");
+//        nextlist1.add("可能否");
+//        nextlist1.add("空空如也");
+//        nextlist1.add("狠人大帝");
 
-        nextlist1.add("我有我爱我");
-        nextlist1.add("红");
-        nextlist1.add("可能否");
-        nextlist1.add("空空如也");
-        nextlist1.add("狠人大帝");
+        for (final String value : nextlist1) {
+            TextView textView = new TextView(getContext());
+            textView.setText(value);
+
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d("dht", "onClick: index = " + nextlist1.indexOf(value) + ", value = " + value);
+                }
+            });
+            mBinding.flowLayout.addView(textView);
+        }
         lists.add(nextlist1);
         lists.add(nextlist2);
         lists.add(nextlist3);

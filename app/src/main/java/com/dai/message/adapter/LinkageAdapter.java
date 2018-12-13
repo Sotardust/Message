@@ -65,9 +65,9 @@ public class LinkageAdapter extends BaseAdapter<String> {
             textView.setText(value);
             textView.setBackgroundResource(R.drawable.bound_recycle_item);
             textView.setPadding(10, 15, 10, 15);
+//            textView.
             textView.setOnClickListener(new View.OnClickListener() {
                 boolean isClick = false;
-
                 @Override
                 public void onClick(View view) {
                     Log.d("dht", "NextLinkageAdapter onClick: ");
