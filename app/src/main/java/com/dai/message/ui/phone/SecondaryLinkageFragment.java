@@ -76,32 +76,38 @@ public class SecondaryLinkageFragment extends BaseFragment {
             nextlist4.add("测试3下 " + i);
             nextlist5.add("测试4下 " + i);
         }
-        nextlist1.add("测试");
+        nextlist1.add("测试一二三四五六");
         nextlist1.add("测试yi");
         nextlist1.add("测试ersan");
         nextlist1.add("测试一");
         nextlist1.add("测试一二三四五六");
+        nextlist1.add("测二三四五六1");
+        nextlist1.add("测试一二测试一二三四五六2");
 
-//        nextlist1.add("测试测试测");
-//        nextlist1.add("说什么好呢");
-//        nextlist1.add("遇见");
-//        nextlist1.add("光年之外");
-//        nextlist1.add("光年之外");
-//
-//        nextlist1.add("我有我爱我");
-//        nextlist1.add("红");
-//        nextlist1.add("可能否");
-//        nextlist1.add("空空如也");
-//        nextlist1.add("狠人大帝");
+        nextlist1.add("测试测试测");
+        nextlist1.add("说什么好呢");
+        nextlist1.add("遇见");
+        nextlist1.add("光年之外");
+        nextlist1.add("光年之外");
+
+        nextlist1.add("我有我爱我");
+        nextlist1.add("红");
+        nextlist1.add("可能否");
+        nextlist1.add("空空如也");
+        nextlist1.add("狠人大帝");
 
         for (final String value : nextlist1) {
-            TextView textView = new TextView(getContext());
+            final TextView textView = (TextView) LayoutInflater.from(getContext()).inflate(R.layout.flowlayout_textview, mBinding.flowLayout, false);
             textView.setText(value);
 
             textView.setOnClickListener(new View.OnClickListener() {
+                boolean isClick = false;
+
                 @Override
                 public void onClick(View view) {
                     Log.d("dht", "onClick: index = " + nextlist1.indexOf(value) + ", value = " + value);
+                    textView.setBackgroundResource(isClick ? R.drawable.bound_recycle_item : R.drawable.bound_recycle_item_blue);
+                    isClick = !isClick;
                 }
             });
             mBinding.flowLayout.addView(textView);
@@ -113,7 +119,7 @@ public class SecondaryLinkageFragment extends BaseFragment {
         lists.add(nextlist5);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        final LinkageAdapter linkageAdapter = new LinkageAdapter(recycleItemClickCallBack);
+        linkageAdapter = new LinkageAdapter(recycleItemClickCallBack);
 
         NextLinkageAdapter adapter1 = new NextLinkageAdapter(nextRecycleItemClickCallBack);
         adapter1.setChangeList(nextlist1);
@@ -138,6 +144,7 @@ public class SecondaryLinkageFragment extends BaseFragment {
         mBinding.recyclerView.addItemDecoration(new VerticalDecoration(2));
     }
 
+    private LinkageAdapter linkageAdapter;
     private RecycleItemClickCallBack<String> recycleItemClickCallBack = new RecycleItemClickCallBack<String>() {
         boolean isClick = true;
 
@@ -145,7 +152,8 @@ public class SecondaryLinkageFragment extends BaseFragment {
         public void onItemClickListener(String string, int position) {
             super.onItemClickListener(string, position);
             isClick = !isClick;
-            adapters.get(position).setShowAll(isClick);
+            linkageAdapter.setShowLines(1);
+//            adapters.get(position).setShowAll(isClick);
 
         }
     };

@@ -1,109 +1,230 @@
 package com.dai.message.adapter.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.LayoutDirection;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.support.v4.text.TextUtilsCompat;
 
-/**
- * 流式布局
- * <p>
- * created by dht on 2018/12/13 17:36
- */
+import com.dai.message.R;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+
 public class FlowLayout extends ViewGroup {
-
     private static final String TAG = "FlowLayout";
 
-    public FlowLayout(Context context) {
-        super(context);
+    private static final int LEFT = -1;
+    private static final int CENTER = 0;
+    private static final int RIGHT = 1;
+
+    protected List<List<View>> mAllViews = new ArrayList<List<View>>();
+    protected List<Integer> mLineHeight = new ArrayList<Integer>();
+    protected List<Integer> mLineWidth = new ArrayList<Integer>();
+    private int mGravity;
+    private List<View> lineViews = new ArrayList<>();
+
+    public FlowLayout(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        @SuppressLint("CustomViewStyleable")
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.flowLayout);
+        mGravity = ta.getInt(R.styleable.flowLayout_gravity, LEFT);
+        int layoutDirection = TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault());
+        if (layoutDirection == LayoutDirection.RTL) {
+            mGravity = mGravity == LEFT ? RIGHT : LEFT;
+        }
+        ta.recycle();
     }
 
     public FlowLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-//        set
+        this(context, attrs, 0);
     }
 
-    public FlowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+    public FlowLayout(Context context) {
+        this(context, null);
     }
-
-    int defaultSize = 200;
-
-    int lineWidth = 10;
-    int lineHeight = 5;
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int childCount = getChildCount();
-        Log.d(TAG, "onMeasure: childCount = " + childCount);
+        Log.d("dht", "onMeasure() called with: widthMeasureSpec = [" + widthMeasureSpec + "], heightMeasureSpec = [" + heightMeasureSpec + "]");
+        int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
+        int modeWidth = MeasureSpec.getMode(widthMeasureSpec);
+        int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
+        int modeHeight = MeasureSpec.getMode(heightMeasureSpec);
 
-        for (int i = 0; i < getChildCount(); i++) {
+        // wrap_content
+        int width = 0;
+        int height = 0;
 
+        int lineWidth = 0;
+        int lineHeight = 0;
+
+        int cCount = getChildCount();
+
+        for (int i = 0; i < cCount; i++) {
             View child = getChildAt(i);
+            if (child.getVisibility() == View.GONE) {
+                if (i == cCount - 1) {
+                    width = Math.max(lineWidth, width);
+                    height += lineHeight;
+                }
+                continue;
+            }
             measureChild(child, widthMeasureSpec, heightMeasureSpec);
-            // 得到LayoutParams
+            MarginLayoutParams lp = (MarginLayoutParams) child
+                    .getLayoutParams();
 
+            int childWidth = child.getMeasuredWidth() + lp.leftMargin
+                    + lp.rightMargin;
+            int childHeight = child.getMeasuredHeight() + lp.topMargin
+                    + lp.bottomMargin;
 
-            int childWidth = child.getMeasuredWidth();
-            int childHeight = child.getMeasuredHeight();
-//            Log.d(TAG, "onMeasure: viewWidth = " + viewWidth +
-//                    ", viewMeasuredWidth" + viewMeasuredWidth +
-//                    ", viewHeight" + viewHeight +
-//                    ", viewMeasuredHeight" + viewMeasuredHeight);
-
-            Log.d(TAG, "onMeasure: childWidth = " + childWidth + ", childHeight" + childHeight);
-            int width = measureSize(childWidth, heightMeasureSpec);
-            int height = measureSize(childHeight, widthMeasureSpec);
-
-            Log.d(TAG, "onMeasure: height = " + height + " , width =" + width);
-            setMeasuredDimension(width, height);
+            if (lineWidth + childWidth > sizeWidth - getPaddingLeft() - getPaddingRight()) {
+                width = Math.max(width, lineWidth);
+                lineWidth = childWidth;
+                height += lineHeight;
+                lineHeight = childHeight;
+            } else {
+                lineWidth += childWidth;
+                lineHeight = Math.max(lineHeight, childHeight);
+            }
+            if (i == cCount - 1) {
+                width = Math.max(lineWidth, width);
+                height += lineHeight;
+            }
         }
+        setMeasuredDimension(
+                modeWidth == MeasureSpec.EXACTLY ? sizeWidth : width + getPaddingLeft() + getPaddingRight(),
+                modeHeight == MeasureSpec.EXACTLY ? sizeHeight : height + getPaddingTop() + getPaddingBottom()
+        );
+
+    }
+
+    private int number = -1;
+
+    public void setShowLines(int number) {
+        this.number = number;
     }
 
     @Override
-    protected void onLayout(boolean b, int i, int i1, int i2, int i3) {
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        mAllViews.clear();
+        mLineHeight.clear();
+        mLineWidth.clear();
+        lineViews.clear();
 
+        int width = getWidth();
 
-        Log.d(TAG, "onLayout() called with: b = [" + b + "], i = [" + i + "], i1 = [" + i1 + "], i2 = [" + i2 + "], i3 = [" + i3 + "]");
-        int left = 0;
-        int top = 10;
-        int right = 0;
-        int bottom = 10;
-        int childCount = getChildCount();
-        for (int j = 0; j < childCount; j++) {
+        int lineWidth = 0;
+        int lineHeight = 0;
+
+        int cCount = getChildCount();
+
+        for (int i = 0; i < cCount; i++) {
             View child = getChildAt(i);
+            if (child.getVisibility() == View.GONE) continue;
+            MarginLayoutParams lp = (MarginLayoutParams) child
+                    .getLayoutParams();
+
             int childWidth = child.getMeasuredWidth();
             int childHeight = child.getMeasuredHeight();
-            left += childWidth;
-            Log.d(TAG, "onLayout: childWidth = " + childWidth + ", childHeight" + childHeight);
 
-//            child.layout(left, 100, right+childWidth, 100);
-//            child.layout(i+i*10, i1+i*10, i2+i*10 , i3+i*10);
-            child.layout(100, 100   , 100, 100);
+            if (childWidth + lineWidth + lp.leftMargin + lp.rightMargin > width - getPaddingLeft() - getPaddingRight()) {
+                mLineHeight.add(lineHeight);
+                mAllViews.add(lineViews);
+                mLineWidth.add(lineWidth);
 
+                lineWidth = 0;
+                lineHeight = childHeight + lp.topMargin + lp.bottomMargin;
+                lineViews = new ArrayList<>();
+            }
+            lineWidth += childWidth + lp.leftMargin + lp.rightMargin;
+            lineHeight = Math.max(lineHeight, childHeight + lp.topMargin + lp.bottomMargin);
+            lineViews.add(child);
+
+        }
+        mLineHeight.add(lineHeight);
+        mLineWidth.add(lineWidth);
+        mAllViews.add(lineViews);
+
+        int left = getPaddingLeft();
+        int top = getPaddingTop();
+
+        int lineNum = mAllViews.size();
+
+        for (int i = 0; i < lineNum; i++) {
+            lineViews = mAllViews.get(i);
+            lineHeight = mLineHeight.get(i);
+
+//            if (lineNum > number && i == number) {
+//                for (View view : lineViews) {
+//                    view.setVisibility(GONE);
+//                }
+//                break;
+//            } else {
+//                for (View view : lineViews) {
+//                    view.setVisibility(VISIBLE);
+//                }
+//            }
+            // set gravity
+            int currentLineWidth = this.mLineWidth.get(i);
+            switch (this.mGravity) {
+                case LEFT:
+                    left = getPaddingLeft();
+                    break;
+                case CENTER:
+                    left = (width - currentLineWidth) / 2 + getPaddingLeft();
+                    break;
+                case RIGHT:
+                    //  适配了rtl，需要补偿一个padding值
+                    left = width - (currentLineWidth + getPaddingLeft()) - getPaddingRight();
+                    //  适配了rtl，需要把lineViews里面的数组倒序排
+                    Collections.reverse(lineViews);
+                    break;
+            }
+
+            for (int j = 0; j < lineViews.size(); j++) {
+                View child = lineViews.get(j);
+                if (child.getVisibility() == View.GONE) {
+                    continue;
+                }
+
+                MarginLayoutParams lp = (MarginLayoutParams) child
+                        .getLayoutParams();
+
+                int lc = left + lp.leftMargin;
+                int tc = top + lp.topMargin;
+                int rc = lc + child.getMeasuredWidth();
+                int bc = tc + child.getMeasuredHeight();
+
+                child.layout(lc, tc, rc, bc);
+
+                left += child.getMeasuredWidth() + lp.leftMargin
+                        + lp.rightMargin;
+            }
+            top += lineHeight;
         }
 
     }
 
-    /**
-     * 测量、设置View默认宽高
-     *
-     * @param defaultSize
-     * @param measureSpec
-     * @return
-     */
-    public int measureSize(int defaultSize, int measureSpec) {
-        int result = defaultSize;
-        int specMode = MeasureSpec.getMode(measureSpec);
-        int specSize = MeasureSpec.getSize(measureSpec);
+    @Override
+    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+        return new MarginLayoutParams(getContext(), attrs);
+    }
 
-        if (specMode == MeasureSpec.EXACTLY) {
-            result = specSize;
-        } else if (specMode == MeasureSpec.AT_MOST) {
-            result = Math.min(result, specSize);
-        }
-        return result;
+    @Override
+    protected LayoutParams generateDefaultLayoutParams() {
+        return new MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+    }
+
+    @Override
+    protected LayoutParams generateLayoutParams(LayoutParams p) {
+        return new MarginLayoutParams(p);
     }
 }
