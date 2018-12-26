@@ -1,6 +1,5 @@
-package com.dai.message.ui.phone;
+package com.dai.message.ui.other;
 
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.dai.message.ui.phone;
+package com.dai.message.ui.other;
 
 
 import android.app.Application;

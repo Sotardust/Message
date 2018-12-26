@@ -1,4 +1,4 @@
-package com.dai.message.adapter.util;
+package com.dai.message.ui.other;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

@@ -7,7 +7,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
-import com.dai.message.ui.phone.SecondaryLinkageViewModel;
+import com.dai.message.ui.other.SecondaryLinkageViewModel;
 import com.dai.message.ui.phone.allcalls.AllCallsViewModel;
 
 /**
