@@ -36,6 +36,7 @@
 
         </activity>
         <activity android:name=".ui.music.local.LocalActivity" />
+        <activity android:name=".ui.music.cloud.CloudDiskActivity" />
     </application>
 
 </manifest>

@@ -28,6 +28,7 @@ public class LocalFragment extends BaseFragment {
     private LocalViewModel mViewModel;
 
     protected FragmentLocalBinding mBinding;
+    private ArrayList<File> paths = new ArrayList<>();
 
     public static LocalFragment newInstance() {
         return new LocalFragment();
@@ -60,7 +61,8 @@ public class LocalFragment extends BaseFragment {
 
             @Override
             public void onChanged(@Nullable ArrayList<File> files) {
-
+                paths.clear();
+                paths.addAll(files);
                 if (files == null) return;
                 ArrayList<String> songList = new ArrayList<>();
                 ArrayList<String> userList = new ArrayList<>();
@@ -89,6 +91,9 @@ public class LocalFragment extends BaseFragment {
         @Override
         public void onItemClickListener(int type, String value, int position) {
             super.onItemClickListener(type, value, position);
+            if (type == 0) {
+                mViewModel.playMusic(paths.get(position).getPath());
+            }
             Log.d(TAG, "onItemClickListener() called with: type = [" + type + "], value = [" + value + "], position = [" + position + "]");
         }
     };
