@@ -15,4 +15,12 @@
     <string name="refuse_times"> 拒接 %1$d 次 </string>
     <string name="title_activity_welcome">WelcomeActivity</string>
     <string name="action_settings">Settings</string>
+
+    <string-array name="musicList">
+        <item>本地音乐</item>
+        <item>最近播放</item>
+        <item>云盘音乐</item>
+        <item>下载管理</item>
+        <item>我喜欢的音乐</item>
+    </string-array>
 </resources>

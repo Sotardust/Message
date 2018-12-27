@@ -7,6 +7,13 @@
     <color name="colorTheme">#ffce3d3a</color>
     <color name="colorWhite">#ffffffff</color>
 
+
+    <color name="orange">#FFA500</color>
+    <color name="background">#e6e6e6</color>
+    <color name="tab_background">#f3f1f1</color>
+    <color name="gray">#bfbfbf</color>
+
+
     <color name="black">#000</color>
     <!--item的水波纹颜色-->
     <color name="itemBackgroundWhite">#cfff</color>

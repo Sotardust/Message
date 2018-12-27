@@ -36,7 +36,6 @@ public class AllCallsRepository {
      *
      * @param entity AllCallsEntity
      */
-    @SuppressWarnings("unchecked")
     public void addAllCallsEntity(final AllCallsEntity entity) {
         LogUtil.writeInfo(TAG, "addAllCallsEntity", entity.toString());
         RxJavaObservable.getInstance().execute(new ObservableCallback<String>() {
@@ -77,7 +76,6 @@ public class AllCallsRepository {
      * @param callBack 回调接口
      * @param callType 1/2/3/4/5 接听/拨打/未接//拒接
      */
-    @SuppressWarnings("unchecked")
     public void getCallsEntities(final CallBack<List<AllCallsEntity>> callBack, final String callType) {
         LogUtil.writeInfo(TAG, "getCallsEntities", callType);
         RxJavaObservable.getInstance().execute(new ObservableCallback<List<AllCallsEntity>>() {

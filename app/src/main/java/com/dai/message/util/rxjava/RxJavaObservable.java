@@ -23,7 +23,7 @@ import io.reactivex.schedulers.Timed;
  * created by dht on 2018/7/6 09:05
  */
 
-public class RxJavaObservable<T> {
+public class RxJavaObservable {
 
     private static RxJavaObservable instance;
 
@@ -47,7 +47,7 @@ public class RxJavaObservable<T> {
      * @param observableCallback 被观察者回调接口
      * @param observerCallBack   观察者回调接口
      */
-    public void execute(ObservableCallback<T> observableCallback, ObserverCallback<T> observerCallBack) {
+    public <T> void execute(ObservableCallback<T> observableCallback, ObserverCallback<T> observerCallBack) {
         Observable.create(observableCallback)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -81,7 +81,7 @@ public class RxJavaObservable<T> {
      * @param throwableConsumerCallBack 消费者回调接口
      */
     @SuppressLint("CheckResult")
-    public void execute(ObservableCallback<T> observableCallback, ConsumerCallBack<T> consumerCallBack, ConsumerCallBack<Throwable> throwableConsumerCallBack) {
+    public <T> void execute(ObservableCallback<T> observableCallback, ConsumerCallBack<T> consumerCallBack, ConsumerCallBack<Throwable> throwableConsumerCallBack) {
         Observable.create(observableCallback)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

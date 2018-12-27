@@ -2,36 +2,42 @@ package com.dai.message.ui.home;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.dai.message.R;
 import com.dai.message.adapter.BaseFragmentPageAdapter;
 import com.dai.message.base.BaseFragment;
 import com.dai.message.callback.OnPageChangerCallback;
+import com.dai.message.callback.TabLayoutCallback;
 import com.dai.message.databinding.FragmentHomeBinding;
 import com.dai.message.ui.music.MusicFragment;
-import com.dai.message.ui.other.SecondaryLinkageFragment;
-import com.dai.message.ui.phone.allcalls.AllCallsFragment;
-import com.dai.message.ui.phone.answered.AnsweredFragment;
-import com.dai.message.ui.phone.dial.DialFragment;
-import com.dai.message.ui.phone.missedcalls.MissedCallsFragment;
-import com.dai.message.ui.phone.refuse.RefuseFragment;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeFragment extends BaseFragment {
 
+    private static final String TAG = "HomeFragment";
     private HomeViewModel mViewModel;
     private FragmentHomeBinding mBinding;
 
-    private String[] titles = {"音乐", "新闻", "小说", "我的", "电话", "其他"};
+    private String[] titles = {"音乐", "新闻", "小说", "我的"};
+    private int[] images = {R.drawable.tablayout_music_bg, R.drawable.tablayout_news_bg,
+            R.drawable.tablayout_novel_bg, R.drawable.tablayout_setting_bg};
+
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -48,7 +54,6 @@ public class HomeFragment extends BaseFragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-        // TODO: Use the ViewModel
         mBinding.setHomeViewModel(mViewModel);
         bindViews();
     }
@@ -56,24 +61,58 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void bindViews() {
         super.bindViews();
-        List<Fragment> mFragmentList = new ArrayList<>();
+        final List<Fragment> mFragmentList = new ArrayList<>();
         mFragmentList.add(MusicFragment.newInstance());
         mFragmentList.add(MusicFragment.newInstance());
         mFragmentList.add(MusicFragment.newInstance());
         mFragmentList.add(MusicFragment.newInstance());
-        mFragmentList.add(MusicFragment.newInstance());
-        mFragmentList.add(MusicFragment.newInstance());
-
+        setCustomTabLayout();
         mBinding.baseViewPager.setAdapter(new BaseFragmentPageAdapter(getChildFragmentManager(), mFragmentList, titles));
-        mBinding.baseViewPager.setCurrentItem(0);
-        mBinding.baseViewPager.setOffscreenPageLimit(6);
-        mBinding.tabLayout.setupWithViewPager(mBinding.baseViewPager);
+
+        mBinding.tabLayout.addOnTabSelectedListener(new TabLayoutCallback() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                super.onTabSelected(tab);
+                Log.d(TAG, "onTabSelected: tab.position = " + tab.getPosition());
+                mBinding.baseViewPager.setCurrentItem(tab.getPosition());
+            }
+        });
         mBinding.baseViewPager.addOnPageChangeListener(new OnPageChangerCallback() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                mBinding.baseViewPager.setCurrentItem(position);
+                Log.d(TAG, "onPageSelected: position = " + position);
+                Objects.requireNonNull(mBinding.tabLayout.getTabAt(position)).select();
             }
         });
+    }
+
+    /**
+     * 自定义布局TabLayout
+     */
+    private void setCustomTabLayout() {
+        for (int i = 0; i < titles.length; i++) {
+            TabLayout.Tab tab = mBinding.tabLayout.newTab();
+            tab.setCustomView(getTabView(i));
+            mBinding.tabLayout.addTab(tab);
+        }
+    }
+
+    /**
+     * 获取对应tab view
+     *
+     * @param index 下标
+     * @return View
+     */
+    private View getTabView(int index) {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.tablayout_home, (ViewGroup) mBinding.getRoot(), false);
+        ImageView imageView = view.findViewById(R.id.tab_image);
+        imageView.setImageResource(images[index]);
+        TextView textView = view.findViewById(R.id.tab_content);
+        textView.setText(titles[index]);
+        return view;
+
+
     }
 }

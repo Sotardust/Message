@@ -35,6 +35,7 @@
             </intent-filter>
 
         </activity>
+        <activity android:name=".ui.music.local.LocalActivity" />
     </application>
 
 </manifest>

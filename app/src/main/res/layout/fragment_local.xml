@@ -5,15 +5,15 @@
     <data>
 
         <variable
-            name="musicViewModel"
-            type="com.dai.message.ui.music.MusicViewModel" />
+            name="localViewModel"
+            type="com.dai.message.ui.music.local.LocalViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        tools:context=".ui.music.MusicFragment">
+        tools:context=".ui.music.local.LocalFragment">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
