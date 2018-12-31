@@ -61,8 +61,8 @@ public class BaseApi {
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
+                Log.e(TAG, field + " onError: e = ", e);
                 if (networkCallback == null) {
-                    Log.e(TAG, field + " onError: e = ", e);
                     return;
                 }
                 networkCallback.onChangeData(null);

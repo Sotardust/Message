@@ -9,6 +9,8 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.dai.message.base.BaseActivity;
+import com.dai.message.ui.login.LoginActivity;
+import com.dai.message.ui.login.LoginFragment;
 import com.dai.message.util.file.FileUtil;
 
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ public class WelcomeActivity extends BaseActivity {
             //请求权限后必须创建日志文件
             FileUtil.createLogFile();
         }
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }

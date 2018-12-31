@@ -9,10 +9,6 @@
             type="String" />
 
         <variable
-            name="type"
-            type="Type" />
-
-        <variable
             name="index"
             type="Integer" />
 

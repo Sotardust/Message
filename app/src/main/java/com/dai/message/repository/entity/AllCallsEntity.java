@@ -16,7 +16,6 @@ import com.dai.message.util.CallTypeConverter;
  * created by Administrator on 2018/10/24 18:32
  */
 @Entity(tableName = "allCalls")
-
 public class AllCallsEntity {
 
     /*姓名*/

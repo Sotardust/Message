@@ -4,15 +4,10 @@
 
     <data>
 
-        <import type="com.dai.message.ui.music.local.LocalAdapter.Type" />
 
         <variable
             name="name"
             type="String" />
-
-        <variable
-            name="type"
-            type="Type" />
 
         <variable
             name="index"
