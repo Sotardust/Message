@@ -6,9 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +14,7 @@ import android.view.ViewGroup;
 import com.dai.message.MainActivity;
 import com.dai.message.R;
 import com.dai.message.base.BaseFragment;
-import com.dai.message.bean.model.LoginModel;
+import com.dai.message.bean.BaseModel;
 import com.dai.message.callback.NetworkCallback;
 import com.dai.message.databinding.FragmentLoginBinding;
 import com.dai.message.util.ToastUtil;
@@ -81,9 +79,9 @@ public class LoginFragment extends BaseFragment {
         }
     }
 
-    private NetworkCallback<LoginModel> loginCallBack = new NetworkCallback<LoginModel>() {
+    private NetworkCallback<BaseModel<String>> loginCallBack = new NetworkCallback<BaseModel<String>>() {
         @Override
-        public void onChangeData(LoginModel model) {
+        public void onChangeData(BaseModel<String> model) {
             if (model == null) {
                 ToastUtil.toastCustom(getContext(), "网络超时", 200);
                 return;

@@ -1,10 +1,13 @@
 package com.dai.message.network.retrofit;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Headers;
 import okhttp3.Interceptor;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -15,6 +18,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * created by dht on 2018/12/24 10:22
  */
 public class RetrofitClient {
+
+    private static final String TAG = "RetrofitClient";
 
     private static RetrofitClient instance;
 
@@ -99,9 +104,12 @@ public class RetrofitClient {
     private static Interceptor getRequestHeader() {
         return new Interceptor() {
             @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
+            public okhttp3.Response intercept(@NonNull Chain chain) throws IOException {
                 okhttp3.Request originalRequest = chain.request();
                 okhttp3.Request.Builder builder = originalRequest.newBuilder();
+
+                //OkHttp 不支持上传中文字符，使用编码URLEncoder.encode(file.getName())
+                //使用 URLDecoder.decode(file.getName(), "UTF-8")解码
                 builder.addHeader("Content-Type", "application/json; charset=utf-8");
 //                builder.addHeader("token", "d08986536b5e3678119aac9b892439a8");
                 okhttp3.Request.Builder requestBuilder = builder.method(originalRequest.method(), originalRequest.body());

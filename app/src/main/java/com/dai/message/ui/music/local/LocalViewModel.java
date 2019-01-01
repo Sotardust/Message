@@ -13,11 +13,21 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.dai.message.BuildConfig;
+import com.dai.message.bean.BaseModel;
+import com.dai.message.callback.NetworkCallback;
+import com.dai.message.ui.music.MusicApi;
 import com.dai.message.util.LogUtil;
 import com.dai.message.util.file.FileType;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.Headers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class LocalViewModel extends AndroidViewModel {
 
@@ -29,10 +39,14 @@ public class LocalViewModel extends AndroidViewModel {
 
     private MutableLiveData<ArrayList<File>> filesListData = new MutableLiveData<>();
 
+
+    private MusicApi musicApi;
+
     public LocalViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
         traversalSong();
+        musicApi = new MusicApi();
     }
 
     MutableLiveData<ArrayList<File>> getFilesListData() {
@@ -105,7 +119,7 @@ public class LocalViewModel extends AndroidViewModel {
     String parseSongName(String path) {
         if (path == null) return null;
         String[] strings = path.split("-");
-        String[] songName = strings[strings.length-1].split("\\.");
+        String[] songName = strings[strings.length - 1].split("\\.");
         return songName[0];
     }
 
@@ -138,5 +152,28 @@ public class LocalViewModel extends AndroidViewModel {
                 searchSongFile(file.getPath());
         }
         filesListData.postValue(filePaths);
+    }
+
+    /**
+     * 上传音乐文件
+     *
+     * @param fileList        文件集合
+     * @param networkCallback 回调接口
+     */
+    public void uploadFiles(List<File> fileList, NetworkCallback<BaseModel<ArrayList<String>>> networkCallback) {
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+
+        for (File file : fileList) {
+            RequestBody requestBody = RequestBody.create(MediaType.parse("multiple/form-data"), file);
+
+//            RequestBody requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
+//            RequestBody requestBody = RequestBody.create(MediaType.parse("audio/*"), file);
+            builder.addFormDataPart("file", URLEncoder.encode(file.getName()), requestBody);
+        }
+
+        builder.setType(MultipartBody.FORM);
+
+
+        musicApi.uploadFile(builder.build(), networkCallback);
     }
 }

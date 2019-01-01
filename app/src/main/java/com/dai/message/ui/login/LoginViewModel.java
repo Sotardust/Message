@@ -2,13 +2,9 @@ package com.dai.message.ui.login;
 
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
-import android.util.Log;
 
-import com.dai.message.MainActivity;
-import com.dai.message.bean.model.LoginModel;
+import com.dai.message.bean.BaseModel;
 import com.dai.message.callback.NetworkCallback;
 import com.dai.message.util.ToastUtil;
 
@@ -36,7 +32,7 @@ public class LoginViewModel extends AndroidViewModel {
      * @param password      密码
      * @param loginCallBack 登录回调接口
      */
-    public void logon(String name, String password, NetworkCallback<LoginModel> loginCallBack) {
+    public void logon(String name, String password, NetworkCallback<BaseModel<String>> loginCallBack) {
 
         loginApi.logon(name, password, loginCallBack);
     }
@@ -52,9 +48,9 @@ public class LoginViewModel extends AndroidViewModel {
         loginApi.register(name, password, registerTime, registerCallBack);
     }
 
-    private NetworkCallback<LoginModel> registerCallBack = new NetworkCallback<LoginModel>() {
+    private NetworkCallback<BaseModel<String>> registerCallBack = new NetworkCallback<BaseModel<String>>() {
         @Override
-        public void onChangeData(LoginModel model) {
+        public void onChangeData(BaseModel<String> model) {
             if (model == null) {
                 ToastUtil.toastCustom(application.getApplicationContext(), "网络超时", 200);
                 return;

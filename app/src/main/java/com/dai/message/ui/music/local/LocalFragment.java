@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,11 +16,14 @@ import android.view.ViewGroup;
 import com.dai.message.R;
 import com.dai.message.adapter.util.VerticalDecoration;
 import com.dai.message.base.BaseFragment;
+import com.dai.message.bean.BaseModel;
+import com.dai.message.callback.NetworkCallback;
 import com.dai.message.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.FragmentLocalBinding;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class LocalFragment extends BaseFragment {
 
@@ -83,18 +87,23 @@ public class LocalFragment extends BaseFragment {
     private RecycleItemClickCallBack<String> recycleItemClickCallBack = new RecycleItemClickCallBack<String>() {
 
         @Override
-        public void onItemClickListener(String value, int position) {
-            super.onItemClickListener(value, position);
-            Log.d(TAG, "onItemClickListener() called with: value = [" + value + "], position = [" + position + "]");
-        }
-
-        @Override
         public void onItemClickListener(int type, String value, int position) {
             super.onItemClickListener(type, value, position);
-            if (type == 0) {
-                mViewModel.playMusic(paths.get(position).getPath());
-            }
-            Log.d(TAG, "onItemClickListener() called with: type = [" + type + "], value = [" + value + "], position = [" + position + "]");
+            Log.d(TAG, "onItemClickListener: path = " + paths.get(position).getPath());
+            String path = paths.get(position).getPath();
+            List<File> files = new ArrayList<>();
+            File file = new File(path);
+            files.add(file);
+            mViewModel.uploadFiles(files, networkCallback);
+
+        }
+    };
+
+    private NetworkCallback<BaseModel<ArrayList<String>>> networkCallback = new NetworkCallback<BaseModel<ArrayList<String>>>() {
+        @Override
+        public void onChangeData(BaseModel<ArrayList<String>> data) {
+
+            Log.d(TAG, "onChangeData: data = " + data);
         }
     };
 }

@@ -19,6 +19,8 @@ import retrofit2.Response;
  */
 public class BaseApi {
 
+    // 使用本机iP地址 不能使用 127.0.0.1（虚拟机把其作为自身IP）
+    protected static final String BASE_URL = "http://192.168.199.192:8080/message/";
     /**
      * 异步获取数据函数
      *
