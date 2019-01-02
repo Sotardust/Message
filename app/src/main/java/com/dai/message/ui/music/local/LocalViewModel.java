@@ -165,9 +165,6 @@ public class LocalViewModel extends AndroidViewModel {
 
         for (File file : fileList) {
             RequestBody requestBody = RequestBody.create(MediaType.parse("multiple/form-data"), file);
-
-//            RequestBody requestBody = RequestBody.create(MediaType.parse("application/octet-stream"), file);
-//            RequestBody requestBody = RequestBody.create(MediaType.parse("audio/*"), file);
             builder.addFormDataPart("file", URLEncoder.encode(file.getName()), requestBody);
         }
 

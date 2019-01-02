@@ -3,6 +3,8 @@ package com.dai.message.network.retrofit;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.dai.message.repository.preferences.Config;
+
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.concurrent.TimeUnit;
@@ -111,6 +113,9 @@ public class RetrofitClient {
                 //OkHttp 不支持上传中文字符，使用编码URLEncoder.encode(file.getName())
                 //使用 URLDecoder.decode(file.getName(), "UTF-8")解码
                 builder.addHeader("Content-Type", "application/json; charset=utf-8");
+
+//                builder.addHeader("Cookie", Config.getInstance().getCookie());
+                builder.addHeader("Cookie", "123");
 //                builder.addHeader("token", "d08986536b5e3678119aac9b892439a8");
                 okhttp3.Request.Builder requestBuilder = builder.method(originalRequest.method(), originalRequest.body());
                 okhttp3.Request request = requestBuilder.build();

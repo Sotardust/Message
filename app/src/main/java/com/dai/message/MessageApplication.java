@@ -3,6 +3,7 @@ package com.dai.message;
 import android.app.Application;
 
 import com.dai.message.base.BaseFragment;
+import com.dai.message.repository.preferences.Config;
 import com.dai.message.util.ScreenUtil;
 
 /**
@@ -15,6 +16,6 @@ public class MessageApplication extends Application {
         super.onCreate();
         BaseFragment.install(this);
         ScreenUtil.install(getApplicationContext());
-
+        Config.install(getApplicationContext());
     }
 }

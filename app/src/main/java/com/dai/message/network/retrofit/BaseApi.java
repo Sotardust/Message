@@ -6,6 +6,7 @@ import android.util.Log;
 import com.dai.message.callback.NetworkCallback;
 import com.dai.message.callback.ObservableCallback;
 import com.dai.message.callback.ObserverCallback;
+import com.dai.message.repository.preferences.Config;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -21,6 +22,7 @@ public class BaseApi {
 
     // 使用本机iP地址 不能使用 127.0.0.1（虚拟机把其作为自身IP）
     protected static final String BASE_URL = "http://192.168.199.192:8080/message/";
+
     /**
      * 异步获取数据函数
      *
@@ -50,6 +52,11 @@ public class BaseApi {
             public void subscribe(ObservableEmitter<T> emitter) throws Exception {
                 super.subscribe(emitter);
                 Response<T> response = call.execute();
+                if (call.request().url().toString().contains("login")) {
+                    String cookie = response.headers().get("Set-Cookie");
+                    Log.d(TAG, "subscribe: cookie = "+ cookie);
+                    Config.getInstance().setCookie(cookie);
+                }
                 emitter.onNext(response.body());
             }
         }, new ObserverCallback<T>() {

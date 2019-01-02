@@ -1,7 +1,6 @@
 package com.dai.message.ui.music.local;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import com.dai.message.R;
 import com.dai.message.base.BaseActivity;
