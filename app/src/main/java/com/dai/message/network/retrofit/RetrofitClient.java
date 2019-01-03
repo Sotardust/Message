@@ -7,9 +7,15 @@ import com.dai.message.repository.preferences.Config;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
 import okhttp3.Headers;
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -30,12 +36,25 @@ public class RetrofitClient {
     private static final int DEFAULT_TIMEOUT = 60;
 
     private RetrofitClient() {
+        final HashMap<String, List<Cookie>> cookieStore = new HashMap<>();
         okhttp3.OkHttpClient okHttpClient = OkHttpClient.getInstance().getBuilder()
                 .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
                 .addInterceptor(getHttpLoggingInterceptor())
                 .addNetworkInterceptor(getRequestHeader())
+                .cookieJar(new CookieJar() {
+                    @Override
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                        cookieStore.put(url.host(), cookies);
+                    }
+
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        List<Cookie> cookies = cookieStore.get(url.host());
+                        return cookies != null ? cookies : new ArrayList<Cookie>();
+                    }
+                })
                 .build();
 
         mRetrofitBuilder = new Retrofit.Builder()
@@ -99,7 +118,7 @@ public class RetrofitClient {
     }
 
     /**
-     * 请求头拦截器
+     * 请求头header拦截器
      *
      * @return Interceptor
      */
@@ -109,14 +128,9 @@ public class RetrofitClient {
             public okhttp3.Response intercept(@NonNull Chain chain) throws IOException {
                 okhttp3.Request originalRequest = chain.request();
                 okhttp3.Request.Builder builder = originalRequest.newBuilder();
-
                 //OkHttp 不支持上传中文字符，使用编码URLEncoder.encode(file.getName())
                 //使用 URLDecoder.decode(file.getName(), "UTF-8")解码
                 builder.addHeader("Content-Type", "application/json; charset=utf-8");
-
-//                builder.addHeader("Cookie", Config.getInstance().getCookie());
-                builder.addHeader("Cookie", "123");
-//                builder.addHeader("token", "d08986536b5e3678119aac9b892439a8");
                 okhttp3.Request.Builder requestBuilder = builder.method(originalRequest.method(), originalRequest.body());
                 okhttp3.Request request = requestBuilder.build();
                 return chain.proceed(request);
