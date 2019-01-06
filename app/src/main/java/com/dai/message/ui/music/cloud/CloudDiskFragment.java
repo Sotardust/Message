@@ -14,8 +14,19 @@ import android.view.ViewGroup;
 import com.dai.message.R;
 import com.dai.message.adapter.util.VerticalDecoration;
 import com.dai.message.base.BaseFragment;
+import com.dai.message.bean.BaseModel;
+import com.dai.message.callback.NetworkCallback;
 import com.dai.message.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.FragmentCloudDiskBinding;
+import com.dai.message.repository.entity.CloudMusicEntity;
+
+import java.io.InputStream;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Response;
+
 
 public class CloudDiskFragment extends BaseFragment {
 
@@ -44,18 +55,35 @@ public class CloudDiskFragment extends BaseFragment {
         bindViews();
     }
 
+    private CloudDiskAdapter localAdapter;
+
     @Override
     public void bindViews() {
         super.bindViews();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        final CloudDiskAdapter localAdapter = new CloudDiskAdapter(recycleItemClickCallBack);
-
+        localAdapter = new CloudDiskAdapter(recycleItemClickCallBack);
+        mViewModel.getMusicList(callback);
         mBinding.recyclerView.setAdapter(localAdapter);
         mBinding.recyclerView.setLayoutManager(layoutManager);
         mBinding.recyclerView.addItemDecoration(new VerticalDecoration(3));
 
     }
 
+    private NetworkCallback<BaseModel<List<CloudMusicEntity>>> callback = new NetworkCallback<BaseModel<List<CloudMusicEntity>>>() {
+        @Override
+        public void onChangeData(BaseModel<List<CloudMusicEntity>> data) {
+            Log.d(TAG, "onChangeData: data = " + data);
+
+            List<CloudMusicEntity> entities = new ArrayList<>();
+            entities.addAll(data.result);
+            ArrayList<String> names = new ArrayList<>();
+            for (CloudMusicEntity entity : entities) {
+                names.add(entity.name);
+            }
+            localAdapter.setUsernameList(names);
+            localAdapter.setChangeList(names);
+        }
+    };
 
     private RecycleItemClickCallBack<String> recycleItemClickCallBack = new RecycleItemClickCallBack<String>() {
 
@@ -63,8 +91,11 @@ public class CloudDiskFragment extends BaseFragment {
         public void onItemClickListener(String value, int position) {
             super.onItemClickListener(value, position);
             Log.d(TAG, "onItemClickListener() called with: value = [" + value + "], position = [" + position + "]");
+            mViewModel.downloadMusic(value);
         }
 
     };
+
+
 
 }

@@ -30,10 +30,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
+            android:onClick="@{() ->  callback.onItemClickListener(name,index)}"
             android:paddingStart="15dp"
             android:paddingLeft="15dp"
             tools:ignore="RtlSymmetry">
-            <!--android:onClick="@{() ->  callback.onItemClickListener(0,name,index)}"-->
 
             <TextView
                 android:id="@+id/tv_song_name"

@@ -10,6 +10,7 @@ import com.dai.message.R;
 import com.dai.message.adapter.util.ViewHolder;
 import com.dai.message.base.BaseAdapter;
 import com.dai.message.callback.RecycleItemClickCallBack;
+import com.dai.message.databinding.RecycleItemCloudDiskBinding;
 import com.dai.message.databinding.RecycleItemLocalBinding;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class CloudDiskAdapter extends BaseAdapter<String> {
 
     @Override
     public RecyclerView.ViewHolder onCreateVH(@NonNull ViewGroup parent, int viewType) {
-        RecycleItemLocalBinding mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
+        RecycleItemCloudDiskBinding mBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()),
                 R.layout.recycle_item_cloud_disk, parent, false);
         mBinding.setCallback(callBack);
         return new ViewHolder<>(mBinding);
@@ -44,10 +45,10 @@ public class CloudDiskAdapter extends BaseAdapter<String> {
     @Override
     public void onBindVH(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolder) {
-            ((ViewHolder<RecycleItemLocalBinding>) holder).mBinding.tvSongName.setText(mList.get(position));
-            ((ViewHolder<RecycleItemLocalBinding>) holder).mBinding.tvUsername.setText(usernameList.get(position));
-            ((ViewHolder<RecycleItemLocalBinding>) holder).mBinding.setName(mList.get(position));
-            ((ViewHolder<RecycleItemLocalBinding>) holder).mBinding.setIndex(position);
+            ((ViewHolder<RecycleItemCloudDiskBinding>) holder).mBinding.tvSongName.setText(mList.get(position));
+            ((ViewHolder<RecycleItemCloudDiskBinding>) holder).mBinding.tvUsername.setText(usernameList.get(position));
+            ((ViewHolder<RecycleItemCloudDiskBinding>) holder).mBinding.setName(mList.get(position));
+            ((ViewHolder<RecycleItemCloudDiskBinding>) holder).mBinding.setIndex(position);
         }
     }
 
