@@ -2,18 +2,16 @@ package com.dai.message.ui.music;
 
 import com.dai.message.bean.BaseModel;
 import com.dai.message.callback.NetworkCallback;
-import com.dai.message.network.api.MusicService;
 import com.dai.message.network.retrofit.BaseApi;
 import com.dai.message.network.retrofit.RetrofitClient;
+import com.dai.message.network.service.MusicService;
 import com.dai.message.repository.entity.CloudMusicEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MultipartBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Response;
 
 public class MusicApi extends BaseApi {
 

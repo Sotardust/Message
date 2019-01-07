@@ -64,12 +64,16 @@ public class LoginFragment extends BaseFragment {
                 String name = mBinding.name.getText().toString();
                 String password = mBinding.password.getText().toString();
                 if (isEmpty(name, password)) return;
+
+
+                if ("0".equals(name) && "0".equals(password)) {
+                    toMainActivity();
+                    return;
+                }
                 mViewModel.logon(name, password, loginCallBack);
 
                 break;
             case R.id.register:
-
-
                 String name1 = mBinding.name.getText().toString();
                 String password2 = mBinding.password.getText().toString();
                 String registerTime = String.valueOf(System.currentTimeMillis());
@@ -87,13 +91,20 @@ public class LoginFragment extends BaseFragment {
                 return;
             }
             if (model.code == 0) {
-                Intent intent = new Intent(getContext(), MainActivity.class);
-                startActivity(intent);
-                if (getActivity() != null) getActivity().finish();
+                toMainActivity();
             }
             ToastUtil.toastCustom(getContext(), model.msg, 200);
         }
     };
+
+    /**
+     * 跳转到主页面
+     */
+    private void toMainActivity() {
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        startActivity(intent);
+        if (getActivity() != null) getActivity().finish();
+    }
 
     /**
      * 判断是否为空

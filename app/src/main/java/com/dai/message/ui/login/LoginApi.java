@@ -2,7 +2,7 @@ package com.dai.message.ui.login;
 
 import com.dai.message.bean.BaseModel;
 import com.dai.message.callback.NetworkCallback;
-import com.dai.message.network.api.LoginService;
+import com.dai.message.network.service.LoginService;
 import com.dai.message.network.retrofit.BaseApi;
 import com.dai.message.network.retrofit.RetrofitClient;
 

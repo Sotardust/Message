@@ -1,4 +1,4 @@
-package com.dai.message.network.api;
+package com.dai.message.network.service;
 
 
 import com.dai.message.bean.BaseModel;

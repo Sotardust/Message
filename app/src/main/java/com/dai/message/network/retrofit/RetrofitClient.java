@@ -45,12 +45,13 @@ public class RetrofitClient {
                 .addNetworkInterceptor(getRequestHeader())
                 .cookieJar(new CookieJar() {
                     @Override
-                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+                    public void saveFromResponse(@NonNull HttpUrl url, @NonNull List<Cookie> cookies) {
                         cookieStore.put(url.host(), cookies);
                     }
 
+                    @NonNull
                     @Override
-                    public List<Cookie> loadForRequest(HttpUrl url) {
+                    public List<Cookie> loadForRequest(@NonNull HttpUrl url) {
                         List<Cookie> cookies = cookieStore.get(url.host());
                         return cookies != null ? cookies : new ArrayList<Cookie>();
                     }
