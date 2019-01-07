@@ -39,6 +39,8 @@
         <activity android:name=".ui.music.local.LocalActivity" />
         <activity android:name=".ui.music.cloud.CloudDiskActivity" />
         <activity android:name=".ui.login.LoginActivity" />
+        <activity android:name=".ui.music.download.DownloadActivity" />
+        <activity android:name=".ui.music.playmusic.PlayMusicActivity" />
     </application>
 
 </manifest>

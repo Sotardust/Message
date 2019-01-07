@@ -1,5 +1,6 @@
 package com.dai.message.ui.music;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -17,10 +18,12 @@ import com.dai.message.base.BaseFragment;
 import com.dai.message.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.FragmentMusicBinding;
 import com.dai.message.ui.music.cloud.CloudDiskActivity;
-import com.dai.message.ui.music.cloud.CloudDiskFragment;
+import com.dai.message.ui.music.download.DownloadActivity;
 import com.dai.message.ui.music.local.LocalActivity;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MusicFragment extends BaseFragment {
 
@@ -52,11 +55,22 @@ public class MusicFragment extends BaseFragment {
         super.bindViews();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         final MusicAdapter musicAdapter = new MusicAdapter(recycleItemClickCallBack);
-        musicAdapter.setChangeList(Arrays.asList(getResources().getStringArray(R.array.musicList)));
+        final List<String> list = Arrays.asList(getResources().getStringArray(R.array.musicList));
+        musicAdapter.setChangeList(list);
         mBinding.recyclerView.setAdapter(musicAdapter);
         mBinding.recyclerView.setLayoutManager(layoutManager);
         mBinding.recyclerView.addItemDecoration(new VerticalDecoration(3));
 
+        mViewModel.getliveData().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                List<Integer> integerList = new ArrayList<>();
+                for (int i = 0; i < list.size(); i++) {
+                    integerList.add(i == 0 ? integer : 0);
+                }
+                musicAdapter.setEndList(integerList);
+            }
+        });
     }
 
     private RecycleItemClickCallBack<String> recycleItemClickCallBack = new RecycleItemClickCallBack<String>() {
@@ -71,8 +85,17 @@ public class MusicFragment extends BaseFragment {
                 case 2:
                     startActivity(new Intent(getActivity(), CloudDiskActivity.class));
                     break;
+
+                case 3:
+                    startActivity(new Intent(getActivity(), DownloadActivity.class));
+                    break;
             }
         }
 
     };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

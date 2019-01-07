@@ -20,12 +20,8 @@ import com.dai.message.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.FragmentCloudDiskBinding;
 import com.dai.message.repository.entity.CloudMusicEntity;
 
-import java.io.InputStream;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Response;
 
 
 public class CloudDiskFragment extends BaseFragment {
@@ -73,7 +69,7 @@ public class CloudDiskFragment extends BaseFragment {
         @Override
         public void onChangeData(BaseModel<List<CloudMusicEntity>> data) {
             Log.d(TAG, "onChangeData: data = " + data);
-
+            if (data == null) return;
             List<CloudMusicEntity> entities = new ArrayList<>();
             entities.addAll(data.result);
             ArrayList<String> names = new ArrayList<>();
@@ -95,7 +91,6 @@ public class CloudDiskFragment extends BaseFragment {
         }
 
     };
-
 
 
 }

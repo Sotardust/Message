@@ -5,7 +5,6 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.dai.message.R;
@@ -14,12 +13,15 @@ import com.dai.message.base.BaseAdapter;
 import com.dai.message.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.RecycleItemMusicBinding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * created by Administrator on 2018/12/27 14:53
  */
 public class MusicAdapter extends BaseAdapter<String> {
+
+    private List<Integer> endList = new ArrayList<>();
 
     MusicAdapter(RecycleItemClickCallBack<String> recycleItemClickCallBack) {
         this.callBack = recycleItemClickCallBack;
@@ -31,6 +33,12 @@ public class MusicAdapter extends BaseAdapter<String> {
     @Override
     public void setChangeList(List<String> mList) {
         this.mList = mList;
+        notifyDataSetChanged();
+    }
+
+
+    public void setEndList(List<Integer> endList) {
+        this.endList = endList;
         notifyDataSetChanged();
     }
 
@@ -48,8 +56,7 @@ public class MusicAdapter extends BaseAdapter<String> {
     public void onBindVH(@NonNull RecyclerView.ViewHolder holder, int position) {
         ((ViewHolder<RecycleItemMusicBinding>) holder).mBinding.itemMusicImage.setImageResource(images[position]);
         ((ViewHolder<RecycleItemMusicBinding>) holder).mBinding.itemMusicContent.setText(mList.get(position));
-        ((ViewHolder<RecycleItemMusicBinding>) holder).mBinding.itemMusicNumber.setVisibility(position == 2 ? View.GONE : View.VISIBLE);
-        ((ViewHolder<RecycleItemMusicBinding>) holder).mBinding.itemMusicNumber.setText(String.format("(%d)", position));
+        ((ViewHolder<RecycleItemMusicBinding>) holder).mBinding.itemMusicNumber.setText(String.format("(%d)", endList.size() == 0 ? 0 : endList.get(position)));
         ((ViewHolder<RecycleItemMusicBinding>) holder).mBinding.setIndex(position);
 
     }

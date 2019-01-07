@@ -10,8 +10,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dai.message.MainActivity;
-
 import java.lang.ref.WeakReference;
 
 
@@ -87,4 +85,5 @@ public class BaseFragment extends Fragment implements ITitleBarManager {
     public void observerCallback() {
 
     }
+
 }
