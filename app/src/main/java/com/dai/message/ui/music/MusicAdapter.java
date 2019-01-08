@@ -27,8 +27,8 @@ public class MusicAdapter extends BaseAdapter<String> {
         this.callBack = recycleItemClickCallBack;
     }
 
-    private int[] images = {R.mipmap.icon_music_orange_64, R.mipmap.icon_music_orange_64,
-            R.mipmap.icon_music_orange_64, R.mipmap.icon_music_orange_64, R.mipmap.icon_music_orange_64};
+    private int[] images = {R.mipmap.icon_cherry_original_64, R.mipmap.icon_dragonfruit_original_64,
+            R.mipmap.icon_egg_original_64, R.mipmap.icon_goods_original_64, R.mipmap.icon_grape_original_64};
 
     @Override
     public void setChangeList(List<String> mList) {
