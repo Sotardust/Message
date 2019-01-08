@@ -13,7 +13,7 @@
     <string name="receiver_times"> 接通 %1$d 次 </string>
     <string name="missed_times"> 未接 %1$d 次 </string>
     <string name="refuse_times"> 拒接 %1$d 次 </string>
-    <string name="title_activity_welcome">WelcomeActivity</string>
+    <string name="title_activity_welcome">interest</string>
     <string name="action_settings">Settings</string>
 
     <string-array name="musicList">

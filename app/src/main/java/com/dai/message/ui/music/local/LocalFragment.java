@@ -2,6 +2,7 @@ package com.dai.message.ui.music.local;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.dai.message.bean.BaseModel;
 import com.dai.message.callback.NetworkCallback;
 import com.dai.message.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.FragmentLocalBinding;
+import com.dai.message.ui.music.playmusic.PlayMusicActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -90,10 +92,17 @@ public class LocalFragment extends BaseFragment {
             super.onItemClickListener(type, value, position);
             Log.d(TAG, "onItemClickListener: path = " + paths.get(position).getPath());
             String path = paths.get(position).getPath();
-            List<File> files = new ArrayList<>();
-            File file = new File(path);
-            files.add(file);
-            mViewModel.uploadFiles(files, networkCallback);
+            if (type == LocalAdapter.Type.IV.index) {
+                List<File> files = new ArrayList<>();
+                File file = new File(path);
+                files.add(file);
+                mViewModel.uploadFiles(files, networkCallback);
+            } else {
+                Intent intent = new Intent(getContext(), PlayMusicActivity.class);
+                intent.putExtra("path", path);
+                startActivity(intent);
+            }
+
 
         }
     };

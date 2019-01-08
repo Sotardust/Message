@@ -56,7 +56,7 @@ public class MusicApi extends BaseApi {
                 .create(BASE_URL, MusicService.class)
                 .downloadMusic(songName);
 
-        ansyOperationHandle(call, networkCallback, "getMusicList", TAG);
+        ansyOperationHandle(call, networkCallback, "downloadMusic", TAG);
     }
 
 
