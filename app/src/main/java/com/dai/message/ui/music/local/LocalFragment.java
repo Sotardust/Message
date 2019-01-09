@@ -73,7 +73,7 @@ public class LocalFragment extends BaseFragment {
                 ArrayList<String> userList = new ArrayList<>();
                 for (File file : files) {
                     songList.add(mViewModel.parseSongName(file.getName()));
-                    userList.add(mViewModel.parseUsername(file.getName()));
+                    userList.add(mViewModel.parseAuthor(file.getName()));
                 }
                 localAdapter.setUsernameList(userList);
                 localAdapter.setChangeList(songList);

@@ -13,11 +13,15 @@ import com.dai.message.R;
 import com.dai.message.base.BaseFragment;
 import com.dai.message.databinding.FragmentPlayMusicBinding;
 
+import java.io.File;
+
 public class PlayMusicFragment extends BaseFragment {
 
     private PlayMusicViewModel mViewModel;
 
     private FragmentPlayMusicBinding mBinding;
+
+    private String path;
 
     public static PlayMusicFragment newInstance() {
         return new PlayMusicFragment();
@@ -35,7 +39,44 @@ public class PlayMusicFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(PlayMusicViewModel.class);
         mBinding.setPlayMusicViewModel(mViewModel);
-        // TODO: Use the ViewModel
+        path = getArguments().getString("path");
+        bindViews();
     }
 
+    @Override
+    public void bindViews() {
+        super.bindViews();
+
+        File file = new File(path);
+        mBinding.songName.setText(mViewModel.parseSongName(file.getName()));
+        mBinding.author.setText(mViewModel.parseAuthor(file.getName()));
+        mBinding.back.setOnClickListener(this);
+        mBinding.playType.setOnClickListener(this);
+        mBinding.leftNext.setOnClickListener(this);
+        mBinding.play.setOnClickListener(this);
+        mBinding.rightNext.setOnClickListener(this);
+        mBinding.list.setOnClickListener(this);
+    }
+
+
+    @Override
+    public void handlingClickEvents(View view) {
+        super.handlingClickEvents(view);
+        switch (view.getId()) {
+            case R.id.back:
+                getActivity().finish();
+                break;
+            case R.id.playType:
+                break;
+            case R.id.leftNext:
+                break;
+            case R.id.play:
+                mViewModel.playMusic(path);
+                break;
+            case R.id.rightNext:
+                break;
+            case R.id.list:
+                break;
+        }
+    }
 }
