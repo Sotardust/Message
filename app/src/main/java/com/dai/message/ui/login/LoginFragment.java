@@ -53,6 +53,7 @@ public class LoginFragment extends BaseFragment {
         super.bindViews();
         mBinding.login.setOnClickListener(this);
         mBinding.register.setOnClickListener(this);
+        mViewModel.initData();
     }
 
 

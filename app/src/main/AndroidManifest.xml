@@ -51,6 +51,8 @@
         <activity android:name=".ui.login.LoginActivity" />
         <activity android:name=".ui.music.download.DownloadActivity" />
         <activity android:name=".ui.music.playmusic.PlayMusicActivity" />
+
+        <service android:name=".service.MusicService" />
     </application>
 
 </manifest>

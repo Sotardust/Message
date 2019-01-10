@@ -11,7 +11,6 @@ import com.dai.message.adapter.util.ViewHolder;
 import com.dai.message.base.BaseAdapter;
 import com.dai.message.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.RecycleItemCloudDiskBinding;
-import com.dai.message.databinding.RecycleItemLocalBinding;
 
 import java.util.ArrayList;
 import java.util.List;

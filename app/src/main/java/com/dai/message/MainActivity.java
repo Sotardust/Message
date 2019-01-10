@@ -1,5 +1,6 @@
 package com.dai.message;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,6 +12,8 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
                     .replace(R.id.container, HomeFragment.newInstance())
                     .commitNow();
         }
+        MediaPlayer player = new MediaPlayer();
 
     }
 
