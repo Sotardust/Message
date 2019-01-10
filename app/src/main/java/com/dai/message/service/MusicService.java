@@ -2,13 +2,16 @@ package com.dai.message.service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.bean.Music;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -19,31 +22,54 @@ import java.util.List;
 public class MusicService extends Service {
 
 
+    private static final String TAG = "MusicService";
+
+    private MediaPlayer mediaPlayer;
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+
+        Log.d(TAG, "onStartCommand: ");
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return aidlInterface;
+        return iBinder;
     }
 
-    IMusicAidlInterface.Stub aidlInterface = new IMusicAidlInterface.Stub() {
+    IMusicAidlInterface.Stub iBinder = new IMusicAidlInterface.Stub() {
         @Override
-        public void setDataSource(String path) throws RemoteException {
+        public void setDataSource(String path) {
+            try {
+                if (mediaPlayer == null) {
+                    mediaPlayer = new MediaPlayer();
+                }
+                mediaPlayer.setDataSource(path);
+                mediaPlayer.prepareAsync();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e(TAG, "setDataSource: e", e);
+            }
+        }
+
+
+        @Override
+        public void nextPlay(Music music) {
 
         }
 
         @Override
-        public void nextPlay(Music music) throws RemoteException {
-
-        }
-
-        @Override
-        public void playMusic(Music music) throws RemoteException {
-
+        public void playMusic(Music music) {
+//            setDataSource();
+            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    mp.start();
+                }
+            });
         }
 
         @Override
@@ -58,12 +84,16 @@ public class MusicService extends Service {
 
         @Override
         public void pause() throws RemoteException {
-
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.pause();
+            }
         }
 
         @Override
         public void stop() throws RemoteException {
-
+            if (mediaPlayer.isPlaying()) {
+                mediaPlayer.stop();
+            }
         }
 
         @Override
@@ -148,7 +178,11 @@ public class MusicService extends Service {
 
         @Override
         public void release() throws RemoteException {
-
+            if (mediaPlayer != null) {
+                mediaPlayer.stop();
+                mediaPlayer.release();
+                mediaPlayer = null;
+            }
         }
     };
 }
