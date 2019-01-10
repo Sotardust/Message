@@ -2,9 +2,11 @@ package com.dai.message.ui.music.playmusic;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +61,7 @@ public class PlayMusicFragment extends BaseFragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void handlingClickEvents(View view) {
         super.handlingClickEvents(view);
@@ -69,11 +72,13 @@ public class PlayMusicFragment extends BaseFragment {
             case R.id.playType:
                 break;
             case R.id.leftNext:
+                mViewModel.pause();
                 break;
             case R.id.play:
                 mViewModel.playMusic(path);
                 break;
             case R.id.rightNext:
+                mViewModel.stop();
                 break;
             case R.id.list:
                 break;
