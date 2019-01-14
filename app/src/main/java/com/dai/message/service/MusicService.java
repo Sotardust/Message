@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
@@ -44,6 +45,12 @@ public class MusicService extends Service {
 
     private List<Music> musicList = new ArrayList<>();
 
+    private PlayType playType = PlayType.PLAY_IN_ORDER;
+
+    private boolean isNext = true;
+
+    private int currentPlayIndex = 0;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -51,9 +58,15 @@ public class MusicService extends Service {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
         }
+
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
+                if (isNext) {
+                    ++currentPlayIndex;
+                } else {
+                    --currentPlayIndex;
+                }
                 mp.start();
             }
         });
@@ -67,43 +80,31 @@ public class MusicService extends Service {
                 }
             }
         });
+
+        mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                Log.d(TAG, "onError() called with: mp = [" + mp + "], what = [" + what + "], extra = [" + extra + "]");
+                if (!mp.isPlaying()) {
+                    mp.start();
+                }
+                return false;
+            }
+        });
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.d(TAG, "onBind: ");
         return iBinder;
     }
 
 
-    private static PlayType playType = PlayType.PLAY_IN_ORDER;
-
-    private int currentPlayIndex = 0;
-
     IMusicAidlInterface.Stub iBinder = new IMusicAidlInterface.Stub() {
-        @Override
-        public void setDataSource(String path) {
-
-        }
-
-
-        @Override
-        public void nextPlay(Music music) {
-
-        }
-
 
         @Override
         public void playMusic(Music music) throws RemoteException {
-
-            for (Music music1 : musicList) {
-                Log.d(TAG, "playMusic: music1 = " + music1);
-
-            }
             try {
-                Log.d(TAG, "playMusic: size = " + musicList.size() + ", musicList.contains(music) = " + musicList.contains(music));
-                Log.d(TAG, "playMusic: lastIndexOf = " + musicList.lastIndexOf(music) + ", indexOf = " + musicList.indexOf(music));
                 if (musicList.contains(music)) {
                     currentPlayIndex = musicList.lastIndexOf(music);
                 }
@@ -114,7 +115,6 @@ public class MusicService extends Service {
                 e.printStackTrace();
                 Log.e(TAG, "playMusic: e", e);
             }
-
         }
 
         @Override
@@ -162,21 +162,12 @@ public class MusicService extends Service {
 
         @Override
         public void playPrevious() throws RemoteException {
+            isNext = false;
             switch (playType) {
                 case LIST_LOOP:
-                    --currentPlayIndex;
-                    if (currentPlayIndex == -1) currentPlayIndex = musicList.size() - 1;
-                    Log.d(TAG, "playPrevious: currentPlayIndex = " + currentPlayIndex);
-                    playMusic(musicList.get(currentPlayIndex));
-                    break;
                 case PLAY_IN_ORDER:
-                    --currentPlayIndex;
-                    if (currentPlayIndex <= -1) {
-                        currentPlayIndex = musicList.size() - 1;
-                        mediaPlayer.stop();
-                        return;
-                    }
-                    Log.d(TAG, "playPrevious: currentPlayIndex = " + currentPlayIndex);
+                    if (currentPlayIndex >= musicList.size()) currentPlayIndex = 0;
+                    if (currentPlayIndex <= -1) currentPlayIndex = musicList.size() - 1;
                     playMusic(musicList.get(currentPlayIndex));
                     break;
                 case SHUFFLE_PLAYBACK:
@@ -186,23 +177,13 @@ public class MusicService extends Service {
 
         @Override
         public void playNext() throws RemoteException {
+            isNext = true;
             Log.d(TAG, "playNext: " + PlayType.getPlayTypeString(playType.getIndex()));
             switch (playType) {
                 case LIST_LOOP:
-                    ++currentPlayIndex;
-                    if (currentPlayIndex == musicList.size()) currentPlayIndex = 0;
-                    Log.d(TAG, "playNext: currentPlayIndex = " + currentPlayIndex);
-                    playMusic(musicList.get(currentPlayIndex));
-                    break;
                 case PLAY_IN_ORDER:
-                    ++currentPlayIndex;
-                    Log.d(TAG, "playNext: currentPlayIndex = " + currentPlayIndex);
-                    if (currentPlayIndex >= musicList.size()) {
-                        currentPlayIndex = 0;
-                        mediaPlayer.stop();
-                        return;
-                    }
-
+                    if (currentPlayIndex >= musicList.size()) currentPlayIndex = 0;
+                    if (currentPlayIndex <= -1) currentPlayIndex = musicList.size() - 1;
                     playMusic(musicList.get(currentPlayIndex));
                     break;
                 case SHUFFLE_PLAYBACK:

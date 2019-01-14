@@ -104,36 +104,40 @@ public class PlayMusicFragment extends BaseFragment {
     @Override
     public void handlingClickEvents(View view) {
         super.handlingClickEvents(view);
-
         try {
             if (list.size() == 0) {
                 list.addAll(musicService.getPlayList());
+                currentMusic = list.get(index);
             }
-            currentMusic = list.get(index);
             switch (view.getId()) {
                 case R.id.back:
                     getActivity().finish();
                     break;
                 case R.id.playType:
                     playType = ++playType > PlayType.SHUFFLE_PLAYBACK.getIndex() ? playType = 0 : playType;
+                    Log.d(TAG, "handlingClickEvents: playType = "+ playType);
                     musicService.setPlayType(playType);
                     ToastUtil.toastShort(getContext(), PlayType.getPlayTypeString(playType));
                     break;
                 case R.id.leftNext:
-                    isPause = false;
                     musicService.playPrevious();
+//                    currentMusic = musicService.getCurrentMusic();
                     break;
                 case R.id.play:
                     if (!isPause) {
                         musicService.playMusic(currentMusic);
-                    } else {
-                        musicService.playPause();
                         isPause = true;
                     }
+                    if (musicService.isPlaying()) {
+                        musicService.pause();
+                    } else {
+                        musicService.playPause();
+                    }
+//                    currentMusic = musicService.getCurrentMusic();
                     break;
                 case R.id.rightNext:
-                    isPause = false;
                     musicService.playNext();
+//                    currentMusic = musicService.getCurrentMusic();
                     break;
                 case R.id.list:
                     break;

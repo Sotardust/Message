@@ -39,49 +39,7 @@ public class PlayMusicViewModel extends BaseAndroidViewModel {
                     mp.start();
                 }
             });
-            mediaPlayer.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
-                @Override
-                public void onSeekComplete(MediaPlayer mp) {
-                    Log.d(TAG, "onSeekComplete: mp" + mp.getCurrentPosition());
-                }
-            });
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
 
-                    Log.d(TAG, "onCompletion: ");
-                }
-            });
-
-            mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
-                @Override
-                public boolean onError(MediaPlayer mp, int what, int extra) {
-                    Log.d(TAG, "onError() called with: mp = [" + mp + "], what = [" + what + "], extra = [" + extra + "]");
-                    return false;
-                }
-            });
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                mediaPlayer.setOnDrmInfoListener(new MediaPlayer.OnDrmInfoListener() {
-                    @Override
-                    public void onDrmInfo(MediaPlayer mp, MediaPlayer.DrmInfo drmInfo) {
-                        Log.d(TAG, "onDrmInfo() called with: mp = [" + mp + "], drmInfo = [" + drmInfo + "]");
-                    }
-                });
-            }
-            mediaPlayer.setOnInfoListener(new MediaPlayer.OnInfoListener() {
-                @Override
-                public boolean onInfo(MediaPlayer mp, int what, int extra) {
-                    Log.d(TAG, "onInfo() called with: mp = [" + mp + "], what = [" + what + "], extra = [" + extra + "]");
-                    return false;
-                }
-            });
-            mediaPlayer.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
-                @Override
-                public void onBufferingUpdate(MediaPlayer mp, int percent) {
-
-                    Log.d(TAG, "onBufferingUpdate() called with: mp = [" + mp + "], percent = [" + percent + "]");
-                }
-            });
 
 //           Observable.interval(0,500,TimeUnit.MILLISECONDS).subscribeOn(Schedulers.io())
 //                   .observeOn(AndroidSchedulers.mainThread())

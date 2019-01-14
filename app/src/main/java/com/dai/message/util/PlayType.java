@@ -27,9 +27,9 @@ public enum PlayType {
     public static PlayType getPlayType(int index) {
         switch (index) {
             case 0:
-                return SINGLE_CYCLE;
-            case 1:
                 return PLAY_IN_ORDER;
+            case 1:
+                return SINGLE_CYCLE;
             case 2:
                 return LIST_LOOP;
             default:
@@ -40,9 +40,9 @@ public enum PlayType {
     public static String getPlayTypeString(int index) {
         switch (index) {
             case 0:
-                return "单曲循环";
-            case 1:
                 return "顺序播放";
+            case 1:
+                return "单曲循环";
             case 2:
                 return "列表循环";
             default:
