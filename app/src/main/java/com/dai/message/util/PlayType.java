@@ -1,13 +1,13 @@
 package com.dai.message.util;
 
 /**
- * created by Administrator on 2019/1/14 16:46
+ * created by dht on 2019/1/14 16:46
  */
 public enum PlayType {
 
-    SINGLE_CYCLE(0),//单曲循环
+    PLAY_IN_ORDER(0), //顺序播放
 
-    PLAY_IN_ORDER(1), //顺序播放
+    SINGLE_CYCLE(1),//单曲循环
 
     LIST_LOOP(2),//列表循环
 
@@ -34,6 +34,19 @@ public enum PlayType {
                 return LIST_LOOP;
             default:
                 return SHUFFLE_PLAYBACK;
+        }
+    }
+
+    public static String getPlayTypeString(int index) {
+        switch (index) {
+            case 0:
+                return "单曲循环";
+            case 1:
+                return "顺序播放";
+            case 2:
+                return "列表循环";
+            default:
+                return "随机播放";
         }
     }
 }

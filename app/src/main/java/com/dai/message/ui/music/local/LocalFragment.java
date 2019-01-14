@@ -92,7 +92,11 @@ public class LocalFragment extends BaseFragment {
                 mViewModel.uploadFiles(files, networkCallback);
             } else {
                 Intent intent = new Intent(getContext(), PlayMusicActivity.class);
+                Log.d(TAG, "onItemClickListener: musicList.get(position) = " + musicList.get(position).toString());
+                Log.d(TAG, "onItemClickListener: musicList.get(position) = " + musicList.get(position));
+
                 intent.putExtra(Key.MUSIC, musicList.get(position));
+                intent.putExtra(Key.INDEX, position);
                 Bundle bundle = new Bundle();
                 assert getArguments() != null;
                 bundle.putBinder(Key.IBINDER, getArguments().getBinder(Key.IBINDER));

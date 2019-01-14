@@ -18,6 +18,7 @@ import com.dai.message.util.PlayType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -47,36 +48,43 @@ public class MusicService extends Service {
     public void onCreate() {
         super.onCreate();
         repository = new MusicRepository(getApplication());
+        if (mediaPlayer == null) {
+            mediaPlayer = new MediaPlayer();
+        }
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.start();
+            }
+        });
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                try {
+                    iBinder.playNext();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
         Log.d(TAG, "onBind: ");
-//        return null;
         return iBinder;
     }
 
+
     private static PlayType playType = PlayType.PLAY_IN_ORDER;
+
+    private int currentPlayIndex = 0;
+
     IMusicAidlInterface.Stub iBinder = new IMusicAidlInterface.Stub() {
         @Override
         public void setDataSource(String path) {
-            try {
-                if (mediaPlayer == null) {
-                    mediaPlayer = new MediaPlayer();
-                }
-                if (mediaPlayer.isPlaying()) return;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    AudioAttributes.Builder attrBuilder = new AudioAttributes.Builder();
-                    attrBuilder.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC);
-                    mediaPlayer.setAudioAttributes(attrBuilder.build());
-                }
-                mediaPlayer.setDataSource(path);
-                mediaPlayer.prepareAsync();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.e(TAG, "setDataSource: e", e);
-            }
+
         }
 
 
@@ -88,22 +96,41 @@ public class MusicService extends Service {
 
         @Override
         public void playMusic(Music music) throws RemoteException {
-            setDataSource(music.path);
 
-            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                @Override
-                public void onPrepared(MediaPlayer mp) {
-                    mp.start();
+            for (Music music1 : musicList) {
+                Log.d(TAG, "playMusic: music1 = " + music1);
+
+            }
+            try {
+                Log.d(TAG, "playMusic: size = " + musicList.size() + ", musicList.contains(music) = " + musicList.contains(music));
+                Log.d(TAG, "playMusic: lastIndexOf = " + musicList.lastIndexOf(music) + ", indexOf = " + musicList.indexOf(music));
+                if (musicList.contains(music)) {
+                    currentPlayIndex = musicList.lastIndexOf(music);
                 }
-            });
+                mediaPlayer.reset();
+                mediaPlayer.setDataSource(music.path);
+                mediaPlayer.prepareAsync();
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e(TAG, "playMusic: e", e);
+            }
+
         }
 
         @Override
         public void initPlayList() throws RemoteException {
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                AudioAttributes.Builder attrBuilder = new AudioAttributes.Builder();
+                attrBuilder.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC);
+                mediaPlayer.setAudioAttributes(attrBuilder.build());
+            }
             repository.getAllMusics(new LocalCallback<ArrayList<Music>>() {
                 @Override
                 public void onChangeData(ArrayList<Music> data) {
+                    musicList.clear();
                     musicList.addAll(data);
+                    Log.d(TAG, "onChangeData: initPlayList.size = " + musicList.size());
                 }
             });
         }
@@ -137,8 +164,20 @@ public class MusicService extends Service {
         public void playPrevious() throws RemoteException {
             switch (playType) {
                 case LIST_LOOP:
+                    --currentPlayIndex;
+                    if (currentPlayIndex == -1) currentPlayIndex = musicList.size() - 1;
+                    Log.d(TAG, "playPrevious: currentPlayIndex = " + currentPlayIndex);
+                    playMusic(musicList.get(currentPlayIndex));
                     break;
                 case PLAY_IN_ORDER:
+                    --currentPlayIndex;
+                    if (currentPlayIndex <= -1) {
+                        currentPlayIndex = musicList.size() - 1;
+                        mediaPlayer.stop();
+                        return;
+                    }
+                    Log.d(TAG, "playPrevious: currentPlayIndex = " + currentPlayIndex);
+                    playMusic(musicList.get(currentPlayIndex));
                     break;
                 case SHUFFLE_PLAYBACK:
                     break;
@@ -147,12 +186,29 @@ public class MusicService extends Service {
 
         @Override
         public void playNext() throws RemoteException {
+            Log.d(TAG, "playNext: " + PlayType.getPlayTypeString(playType.getIndex()));
             switch (playType) {
                 case LIST_LOOP:
+                    ++currentPlayIndex;
+                    if (currentPlayIndex == musicList.size()) currentPlayIndex = 0;
+                    Log.d(TAG, "playNext: currentPlayIndex = " + currentPlayIndex);
+                    playMusic(musicList.get(currentPlayIndex));
                     break;
                 case PLAY_IN_ORDER:
+                    ++currentPlayIndex;
+                    Log.d(TAG, "playNext: currentPlayIndex = " + currentPlayIndex);
+                    if (currentPlayIndex >= musicList.size()) {
+                        currentPlayIndex = 0;
+                        mediaPlayer.stop();
+                        return;
+                    }
+
+                    playMusic(musicList.get(currentPlayIndex));
                     break;
                 case SHUFFLE_PLAYBACK:
+                    Random random = new Random();
+                    int index = random.nextInt(musicList.size());
+                    playMusic(musicList.get(index));
                     break;
             }
         }
@@ -220,5 +276,8 @@ public class MusicService extends Service {
                 mediaPlayer = null;
             }
         }
+
+
     };
+
 }

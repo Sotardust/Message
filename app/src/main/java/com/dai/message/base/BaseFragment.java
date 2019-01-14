@@ -80,6 +80,13 @@ public class BaseFragment extends Fragment implements ITitleBarManager {
     }
 
     /**
+     * 初始化数据
+     */
+    public void initData() {
+
+    }
+
+    /**
      * 该方法处理视图View点击事件以及ViewModel观察监听数据
      */
     public void observerCallback() {

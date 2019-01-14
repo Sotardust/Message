@@ -19,6 +19,11 @@ import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.bean.Music;
 import com.dai.message.databinding.FragmentPlayMusicBinding;
 import com.dai.message.util.Key;
+import com.dai.message.util.PlayType;
+import com.dai.message.util.ToastUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayMusicFragment extends BaseFragment {
 
@@ -29,7 +34,13 @@ public class PlayMusicFragment extends BaseFragment {
     private FragmentPlayMusicBinding mBinding;
 
     private Music currentMusic;
+
     private IMusicAidlInterface musicService;
+
+    private boolean isPause = false;
+
+    private int playType = -1;
+    private int index = 0;
 
     public static PlayMusicFragment newInstance() {
         return new PlayMusicFragment();
@@ -43,17 +54,35 @@ public class PlayMusicFragment extends BaseFragment {
         return mBinding.getRoot();
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(PlayMusicViewModel.class);
         mBinding.setPlayMusicViewModel(mViewModel);
-        if (getArguments() != null) {
-            currentMusic = getArguments().getParcelable(Key.MUSIC);
-            musicService = (IMusicAidlInterface) getArguments().getBinder(Key.IBINDER);
-        }
+        initData();
         bindViews();
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+    @Override
+    public void initData() {
+        super.initData();
+        try {
+            if (getArguments() != null) {
+                index = getArguments().getInt(Key.INDEX);
+                currentMusic = getArguments().getParcelable(Key.MUSIC);
+                musicService = (IMusicAidlInterface) getArguments().getBinder(Key.IBINDER);
+                if (musicService != null) {
+                    musicService.initPlayList();
+                }
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            Log.e(TAG, "initData: e", e);
+        }
     }
 
     @Override
@@ -69,33 +98,42 @@ public class PlayMusicFragment extends BaseFragment {
         mBinding.list.setOnClickListener(this);
     }
 
-    private boolean isPause = false;
+    private List<Music> list = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void handlingClickEvents(View view) {
         super.handlingClickEvents(view);
+
         try {
+            if (list.size() == 0) {
+                list.addAll(musicService.getPlayList());
+            }
+            currentMusic = list.get(index);
             switch (view.getId()) {
                 case R.id.back:
                     getActivity().finish();
                     break;
                 case R.id.playType:
+                    playType = ++playType > PlayType.SHUFFLE_PLAYBACK.getIndex() ? playType = 0 : playType;
+                    musicService.setPlayType(playType);
+                    ToastUtil.toastShort(getContext(), PlayType.getPlayTypeString(playType));
                     break;
                 case R.id.leftNext:
-                    musicService.pause();
+                    isPause = false;
+                    musicService.playPrevious();
                     break;
                 case R.id.play:
                     if (!isPause) {
                         musicService.playMusic(currentMusic);
-                        isPause = true;
                     } else {
                         musicService.playPause();
-                        isPause = false;
+                        isPause = true;
                     }
                     break;
                 case R.id.rightNext:
-                    musicService.stop();
+                    isPause = false;
+                    musicService.playNext();
                     break;
                 case R.id.list:
                     break;
