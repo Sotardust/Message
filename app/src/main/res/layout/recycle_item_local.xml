@@ -5,9 +5,10 @@
     <data>
 
 
+
         <variable
-            name="name"
-            type="String" />
+            name="music"
+            type="com.dai.message.bean.Music" />
 
         <variable
             name="index"
@@ -31,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:onClick="@{() ->  callback.onItemClickListener(0,name,index)}"
+            android:onClick="@{() ->  callback.onItemClickListener(0,music.name,index)}"
             android:paddingStart="15dp"
             android:paddingLeft="15dp"
             tools:ignore="RtlSymmetry">
@@ -40,7 +41,7 @@
                 android:id="@+id/tv_song_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="不负时光"
+                android:text="@{music.name}"
                 android:textSize="15sp" />
 
             <TextView
@@ -51,7 +52,7 @@
                 android:layout_alignStart="@+id/tv_song_name"
                 android:layout_alignLeft="@+id/tv_song_name"
                 android:padding="2dp"
-                android:text="123456"
+                android:text="@{music.author}"
                 android:textColor="@color/tabBackground"
                 android:textSize="12sp" />
 
@@ -63,7 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@mipmap/more"
-            android:onClick="@{() ->  callback.onItemClickListener(1,name,index)}" />
+            android:onClick="@{() ->  callback.onItemClickListener(1,music.name,index)}" />
 
     </LinearLayout>
 

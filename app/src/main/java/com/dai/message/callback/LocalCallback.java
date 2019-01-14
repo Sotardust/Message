@@ -6,7 +6,7 @@ package com.dai.message.callback;
  * <p>
  * created by dht on 2018/7/5 18:35
  */
-public interface CallBack<T> {
+public interface LocalCallback<T> {
 
     void onChangeData(T data);
 }

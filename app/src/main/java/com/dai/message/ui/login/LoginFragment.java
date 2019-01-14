@@ -62,16 +62,16 @@ public class LoginFragment extends BaseFragment {
         super.handlingClickEvents(view);
         switch (view.getId()) {
             case R.id.login:
-                String name = mBinding.name.getText().toString();
-                String password = mBinding.password.getText().toString();
-                if (isEmpty(name, password)) return;
-
-
-                if ("0".equals(name) && "0".equals(password)) {
+//                String name = mBinding.name.getText().toString();
+//                String password = mBinding.password.getText().toString();
+//                if (isEmpty(name, password)) return;
+//
+//
+//                if ("0".equals(name) && "0".equals(password)) {
                     toMainActivity();
-                    return;
-                }
-                mViewModel.logon(name, password, loginCallBack);
+//                    return;
+//                }
+//                mViewModel.logon(name, password, loginCallBack);
 
                 break;
             case R.id.register:

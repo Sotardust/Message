@@ -1,31 +1,17 @@
 package com.dai.message.ui.music.playmusic;
 
 import android.app.Application;
-import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.v4.content.FileProvider;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.dai.message.BuildConfig;
 import com.dai.message.base.BaseAndroidViewModel;
-import com.dai.message.util.LogUtil;
-import com.dai.message.util.file.FileType;
+import com.dai.message.bean.Music;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 public class PlayMusicViewModel extends BaseAndroidViewModel {
 
@@ -38,9 +24,10 @@ public class PlayMusicViewModel extends BaseAndroidViewModel {
     private MediaPlayer mediaPlayer = new MediaPlayer();
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void playMusic(String path) {
+    public void playMusic(Music music) {
+
         try {
-            mediaPlayer.setDataSource(path);
+            mediaPlayer.setDataSource(music.path);
             AudioAttributes.Builder attrBuilder = new AudioAttributes.Builder();
             attrBuilder.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC);
             mediaPlayer.setAudioAttributes(attrBuilder.build());

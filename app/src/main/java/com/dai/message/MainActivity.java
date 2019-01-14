@@ -1,33 +1,68 @@
 package com.dai.message;
 
-import android.media.MediaPlayer;
+import android.annotation.SuppressLint;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.os.IBinder;
 import android.util.Log;
 
+import com.dai.message.base.BaseActivity;
+import com.dai.message.bean.IMusicAidlInterface;
+import com.dai.message.service.MusicService;
 import com.dai.message.ui.home.HomeFragment;
+import com.dai.message.util.Key;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
 
 
+    private ServiceConnection connection;
+    private IMusicAidlInterface musicService;
 
-
+    @SuppressLint("NewApi")
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, HomeFragment.newInstance())
-                    .commitNow();
-        }
-        MediaPlayer player = new MediaPlayer();
 
+        connection = new ServiceConnection() {
+            @Override
+            public void onServiceConnected(ComponentName name, IBinder service) {
+                Log.d(TAG, "onServiceConnected: ");
+                musicService = IMusicAidlInterface.Stub.asInterface(service);
+                if (savedInstanceState == null) {
+                    HomeFragment homeFragment = HomeFragment.newInstance();
+                    Bundle bundle = new Bundle();
+                    bundle.putBinder(Key.IBINDER, (IBinder) musicService);
+                    homeFragment.setArguments(bundle);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.container, homeFragment)
+                            .commitNow();
+                }
+            }
+
+            @Override
+            public void onServiceDisconnected(ComponentName name) {
+                Log.d(TAG, "onServiceDisconnected: name" + name);
+            }
+        };
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bindService(new Intent(this, MusicService.class), connection, Context.BIND_AUTO_CREATE);
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(connection);
+    }
 
     @Override
     public void onTrimMemory(int level) {

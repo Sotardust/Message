@@ -5,7 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
 import com.dai.message.base.BaseAndroidViewModel;
-import com.dai.message.callback.CallBack;
+import com.dai.message.callback.LocalCallback;
 import com.dai.message.repository.AllCallsRepository;
 import com.dai.message.repository.entity.AllCallsEntity;
 
@@ -41,7 +41,7 @@ public class DialViewModel extends BaseAndroidViewModel {
      * @return AllCalls实体集合
      */
     private void distinctDialCalls() {
-        repository.getCallsEntities(new CallBack<List<AllCallsEntity>>() {
+        repository.getCallsEntities(new LocalCallback<List<AllCallsEntity>>() {
             @Override
             public void onChangeData(List<AllCallsEntity> data) {
                 mDialCallsList.setValue((ArrayList<AllCallsEntity>) data);

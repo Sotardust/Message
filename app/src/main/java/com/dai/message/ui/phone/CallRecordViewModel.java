@@ -3,16 +3,10 @@ package com.dai.message.ui.phone;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.arch.lifecycle.AndroidViewModel;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
-import android.provider.CallLog;
 import android.support.annotation.NonNull;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 
-import com.dai.message.callback.CallBack;
+import com.dai.message.callback.LocalCallback;
 import com.dai.message.repository.AllCallsRepository;
 import com.dai.message.repository.entity.AllCallsEntity;
 import com.dai.message.util.AllCallsType;
@@ -147,9 +141,9 @@ public class CallRecordViewModel extends AndroidViewModel {
      * 去重 自定义0 为获取全部通话记录
      * 1/2/3/4/5 接听/拨打/未接//拒接
      *
-     * @param callBack AllCalls 实体集合
+     * @param localCallback AllCalls 实体集合
      */
-    protected void distinctAllCalls(CallBack<List<AllCallsEntity>> callBack) {
+    protected void distinctAllCalls(LocalCallback<List<AllCallsEntity>> localCallback) {
 
         if (IS_FIRST) {
             final ArrayList<String> numberList = new ArrayList<>();
@@ -172,6 +166,6 @@ public class CallRecordViewModel extends AndroidViewModel {
             }
             IS_FIRST = !IS_FIRST;
         }
-        repository.getAllCallsEntities(callBack);
+        repository.getAllCallsEntities(localCallback);
     }
 }

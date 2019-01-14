@@ -5,7 +5,7 @@ import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
-import com.dai.message.callback.CallBack;
+import com.dai.message.callback.LocalCallback;
 import com.dai.message.repository.entity.AllCallsEntity;
 import com.dai.message.ui.phone.CallRecordViewModel;
 
@@ -40,7 +40,7 @@ public class AllCallsViewModel extends CallRecordViewModel {
      * @return AllCalls集合类
      */
     private void distinctAllCalls() {
-        distinctAllCalls(new CallBack<List<AllCallsEntity>>() {
+        distinctAllCalls(new LocalCallback<List<AllCallsEntity>>() {
             @Override
             public void onChangeData(List<AllCallsEntity> data) {
                 mAllCallsList.setValue((ArrayList<AllCallsEntity>) data);

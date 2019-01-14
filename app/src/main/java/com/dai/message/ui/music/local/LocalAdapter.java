@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import com.dai.message.R;
 import com.dai.message.adapter.util.ViewHolder;
 import com.dai.message.base.BaseAdapter;
+import com.dai.message.bean.Music;
 import com.dai.message.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.RecycleItemLocalBinding;
 
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * created by Administrator on 2018/12/27 16:37
  */
-public class LocalAdapter extends BaseAdapter<String> {
+public class LocalAdapter extends BaseAdapter<Music> {
 
     private ArrayList<String> usernameList = new ArrayList<>();
 
@@ -27,7 +28,7 @@ public class LocalAdapter extends BaseAdapter<String> {
     }
 
     @Override
-    public void setChangeList(List<String> mList) {
+    public void setChangeList(List<Music> mList) {
         this.mList = mList;
         notifyDataSetChanged();
     }
@@ -44,16 +45,9 @@ public class LocalAdapter extends BaseAdapter<String> {
     @Override
     public void onBindVH(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolder) {
-            ((ViewHolder<RecycleItemLocalBinding>) holder).mBinding.tvSongName.setText(mList.get(position));
-            ((ViewHolder<RecycleItemLocalBinding>) holder).mBinding.tvUsername.setText(usernameList.get(position));
-            ((ViewHolder<RecycleItemLocalBinding>) holder).mBinding.setName(mList.get(position));
+            ((ViewHolder<RecycleItemLocalBinding>) holder).mBinding.setMusic(mList.get(position));
             ((ViewHolder<RecycleItemLocalBinding>) holder).mBinding.setIndex(position);
         }
-    }
-
-
-    void setUsernameList(ArrayList<String> usernameList) {
-        this.usernameList = usernameList;
     }
 
     public enum Type {

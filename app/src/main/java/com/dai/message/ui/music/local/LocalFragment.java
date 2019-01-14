@@ -4,9 +4,11 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,10 +19,12 @@ import com.dai.message.R;
 import com.dai.message.adapter.util.VerticalDecoration;
 import com.dai.message.base.BaseFragment;
 import com.dai.message.bean.BaseModel;
+import com.dai.message.bean.Music;
 import com.dai.message.callback.NetworkCallback;
 import com.dai.message.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.FragmentLocalBinding;
 import com.dai.message.ui.music.playmusic.PlayMusicActivity;
+import com.dai.message.util.Key;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,9 +35,8 @@ public class LocalFragment extends BaseFragment {
     private static final String TAG = "LocalFragment";
 
     private LocalViewModel mViewModel;
-
-    protected FragmentLocalBinding mBinding;
-    private ArrayList<File> paths = new ArrayList<>();
+    private FragmentLocalBinding mBinding;
+    private ArrayList<Music> musicList = new ArrayList<>();
 
     public static LocalFragment newInstance() {
         return new LocalFragment();
@@ -60,23 +63,12 @@ public class LocalFragment extends BaseFragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         final LocalAdapter localAdapter = new LocalAdapter(recycleItemClickCallBack);
 
-
-        mViewModel.getFilesListData().observe(this, new Observer<ArrayList<File>>() {
-
-
+        mViewModel.getMusicData().observe(this, new Observer<ArrayList<Music>>() {
             @Override
-            public void onChanged(@Nullable ArrayList<File> files) {
-                paths.clear();
-                paths.addAll(files);
-                if (files == null) return;
-                ArrayList<String> songList = new ArrayList<>();
-                ArrayList<String> userList = new ArrayList<>();
-                for (File file : files) {
-                    songList.add(mViewModel.parseSongName(file.getName()));
-                    userList.add(mViewModel.parseAuthor(file.getName()));
-                }
-                localAdapter.setUsernameList(userList);
-                localAdapter.setChangeList(songList);
+            public void onChanged(@Nullable ArrayList<Music> musics) {
+                musicList.clear();
+                musicList.addAll(musics);
+                localAdapter.setChangeList(musics);
             }
         });
         mBinding.recyclerView.setAdapter(localAdapter);
@@ -87,11 +79,12 @@ public class LocalFragment extends BaseFragment {
 
     private RecycleItemClickCallBack<String> recycleItemClickCallBack = new RecycleItemClickCallBack<String>() {
 
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
         @Override
         public void onItemClickListener(int type, String value, int position) {
             super.onItemClickListener(type, value, position);
-            Log.d(TAG, "onItemClickListener: path = " + paths.get(position).getPath());
-            String path = paths.get(position).getPath();
+            Log.d(TAG, "onItemClickListener: path = " + musicList.get(position).path);
+            String path = musicList.get(position).path;
             if (type == LocalAdapter.Type.IV.index) {
                 List<File> files = new ArrayList<>();
                 File file = new File(path);
@@ -99,7 +92,11 @@ public class LocalFragment extends BaseFragment {
                 mViewModel.uploadFiles(files, networkCallback);
             } else {
                 Intent intent = new Intent(getContext(), PlayMusicActivity.class);
-                intent.putExtra("path", path);
+                intent.putExtra(Key.MUSIC, musicList.get(position));
+                Bundle bundle = new Bundle();
+                assert getArguments() != null;
+                bundle.putBinder(Key.IBINDER, getArguments().getBinder(Key.IBINDER));
+                intent.putExtra(Key.IBINDER, bundle);
                 startActivity(intent);
             }
 

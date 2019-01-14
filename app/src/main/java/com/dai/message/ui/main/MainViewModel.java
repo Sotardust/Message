@@ -1,7 +1,15 @@
 package com.dai.message.ui.main;
 
-import android.arch.lifecycle.ViewModel;
+import android.app.Application;
+import android.support.annotation.NonNull;
 
-public class MainViewModel extends ViewModel {
-    // TODO: Implement the ViewModel
+import com.dai.message.base.BaseAndroidViewModel;
+
+public class MainViewModel extends BaseAndroidViewModel {
+
+    public MainViewModel(@NonNull Application application) {
+
+        super(application);
+    }
+
 }

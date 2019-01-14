@@ -3,7 +3,7 @@ package com.dai.message.util.rxjava;
 import android.annotation.SuppressLint;
 
 
-import com.dai.message.callback.CallBack;
+import com.dai.message.callback.LocalCallback;
 import com.dai.message.callback.ConsumerCallBack;
 import com.dai.message.callback.ObservableCallback;
 import com.dai.message.callback.ObserverCallback;
@@ -58,17 +58,17 @@ public class RxJavaObservable {
     /**
      * 用于轮循红外测温数据
      *
-     * @param callBack 回调接口
+     * @param localCallback 回调接口
      * @return Disposable
      */
-    public Disposable getDisposable(final CallBack<Timed<Long>> callBack) {
+    public Disposable getDisposable(final LocalCallback<Timed<Long>> localCallback) {
         return Observable.interval(1, TimeUnit.SECONDS).subscribeOn(Schedulers.io())
                 .timeInterval(TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Timed<Long>>() {
                     @Override
                     public void accept(Timed<Long> longTimed) {
-                        callBack.onChangeData(longTimed);
+                        localCallback.onChangeData(longTimed);
                     }
                 });
     }

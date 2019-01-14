@@ -36,7 +36,10 @@ interface IMusicAidlInterface {
 
      void playMusic(in Music music);
 
-     void playPlaylist(in List<Music> playlist,int id,String pid);
+     /*初始化播放列表*/
+     void initPlayList();
+
+     void setPlayType(int type);
 
      void playPause();//播放已暂停的音乐
 
@@ -59,12 +62,6 @@ interface IMusicAidlInterface {
      int getDuration();
 
      int getCurrentPosition();
-
-     String getSongName();
-
-     String getSongArtist();
-
-     Music getPlayingMusic();
 
      List<Music> getPlayList();
 

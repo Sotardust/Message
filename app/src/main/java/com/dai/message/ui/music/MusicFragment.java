@@ -20,6 +20,7 @@ import com.dai.message.databinding.FragmentMusicBinding;
 import com.dai.message.ui.music.cloud.CloudDiskActivity;
 import com.dai.message.ui.music.download.DownloadActivity;
 import com.dai.message.ui.music.local.LocalActivity;
+import com.dai.message.util.Key;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,12 +62,12 @@ public class MusicFragment extends BaseFragment {
         mBinding.recyclerView.setLayoutManager(layoutManager);
         mBinding.recyclerView.addItemDecoration(new VerticalDecoration(3));
 
-        mViewModel.getliveData().observe(this, new Observer<Integer>() {
+        mViewModel.getMusicData().observe(this, new Observer<Integer>() {
             @Override
-            public void onChanged(@Nullable Integer integer) {
+            public void onChanged(Integer total) {
                 List<Integer> integerList = new ArrayList<>();
                 for (int i = 0; i < list.size(); i++) {
-                    integerList.add(i == 0 ? integer : 0);
+                    integerList.add(i == 0 ? total : 0);
                 }
                 musicAdapter.setEndList(integerList);
             }
@@ -80,14 +81,18 @@ public class MusicFragment extends BaseFragment {
             super.onItemClickListener(value, position);
             switch (position) {
                 case 0:
-                    startActivity(new Intent(getActivity(), LocalActivity.class));
+
+                    startActivity(new Intent(getActivity(), LocalActivity.class)
+                            .putExtra(Key.IBINDER, getArguments()));
                     break;
                 case 2:
-                    startActivity(new Intent(getActivity(), CloudDiskActivity.class));
+                    startActivity(new Intent(getActivity(), CloudDiskActivity.class)
+                            .putExtra(Key.IBINDER, getArguments()));
                     break;
 
                 case 3:
-                    startActivity(new Intent(getActivity(), DownloadActivity.class));
+                    startActivity(new Intent(getActivity(), DownloadActivity.class)
+                            .putExtra(Key.IBINDER, getArguments()));
                     break;
             }
         }

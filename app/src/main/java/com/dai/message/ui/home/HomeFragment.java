@@ -19,10 +19,13 @@ import android.widget.TextView;
 import com.dai.message.R;
 import com.dai.message.adapter.BaseFragmentPageAdapter;
 import com.dai.message.base.BaseFragment;
+import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.callback.OnPageChangerCallback;
 import com.dai.message.callback.TabLayoutCallback;
 import com.dai.message.databinding.FragmentHomeBinding;
 import com.dai.message.ui.music.MusicFragment;
+import com.dai.message.ui.news.NewsFragment;
+import com.dai.message.util.Key;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +53,7 @@ public class HomeFragment extends BaseFragment {
         return mBinding.getRoot();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -58,14 +62,18 @@ public class HomeFragment extends BaseFragment {
         bindViews();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     public void bindViews() {
         super.bindViews();
         final List<Fragment> mFragmentList = new ArrayList<>();
-        mFragmentList.add(MusicFragment.newInstance());
-        mFragmentList.add(MusicFragment.newInstance());
-        mFragmentList.add(MusicFragment.newInstance());
-        mFragmentList.add(MusicFragment.newInstance());
+        MusicFragment musicFragment = MusicFragment.newInstance();
+        IMusicAidlInterface service = (IMusicAidlInterface) getArguments().getBinder(Key.IBINDER);
+        musicFragment.setArguments(getArguments());
+        mFragmentList.add(musicFragment);
+        mFragmentList.add(NewsFragment.newInstance());
+        mFragmentList.add(NewsFragment.newInstance());
+        mFragmentList.add(NewsFragment.newInstance());
         setCustomTabLayout();
         mBinding.baseViewPager.setAdapter(new BaseFragmentPageAdapter(getChildFragmentManager(), mFragmentList, titles));
 
