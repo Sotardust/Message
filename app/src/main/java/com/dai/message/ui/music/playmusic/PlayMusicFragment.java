@@ -37,10 +37,7 @@ public class PlayMusicFragment extends BaseFragment {
 
     private IMusicAidlInterface musicService;
 
-    private boolean isPause = false;
-
     private int playType = -1;
-    private int index = 0;
 
     public static PlayMusicFragment newInstance() {
         return new PlayMusicFragment();
@@ -72,17 +69,18 @@ public class PlayMusicFragment extends BaseFragment {
         super.initData();
         try {
             if (getArguments() != null) {
-                index = getArguments().getInt(Key.INDEX);
+                int index = getArguments().getInt(Key.INDEX);
                 currentMusic = getArguments().getParcelable(Key.MUSIC);
                 musicService = (IMusicAidlInterface) getArguments().getBinder(Key.IBINDER);
                 if (musicService != null) {
-                    musicService.initPlayList();
+                    list.addAll(musicService.getPlayList());
+                    musicService.playMusic(list.get(index));
                 }
             }
         } catch (RemoteException e) {
             e.printStackTrace();
-            Log.e(TAG, "initData: e", e);
         }
+
     }
 
     @Override
@@ -92,10 +90,10 @@ public class PlayMusicFragment extends BaseFragment {
         mBinding.author.setText(currentMusic.author);
         mBinding.back.setOnClickListener(this);
         mBinding.playType.setOnClickListener(this);
-        mBinding.leftNext.setOnClickListener(this);
+        mBinding.previous.setOnClickListener(this);
         mBinding.play.setOnClickListener(this);
-        mBinding.rightNext.setOnClickListener(this);
-        mBinding.list.setOnClickListener(this);
+        mBinding.next.setOnClickListener(this);
+        mBinding.playList.setOnClickListener(this);
     }
 
     private List<Music> list = new ArrayList<>();
@@ -105,41 +103,34 @@ public class PlayMusicFragment extends BaseFragment {
     public void handlingClickEvents(View view) {
         super.handlingClickEvents(view);
         try {
-            if (list.size() == 0) {
-                list.addAll(musicService.getPlayList());
-                currentMusic = list.get(index);
-            }
             switch (view.getId()) {
                 case R.id.back:
                     getActivity().finish();
                     break;
-                case R.id.playType:
+                case R.id.play_type:
                     playType = ++playType > PlayType.SHUFFLE_PLAYBACK.getIndex() ? playType = 0 : playType;
-                    Log.d(TAG, "handlingClickEvents: playType = "+ playType);
                     musicService.setPlayType(playType);
-                    ToastUtil.toastShort(getContext(), PlayType.getPlayTypeString(playType));
+                    ToastUtil.toastCustom(getContext(), PlayType.getPlayTypeString(playType), 500);
                     break;
-                case R.id.leftNext:
+                case R.id.previous:
                     musicService.playPrevious();
-//                    currentMusic = musicService.getCurrentMusic();
+                    ToastUtil.toastCustom(getContext(), "上一首", 500);
                     break;
                 case R.id.play:
-                    if (!isPause) {
-                        musicService.playMusic(currentMusic);
-                        isPause = true;
-                    }
+
                     if (musicService.isPlaying()) {
+                        ToastUtil.toastCustom(getContext(), "暂停", 500);
                         musicService.pause();
                     } else {
                         musicService.playPause();
+                        ToastUtil.toastCustom(getContext(), "播放", 500);
                     }
-//                    currentMusic = musicService.getCurrentMusic();
                     break;
-                case R.id.rightNext:
+                case R.id.next:
                     musicService.playNext();
-//                    currentMusic = musicService.getCurrentMusic();
+                    ToastUtil.toastCustom(getContext(), "下一首", 500);
                     break;
-                case R.id.list:
+                case R.id.play_list:
                     break;
             }
         } catch (RemoteException e) {

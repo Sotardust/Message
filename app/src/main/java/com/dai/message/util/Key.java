@@ -6,6 +6,7 @@ package com.dai.message.util;
 public class Key {
 
     public static final String MUSIC = "music";
+    public static final String CURRENT_MUSIC = "current_music";
     public static final String INDEX = "index";
     public static final String IBINDER = "iBinder";
 

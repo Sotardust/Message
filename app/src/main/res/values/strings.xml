@@ -23,4 +23,13 @@
         <item>下载管理</item>
         <item>我喜欢的音乐</item>
     </string-array>
+
+    <string name="back">返回</string>
+    <string name="play">播放</string>
+    <string name="pause">暂停</string>
+    <string name="previous">上一首</string>
+    <string name="next">下一首</string>
+    <string name="play_list">播放列表</string>
+    <string name="play_type">播放类型</string>
+
 </resources>

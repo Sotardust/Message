@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Intent;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
@@ -13,8 +12,11 @@ import android.util.Log;
 import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.bean.Music;
 import com.dai.message.callback.LocalCallback;
+import com.dai.message.receiver.SendLocalBroadcast;
 import com.dai.message.repository.MusicRepository;
+import com.dai.message.repository.preferences.Config;
 import com.dai.message.util.PlayType;
+import com.dai.message.util.ToastUtil;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,7 +31,8 @@ import java.util.Random;
 public class MusicService extends Service {
 
 
-    private static final String TAG = "MusicService";
+    //    private static final String TAG = "MusicService";
+    private static final String TAG = "MusicTitleView";
 
     private MediaPlayer mediaPlayer;
 
@@ -104,35 +107,52 @@ public class MusicService extends Service {
 
         @Override
         public void playMusic(Music music) throws RemoteException {
-            try {
-                if (musicList.contains(music)) {
-                    currentPlayIndex = musicList.lastIndexOf(music);
+            synchronized (Music.class) {
+                try {
+                    if (musicList.contains(music)) {
+                        currentPlayIndex = musicList.lastIndexOf(music);
+                    }
+                    mediaPlayer.reset();
+                    mediaPlayer.setDataSource(music.path);
+                    mediaPlayer.prepareAsync();
+                    Config.getInstance().setCurrentMusic(music);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "playMusic: e", e);
                 }
-                mediaPlayer.reset();
-                mediaPlayer.setDataSource(music.path);
-                mediaPlayer.prepareAsync();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.e(TAG, "playMusic: e", e);
             }
         }
 
         @Override
-        public void initPlayList() throws RemoteException {
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                AudioAttributes.Builder attrBuilder = new AudioAttributes.Builder();
-                attrBuilder.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC);
-                mediaPlayer.setAudioAttributes(attrBuilder.build());
+        public void playCurrentMusic() throws RemoteException {
+            Music music = Config.getInstance().getCurrentMusic();
+            if (music == null) {
+                ToastUtil.toastCustom(getApplicationContext(), "数据初始化中", 500);
+                return;
             }
-            repository.getAllMusics(new LocalCallback<ArrayList<Music>>() {
-                @Override
-                public void onChangeData(ArrayList<Music> data) {
-                    musicList.clear();
-                    musicList.addAll(data);
-                    Log.d(TAG, "onChangeData: initPlayList.size = " + musicList.size());
+            playMusic(music);
+        }
+
+        @Override
+        public void initPlayList() throws RemoteException {
+            synchronized (Music.class) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    AudioAttributes.Builder attrBuilder = new AudioAttributes.Builder();
+                    attrBuilder.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC);
+                    mediaPlayer.setAudioAttributes(attrBuilder.build());
                 }
-            });
+                repository.getAllMusics(new LocalCallback<ArrayList<Music>>() {
+                    @Override
+                    public void onChangeData(ArrayList<Music> data) {
+                        musicList.clear();
+                        musicList.addAll(data);
+                        if (Config.getInstance().getCurrentMusic() == null) {
+                            Config.getInstance().setCurrentMusic(data.get(0));
+                        }
+                        SendLocalBroadcast.getInstance().updateMusicView(getApplicationContext(), null, SendLocalBroadcast.KEY_UPDATE_VIEW);
+                    }
+                });
+            }
         }
 
         @Override
@@ -143,70 +163,86 @@ public class MusicService extends Service {
 
         @Override
         public void playPause() throws RemoteException {
-            mediaPlayer.start();
+            synchronized (Music.class) {
+                mediaPlayer.start();
+            }
         }
 
         @Override
         public void pause() throws RemoteException {
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.pause();
+            synchronized (Music.class) {
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.pause();
+                }
             }
         }
 
         @Override
         public void stop() throws RemoteException {
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
+            synchronized (Music.class) {
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.stop();
+                }
             }
         }
 
         @Override
         public void playPrevious() throws RemoteException {
-            isNext = false;
-            switch (playType) {
-                case LIST_LOOP:
-                case PLAY_IN_ORDER:
-                    if (currentPlayIndex >= musicList.size()) currentPlayIndex = 0;
-                    if (currentPlayIndex <= -1) currentPlayIndex = musicList.size() - 1;
-                    playMusic(musicList.get(currentPlayIndex));
-                    break;
-                case SHUFFLE_PLAYBACK:
-                    break;
+            synchronized (Music.class) {
+                isNext = false;
+                switch (playType) {
+                    case LIST_LOOP:
+                    case PLAY_IN_ORDER:
+                        if (currentPlayIndex >= musicList.size()) currentPlayIndex = 0;
+                        if (currentPlayIndex <= -1) currentPlayIndex = musicList.size() - 1;
+                        playMusic(musicList.get(currentPlayIndex));
+                        break;
+                    case SHUFFLE_PLAYBACK:
+                        break;
+                }
             }
         }
 
         @Override
         public void playNext() throws RemoteException {
-            isNext = true;
-            Log.d(TAG, "playNext: " + PlayType.getPlayTypeString(playType.getIndex()));
-            switch (playType) {
-                case LIST_LOOP:
-                case PLAY_IN_ORDER:
-                    if (currentPlayIndex >= musicList.size()) currentPlayIndex = 0;
-                    if (currentPlayIndex <= -1) currentPlayIndex = musicList.size() - 1;
-                    playMusic(musicList.get(currentPlayIndex));
-                    break;
-                case SHUFFLE_PLAYBACK:
-                    Random random = new Random();
-                    int index = random.nextInt(musicList.size());
-                    playMusic(musicList.get(index));
-                    break;
+            synchronized (Music.class) {
+                isNext = true;
+                switch (playType) {
+                    case LIST_LOOP:
+                    case PLAY_IN_ORDER:
+                        if (currentPlayIndex >= musicList.size()) currentPlayIndex = 0;
+                        if (currentPlayIndex <= -1) currentPlayIndex = musicList.size() - 1;
+                        playMusic(musicList.get(currentPlayIndex));
+                        break;
+                    case SHUFFLE_PLAYBACK:
+                        Random random = new Random();
+                        int index = random.nextInt(musicList.size());
+                        playMusic(musicList.get(index));
+                        break;
+                }
             }
         }
 
         @Override
         public void seekTo(int msec) throws RemoteException {
-            mediaPlayer.seekTo(msec);
+            synchronized (Music.class) {
+                mediaPlayer.seekTo(msec);
+            }
         }
 
         @Override
         public boolean isLooping() throws RemoteException {
-            return mediaPlayer.isLooping();
+            synchronized (Music.class) {
+                return mediaPlayer.isLooping();
+            }
         }
 
         @Override
         public boolean isPlaying() throws RemoteException {
-            return mediaPlayer.isPlaying();
+            synchronized (Music.class) {
+                return mediaPlayer.isPlaying();
+
+            }
         }
 
         @Override
@@ -216,7 +252,9 @@ public class MusicService extends Service {
 
         @Override
         public int getDuration() throws RemoteException {
-            return mediaPlayer.getDuration();
+            synchronized (Music.class) {
+                return mediaPlayer.getDuration();
+            }
         }
 
         @Override
@@ -226,7 +264,16 @@ public class MusicService extends Service {
 
         @Override
         public List<Music> getPlayList() throws RemoteException {
-            return musicList;
+            synchronized (Music.class) {
+                return musicList;
+            }
+        }
+
+        @Override
+        public Music getCurrentMusic() throws RemoteException {
+            synchronized (Music.class) {
+                return Config.getInstance().getCurrentMusic();
+            }
         }
 
         @Override

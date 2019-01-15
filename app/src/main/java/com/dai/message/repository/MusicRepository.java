@@ -8,6 +8,7 @@ import com.dai.message.callback.LocalCallback;
 import com.dai.message.callback.ObservableCallback;
 import com.dai.message.callback.ObserverCallback;
 import com.dai.message.repository.dao.MusicDao;
+import com.dai.message.repository.preferences.Config;
 import com.dai.message.util.rxjava.RxJavaObservable;
 
 import java.util.ArrayList;
@@ -46,8 +47,9 @@ public class MusicRepository {
                             public void subscribe(final ObservableEmitter<String> emitter) throws Exception {
                                 super.subscribe(emitter);
                                 for (Music music : musics) {
-                                    if (!names.contains(music.name))
+                                    if (!names.contains(music.name)) {
                                         musicDao.addMusic(music);
+                                    }
                                 }
                                 emitter.onNext(RxJavaObservable.KEY_SUCCESSFUL);
                             }

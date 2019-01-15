@@ -36,6 +36,8 @@ interface IMusicAidlInterface {
 
      void playMusic(in Music music);
 
+     void playCurrentMusic();
+
      /*初始化播放列表*/
      void initPlayList();
 
@@ -64,6 +66,8 @@ interface IMusicAidlInterface {
      int getCurrentPosition();
 
      List<Music> getPlayList();
+
+     Music getCurrentMusic();
 
      void removeFromQueue(int position);
 

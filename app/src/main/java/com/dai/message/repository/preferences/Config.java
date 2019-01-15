@@ -1,14 +1,23 @@
 package com.dai.message.repository.preferences;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.dai.message.bean.Music;
+import com.google.gson.Gson;
 
 public class Config {
 
 
     private static Config config;
     private static SharedPreferences preferences;
+    private static SharedPreferences.Editor editor;
+
+    private Gson gson = new Gson();
+
     private static final String COOKIE = "cookie";
+    private static final String KEY_MUSIC = "music";
 
     private Config() {
     }
@@ -24,8 +33,10 @@ public class Config {
         return config;
     }
 
+    @SuppressLint("CommitPrefEdits")
     public static void install(Context context) {
         preferences = context.getApplicationContext().getSharedPreferences("config", Context.MODE_PRIVATE);
+        editor = preferences.edit();
     }
 
     public String getCookie() {
@@ -36,6 +47,16 @@ public class Config {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(COOKIE, cookie);
         editor.apply();
+    }
+
+
+    public void setCurrentMusic(Music music) {
+        editor.putString(KEY_MUSIC, gson.toJson(music));
+        editor.apply();
+    }
+
+    public Music getCurrentMusic() {
+        return gson.fromJson(preferences.getString(KEY_MUSIC, null), Music.class);
     }
 
 }

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.util.Log;
 
 import com.dai.message.base.BaseActivity;
@@ -34,6 +35,11 @@ public class MainActivity extends BaseActivity {
             public void onServiceConnected(ComponentName name, IBinder service) {
                 Log.d(TAG, "onServiceConnected: ");
                 musicService = IMusicAidlInterface.Stub.asInterface(service);
+                try {
+                    musicService.initPlayList();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
                 if (savedInstanceState == null) {
                     HomeFragment homeFragment = HomeFragment.newInstance();
                     Bundle bundle = new Bundle();
@@ -61,7 +67,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbindService(connection);
+        try {
+            unbindService(connection);
+            if (musicService != null)
+                musicService.release();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

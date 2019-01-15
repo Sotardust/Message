@@ -81,7 +81,6 @@ public class MusicFragment extends BaseFragment {
             super.onItemClickListener(value, position);
             switch (position) {
                 case 0:
-
                     startActivity(new Intent(getActivity(), LocalActivity.class)
                             .putExtra(Key.IBINDER, getArguments()));
                     break;
