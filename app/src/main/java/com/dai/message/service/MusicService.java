@@ -146,7 +146,7 @@ public class MusicService extends Service {
                     public void onChangeData(ArrayList<Music> data) {
                         musicList.clear();
                         musicList.addAll(data);
-                        if (Config.getInstance().getCurrentMusic() == null) {
+                        if (Config.getInstance().getCurrentMusic() == null && musicList.size() != 0) {
                             Config.getInstance().setCurrentMusic(data.get(0));
                         }
                         SendLocalBroadcast.getInstance().updateMusicView(getApplicationContext(), null, SendLocalBroadcast.KEY_UPDATE_VIEW);

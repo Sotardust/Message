@@ -119,6 +119,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
                 try {
                     currentMusic = musicService.getCurrentMusic();
                     Log.d(TAG, "*********************run: currentMusic = " + currentMusic);
+                    if (currentMusic == null) return;
                     songName.setText(currentMusic.name);
                     author.setText(currentMusic.author);
                     play.setText(context.getString(isInit ? R.string.play : musicService.isPlaying() ? R.string.play : R.string.pause));
