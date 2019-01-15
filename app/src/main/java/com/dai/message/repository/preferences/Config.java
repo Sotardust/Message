@@ -3,6 +3,7 @@ package com.dai.message.repository.preferences;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.dai.message.bean.Music;
 import com.google.gson.Gson;

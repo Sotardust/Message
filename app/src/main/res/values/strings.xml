@@ -26,6 +26,7 @@
 
     <string name="back">返回</string>
     <string name="play">播放</string>
+    <string name="playing">正在播放…</string>
     <string name="pause">暂停</string>
     <string name="previous">上一首</string>
     <string name="next">下一首</string>

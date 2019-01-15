@@ -43,6 +43,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
     private Music currentMusic;
     private List<Music> list = new ArrayList<>();
     private Context context;
+    private boolean isFirst = true;
 
     public MusicTitleView(Context context) {
         super(context);
@@ -109,25 +110,44 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
     /**
      * 更新视图View
      *
-     * @param isInit 若是第一次初始化则为 paly =播放
+     * @param isInit 若是第一次初始化则为 play =播放
      */
     public void updateView(final boolean isInit) {
+        update(true, isInit);
+    }
 
+    /**
+     * 更新视图View
+     *
+     * @param isUpdateView 是否是 updateView方法
+     * @param isInit       boolean
+     */
+    private void update(final boolean isUpdateView, final boolean isInit) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try {
                     currentMusic = musicService.getCurrentMusic();
-                    Log.d(TAG, "*********************run: currentMusic = " + currentMusic);
                     if (currentMusic == null) return;
                     songName.setText(currentMusic.name);
                     author.setText(currentMusic.author);
-                    play.setText(context.getString(isInit ? R.string.play : musicService.isPlaying() ? R.string.play : R.string.pause));
+                    if (isUpdateView) {
+                        play.setText(context.getString(isInit ? R.string.play : musicService.isPlaying() ? R.string.pause : R.string.playing));
+                    } else {
+                        play.setText(context.getString(musicService.isPlaying() ? R.string.playing : R.string.pause));
+                    }
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    /**
+     * 更新视图View
+     */
+    public void updateResumeView() {
+        update(false, false);
     }
 
     @Override
@@ -138,14 +158,15 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
                     activity.finish();
                     break;
                 case R.id.music_title_play:
-                    if (musicService.getCurrentPosition() == 0) {
+                    updateView(false);
+                    if (isFirst) {
                         musicService.playCurrentMusic();
+                        isFirst = false;
                     } else if (musicService.isPlaying()) {
                         musicService.pause();
                     } else {
                         musicService.playPause();
                     }
-                    updateView(false);
                     break;
                 case R.id.music_title_play_list:
                     ToastUtil.toastCustom(context, "播放列表", 500);

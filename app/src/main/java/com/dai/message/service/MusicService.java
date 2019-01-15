@@ -54,6 +54,8 @@ public class MusicService extends Service {
 
     private int currentPlayIndex = 0;
 
+    private boolean isFirst = true;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -77,6 +79,10 @@ public class MusicService extends Service {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 try {
+                    if (isFirst) {
+                        isFirst = false;
+                        return;
+                    }
                     iBinder.playNext();
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -87,7 +93,6 @@ public class MusicService extends Service {
         mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
             @Override
             public boolean onError(MediaPlayer mp, int what, int extra) {
-                Log.d(TAG, "onError() called with: mp = [" + mp + "], what = [" + what + "], extra = [" + extra + "]");
                 if (!mp.isPlaying()) {
                     mp.start();
                 }
@@ -115,10 +120,11 @@ public class MusicService extends Service {
                     mediaPlayer.reset();
                     mediaPlayer.setDataSource(music.path);
                     mediaPlayer.prepareAsync();
+                    Log.d("MusicTitleView", "playMusic: music = " + music);
                     Config.getInstance().setCurrentMusic(music);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Log.e(TAG, "playMusic: e", e);
+                    Log.e("MusicTitleView", "playMusic: e", e);
                 }
             }
         }
@@ -146,6 +152,7 @@ public class MusicService extends Service {
                     public void onChangeData(ArrayList<Music> data) {
                         musicList.clear();
                         musicList.addAll(data);
+                        Log.d(TAG, "onChangeData: " + (Config.getInstance().getCurrentMusic() == null) + ", musicList.size() != 0 = " + (musicList.size() != 0));
                         if (Config.getInstance().getCurrentMusic() == null && musicList.size() != 0) {
                             Config.getInstance().setCurrentMusic(data.get(0));
                         }

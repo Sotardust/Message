@@ -97,7 +97,7 @@ public class HomeFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         if (musicTitleView != null)
-            musicTitleView.updateView(false);
+            musicTitleView.updateResumeView();
     }
 
     @Override
