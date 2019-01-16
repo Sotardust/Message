@@ -82,7 +82,7 @@ public class HomeFragment extends BaseFragment {
         musicTitleView = view.findViewById(R.id.home_music_title_view);
         musicTitleView.setBundleData(getArguments());
         musicTitleView.setActivity(getActivity());
-        musicTitleView.setBackViewVisitity();
+        musicTitleView.setBackViewVisibitity();
 
 
     }

@@ -2,8 +2,10 @@ package com.dai.message.ui.view;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -12,12 +14,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dai.message.R;
 import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.bean.Music;
 import com.dai.message.repository.preferences.Config;
+import com.dai.message.ui.music.playmusic.PlayMusicActivity;
 import com.dai.message.util.Key;
 import com.dai.message.util.ToastUtil;
 
@@ -31,6 +35,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
     private static final String TAG = "MusicTitleView";
 
     private ImageView back;
+    private RelativeLayout musicRelative;
     private ImageView avatar;
     private TextView songName;
     private TextView author;
@@ -65,6 +70,8 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
     private void initView() {
         View view = inflate(context, R.layout.view_title_music, this);
         back = view.findViewById(R.id.music_title_back);
+
+        musicRelative = view.findViewById(R.id.music_relative);
         avatar = view.findViewById(R.id.music_title_avatar);
         songName = view.findViewById(R.id.music_title_song_name);
         author = view.findViewById(R.id.music_title_author);
@@ -72,9 +79,10 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
         playList = view.findViewById(R.id.music_title_play_list);
 
         back.setOnClickListener(this);
-        avatar.setOnClickListener(this);
-        songName.setOnClickListener(this);
-        author.setOnClickListener(this);
+        musicRelative.setOnClickListener(this);
+//        avatar.setOnClickListener(this);
+//        songName.setOnClickListener(this);
+//        author.setOnClickListener(this);
         play.setOnClickListener(this);
         playList.setOnClickListener(this);
     }
@@ -105,7 +113,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
     /**
      * 设置返回按钮可见
      */
-    public void setBackViewVisitity() {
+    public void setBackViewVisibitity() {
         back.setVisibility(VISIBLE);
     }
 
@@ -153,6 +161,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
         update(false, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
     public void onClick(View v) {
         try {
@@ -172,7 +181,20 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
                     }
                     break;
                 case R.id.music_title_play_list:
-                    ToastUtil.toastCustom(context, "播放列表", 500);
+                    ToastUtil.toastCustom(context, R.string.play_music, 500);
+                    break;
+                case R.id.music_relative:
+                    Log.d(TAG, "onClick: music_relative = ");
+                    if (Config.getInstance().getCurrentMusic() == null) {
+                        ToastUtil.toastCustom(context, R.string.no_play_music, 500);
+                        return;
+                    }
+                    Bundle bundle = new Bundle();
+                    bundle.putBinder(Key.IBINDER, (IBinder) musicService);
+                    Intent intent = new Intent(context, PlayMusicActivity.class);
+                    intent.putExtra(Key.IBINDER, bundle);
+                    intent.putExtra(Key.MUSIC, Config.getInstance().getCurrentMusic());
+                    context.startActivity(intent);
                     break;
             }
         } catch (RemoteException e) {

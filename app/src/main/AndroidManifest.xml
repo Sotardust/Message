@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <!-- 微信 ：AppID：wx4b46660f04a64bc4 -->
     <!-- 微信 ：AppSecret：2bb298412c9aa9bcefbb35000627b72e -->
     <application

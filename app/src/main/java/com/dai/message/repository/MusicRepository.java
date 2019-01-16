@@ -51,18 +51,25 @@ public class MusicRepository {
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
                 .flatMap(new Function<List<String>, ObservableSource<String>>() {
                     @Override
-                    public ObservableSource<String> apply(List<String> names) throws Exception {
-                        for (Music music : musics) {
-                            if (!names.contains(music.name)) {
-                                musicDao.addMusic(music);
+                    public ObservableSource<String> apply(final List<String> names) throws Exception {
+
+                        return Observable.create(new ObservableCallback<String>() {
+                            @Override
+                            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                                super.subscribe(emitter);
+                                for (Music music : musics) {
+                                    if (!names.contains(music.name)) {
+                                        musicDao.addMusic(music);
+                                    }
+                                }
+                                emitter.onNext(ObservableUtil.KEY_SUCCESSFUL);
                             }
-                        }
-                        return Observable.just(ObservableUtil.KEY_SUCCESSFUL);
+                        });
                     }
                 })
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(ObservableUtil.subscriber(new LocalCallback<String>() {
                     @Override

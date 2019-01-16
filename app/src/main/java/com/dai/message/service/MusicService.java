@@ -48,8 +48,6 @@ public class MusicService extends Service {
 
     private List<Music> musicList = new ArrayList<>();
 
-    private PlayType playType = PlayType.PLAY_IN_ORDER;
-
     private boolean isNext = true;
 
     private int currentPlayIndex = 0;
@@ -166,7 +164,8 @@ public class MusicService extends Service {
 
         @Override
         public void setPlayType(int type) throws RemoteException {
-            playType = PlayType.getPlayType(type);
+
+            Config.getInstance().setPlayType(type);
             mediaPlayer.setLooping(type == PlayType.SINGLE_CYCLE.getIndex());
         }
 
@@ -199,7 +198,7 @@ public class MusicService extends Service {
         public void playPrevious() throws RemoteException {
             synchronized (Music.class) {
                 isNext = false;
-                switch (playType) {
+                switch (Config.getInstance().getPlayType()) {
                     case LIST_LOOP:
                     case PLAY_IN_ORDER:
                         if (currentPlayIndex >= musicList.size()) currentPlayIndex = 0;
@@ -216,7 +215,7 @@ public class MusicService extends Service {
         public void playNext() throws RemoteException {
             synchronized (Music.class) {
                 isNext = true;
-                switch (playType) {
+                switch (Config.getInstance().getPlayType()) {
                     case LIST_LOOP:
                     case PLAY_IN_ORDER:
                         if (currentPlayIndex >= musicList.size()) currentPlayIndex = 0;

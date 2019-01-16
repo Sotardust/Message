@@ -11,9 +11,11 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.dai.message.base.BaseActivity;
+import com.dai.message.base.BaseDialogFragment;
 import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.repository.preferences.Config;
 import com.dai.message.service.MusicService;
+import com.dai.message.ui.dialog.MainDialogFragment;
 import com.dai.message.ui.home.HomeFragment;
 import com.dai.message.util.Key;
 
@@ -30,7 +32,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-
+        BaseDialogFragment.install(this);
         Config.getInstance().setIsFirstPlay(true);
         connection = new ServiceConnection() {
             @Override
@@ -83,5 +85,12 @@ public class MainActivity extends BaseActivity {
         super.onTrimMemory(level);
         // activity 都不可见的情况下，进程保活
         Log.d(TAG, "onTrimMemory: ");
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        MainDialogFragment.newInstance().show();
+
     }
 }

@@ -30,6 +30,7 @@ public class WelcomeActivity extends BaseActivity {
             Manifest.permission.READ_CONTACTS,
             Manifest.permission.READ_SMS,
             Manifest.permission.READ_PHONE_STATE,
+            Manifest.permission.SYSTEM_ALERT_WINDOW,
             Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS};
 
 

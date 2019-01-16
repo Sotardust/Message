@@ -24,9 +24,6 @@ import com.dai.message.util.Key;
 import com.dai.message.util.PlayType;
 import com.dai.message.util.ToastUtil;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class PlayMusicFragment extends BaseFragment {
 
     private static final String TAG = "PlayMusicFragment";
@@ -39,7 +36,7 @@ public class PlayMusicFragment extends BaseFragment {
 
     private IMusicAidlInterface musicService;
 
-    private int playType = -1;
+    private int playType = Config.getInstance().getPlayType().getIndex();
 
     public static PlayMusicFragment newInstance() {
         return new PlayMusicFragment();
@@ -62,8 +59,8 @@ public class PlayMusicFragment extends BaseFragment {
         mBinding.setPlayMusicViewModel(mViewModel);
 
         initData();
-        initViews(mBinding.getRoot());
         bindViews();
+        initViews(mBinding.getRoot());
     }
 
     @Override
@@ -83,9 +80,10 @@ public class PlayMusicFragment extends BaseFragment {
                 currentMusic = getArguments().getParcelable(Key.MUSIC);
                 musicService = (IMusicAidlInterface) getArguments().getBinder(Key.IBINDER);
                 if (musicService != null) {
-                    if (!currentMusic.toString().equals(Config.getInstance().getCurrentMusic().toString())) {
+                    if (!currentMusic.toString().equals(Config.getInstance().getCurrentMusic().toString()) || !musicService.isPlaying()) {
                         musicService.playMusic(currentMusic);
                     }
+                    //play音乐有延迟
                 }
             }
         } catch (RemoteException e) {
@@ -102,9 +100,8 @@ public class PlayMusicFragment extends BaseFragment {
         mBinding.play.setOnClickListener(this);
         mBinding.next.setOnClickListener(this);
         mBinding.playList.setOnClickListener(this);
+        mBinding.playType.setText(PlayType.getPlayTypeString(playType));
     }
-
-    private List<Music> list = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -115,24 +112,26 @@ public class PlayMusicFragment extends BaseFragment {
                 case R.id.play_type:
                     playType = ++playType > PlayType.SHUFFLE_PLAYBACK.getIndex() ? playType = 0 : playType;
                     musicService.setPlayType(playType);
+                    mBinding.playType.setText(PlayType.getPlayTypeString(playType));
                     ToastUtil.toastCustom(getContext(), PlayType.getPlayTypeString(playType), 500);
                     break;
                 case R.id.previous:
                     musicService.playPrevious();
-                    ToastUtil.toastCustom(getContext(), "上一首", 500);
+                    ToastUtil.toastCustom(getContext(), R.string.previous, 500);
                     break;
                 case R.id.play:
                     if (musicService.isPlaying()) {
-                        ToastUtil.toastCustom(getContext(), "暂停", 500);
+                        ToastUtil.toastCustom(getContext(), R.string.pause, 500);
                         musicService.pause();
                     } else {
                         musicService.playPause();
-                        ToastUtil.toastCustom(getContext(), "播放", 500);
+                        ToastUtil.toastCustom(getContext(), R.string.playing, 500);
                     }
+                    mBinding.play.setText(musicService.isPlaying() ? R.string.playing : R.string.pause);
                     break;
                 case R.id.next:
                     musicService.playNext();
-                    ToastUtil.toastCustom(getContext(), "下一首", 500);
+                    ToastUtil.toastCustom(getContext(), R.string.next, 500);
                     break;
                 case R.id.play_list:
                     break;

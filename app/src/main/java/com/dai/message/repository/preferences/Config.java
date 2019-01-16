@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.dai.message.bean.Music;
+import com.dai.message.util.PlayType;
 import com.google.gson.Gson;
 
 public class Config {
@@ -19,6 +20,7 @@ public class Config {
     private static final String COOKIE = "cookie";
     private static final String KEY_MUSIC = "music";
     private static final String KEY_IS_FIRST_PLAY = "is_first_play";
+    private static final String KEY_PLAY_TYPE = "play_type";
 
     private Config() {
     }
@@ -59,6 +61,16 @@ public class Config {
     public Music getCurrentMusic() {
         return gson.fromJson(preferences.getString(KEY_MUSIC, null), Music.class);
     }
+
+    public void setPlayType(int playType) {
+        editor.putInt(KEY_PLAY_TYPE, playType);
+        editor.apply();
+    }
+
+    public PlayType getPlayType() {
+        return PlayType.getPlayType(preferences.getInt(KEY_PLAY_TYPE, 0));
+    }
+
 
     public void setIsFirstPlay(boolean isFirstPlay) {
         editor.putBoolean(KEY_IS_FIRST_PLAY, isFirstPlay);
