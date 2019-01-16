@@ -3,7 +3,6 @@ package com.dai.message.repository.preferences;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import com.dai.message.bean.Music;
 import com.google.gson.Gson;
@@ -19,6 +18,7 @@ public class Config {
 
     private static final String COOKIE = "cookie";
     private static final String KEY_MUSIC = "music";
+    private static final String KEY_IS_FIRST_PLAY = "is_first_play";
 
     private Config() {
     }
@@ -58,6 +58,15 @@ public class Config {
 
     public Music getCurrentMusic() {
         return gson.fromJson(preferences.getString(KEY_MUSIC, null), Music.class);
+    }
+
+    public void setIsFirstPlay(boolean isFirstPlay) {
+        editor.putBoolean(KEY_IS_FIRST_PLAY, isFirstPlay);
+        editor.apply();
+    }
+
+    public boolean isFirstPlay() {
+        return preferences.getBoolean(KEY_IS_FIRST_PLAY, true);
     }
 
 }

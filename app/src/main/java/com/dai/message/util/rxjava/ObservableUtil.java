@@ -1,16 +1,17 @@
 package com.dai.message.util.rxjava;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 
-
-import com.dai.message.callback.LocalCallback;
 import com.dai.message.callback.ConsumerCallBack;
+import com.dai.message.callback.LocalCallback;
 import com.dai.message.callback.ObservableCallback;
 import com.dai.message.callback.ObserverCallback;
 
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -23,36 +24,58 @@ import io.reactivex.schedulers.Timed;
  * created by dht on 2018/7/6 09:05
  */
 
-public class RxJavaObservable {
+public class ObservableUtil {
 
-    private static RxJavaObservable instance;
+    private static final String TAG = "ObservableUtil";
+
+    private static ObservableUtil instance;
 
     public static final String KEY_SUCCESSFUL = "successful";
 
-    private RxJavaObservable() {
-    }
 
-    public static RxJavaObservable getInstance() {
-        if (instance == null)
-            synchronized (RxJavaObservable.class) {
-                if (instance == null)
-                    instance = new RxJavaObservable();
-            }
-        return instance;
-    }
-
+//    public static <T> void flatMap(){
+//        Observable.create()
+//    }
     /**
      * 异步执行方法
      *
      * @param observableCallback 被观察者回调接口
-     * @param observerCallBack   观察者回调接口
+     * @param localCallback      回调接口
      */
-    public <T> void execute(ObservableCallback<T> observableCallback, ObserverCallback<T> observerCallBack) {
+    public static  <T> void execute(ObservableCallback<T> observableCallback, LocalCallback<T> localCallback) {
         Observable.create(observableCallback)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observerCallBack);
+                .subscribe(subscriber(localCallback));
 
+    }
+
+    /**
+     * 返回并获取数据结果
+     *
+     * @param localCallback NetworkCallBack
+     * @param <T>           T
+     * @return Observer
+     */
+    public static <T> Observer<T> subscriber(final LocalCallback<T> localCallback) {
+        return new ObserverCallback<T>() {
+            @Override
+            public void onNext(T value) {
+                super.onNext(value);
+                if (localCallback == null) return;
+                localCallback.onChangeData(value);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                Log.e(TAG, " onError: e = ", e);
+                if (localCallback == null) {
+                    return;
+                }
+                localCallback.onChangeData(null);
+            }
+        };
     }
 
     /**

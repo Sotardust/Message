@@ -13,6 +13,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
+        android:visibility="gone"
         android:background="@mipmap/icon_back_orange_64" />
 
     <RelativeLayout
@@ -68,13 +69,13 @@
 
     <TextView
         android:id="@+id/music_title_play"
-        style="@style/musicTitle"
+        style="@style/TitleBar"
         android:drawableTop="@mipmap/icon_peach_original_64"
         android:text="@string/play" />
 
     <TextView
         android:id="@+id/music_title_play_list"
-        style="@style/musicTitle"
+        style="@style/TitleBar"
         android:drawableTop="@mipmap/icon_pipa_original_64"
         android:text="@string/play_list" />
 

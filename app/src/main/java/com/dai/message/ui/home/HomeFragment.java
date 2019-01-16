@@ -82,13 +82,15 @@ public class HomeFragment extends BaseFragment {
         musicTitleView = view.findViewById(R.id.home_music_title_view);
         musicTitleView.setBundleData(getArguments());
         musicTitleView.setActivity(getActivity());
+        musicTitleView.setBackViewVisitity();
+
 
     }
 
     private LocalCallback<Integer> localCallback = new LocalCallback<Integer>() {
         @Override
         public void onChangeData(Integer data) {
-            Log.d("MusicTitleView", "onChangeData: data = " + data);
+            Log.d("MusicTitleView", "HomeFragment onChangeData: data = " + data);
             musicTitleView.updateView(true);
         }
     };

@@ -28,7 +28,6 @@ public class BaseReceiver<T> extends BroadcastReceiver {
 
 
         int index = intent.getIntExtra(Key.INDEX, -1);
-        Log.d(TAG, "onReceive: index = " + index);
         if (index == SendLocalBroadcast.KEY_UPDATE_VIEW) {
             int data = intent.getIntExtra(Key.INDEX, -1);
             callBack.onChangeData(data);

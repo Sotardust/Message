@@ -12,6 +12,7 @@ import android.util.Log;
 
 import com.dai.message.base.BaseActivity;
 import com.dai.message.bean.IMusicAidlInterface;
+import com.dai.message.repository.preferences.Config;
 import com.dai.message.service.MusicService;
 import com.dai.message.ui.home.HomeFragment;
 import com.dai.message.util.Key;
@@ -30,6 +31,7 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
 
+        Config.getInstance().setIsFirstPlay(true);
         connection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {

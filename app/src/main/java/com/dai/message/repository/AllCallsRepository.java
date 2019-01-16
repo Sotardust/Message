@@ -1,15 +1,13 @@
 package com.dai.message.repository;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.dai.message.callback.LocalCallback;
 import com.dai.message.callback.ObservableCallback;
-import com.dai.message.callback.ObserverCallback;
 import com.dai.message.repository.dao.AllCallsDao;
 import com.dai.message.repository.entity.AllCallsEntity;
 import com.dai.message.util.LogUtil;
-import com.dai.message.util.rxjava.RxJavaObservable;
+import com.dai.message.util.rxjava.ObservableUtil;
 
 import java.util.List;
 
@@ -38,7 +36,7 @@ public class AllCallsRepository {
      */
     public void addAllCallsEntity(final AllCallsEntity entity) {
         LogUtil.writeInfo(TAG, "addAllCallsEntity", entity.toString());
-        RxJavaObservable.getInstance()
+       ObservableUtil
                 .execute(new ObservableCallback<String>() {
                     @Override
                     public void subscribe(ObservableEmitter<String> emitter) throws Exception {
@@ -46,17 +44,10 @@ public class AllCallsRepository {
                         allCallsDao.addAllCallsEntity(entity);
                         emitter.onNext("successful");
                     }
-                }, new ObserverCallback<String>() {
+                }, new LocalCallback<String>() {
                     @Override
-                    public void onNext(String entities) {
-                        super.onNext(entities);
+                    public void onChangeData(String data) {
 
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        Log.e(TAG, "onError: ", e);
                     }
                 });
     }
@@ -75,11 +66,11 @@ public class AllCallsRepository {
      * 获取数据库中的AllCallsEntity 实体类集合数据
      *
      * @param localCallback 回调接口
-     * @param callType 1/2/3/4/5 接听/拨打/未接//拒接
+     * @param callType      1/2/3/4/5 接听/拨打/未接//拒接
      */
     public void getCallsEntities(final LocalCallback<List<AllCallsEntity>> localCallback, final String callType) {
         LogUtil.writeInfo(TAG, "getCallsEntities", callType);
-        RxJavaObservable.getInstance()
+       ObservableUtil
                 .execute(new ObservableCallback<List<AllCallsEntity>>() {
                     @Override
                     public void subscribe(ObservableEmitter<List<AllCallsEntity>> emitter) throws Exception {
@@ -90,17 +81,10 @@ public class AllCallsRepository {
                         emitter.onNext(entities);
 
                     }
-                }, new ObserverCallback<List<AllCallsEntity>>() {
+                }, new LocalCallback<List<AllCallsEntity>>() {
                     @Override
-                    public void onNext(List<AllCallsEntity> entities) {
-                        super.onNext(entities);
+                    public void onChangeData(List<AllCallsEntity> entities) {
                         localCallback.onChangeData(entities);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        super.onError(e);
-                        Log.e(TAG, "onError: ", e);
                     }
                 });
     }

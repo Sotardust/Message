@@ -16,47 +16,10 @@
         android:orientation="vertical"
         tools:context=".ui.music.playmusic.PlayMusicFragment">
 
-
-        <RelativeLayout
+        <com.dai.message.ui.view.TopTitleView
+            android:id="@+id/play_top_title_view"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:background="@color/colorWhite">
-
-            <ImageView
-                android:id="@+id/back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:background="@mipmap/icon_leaf_original_64" />
-
-            <TextView
-                android:id="@+id/songName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/back"
-                android:layout_marginStart="19dp"
-                android:layout_marginLeft="19dp"
-                android:layout_marginTop="-8dp"
-                android:layout_toEndOf="@+id/back"
-                android:layout_toRightOf="@+id/back"
-                android:text="歌曲名称"
-                android:textColor="@color/orange"
-                android:textSize="15sp" />
-
-            <TextView
-                android:id="@+id/author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/back"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_marginStart="61dp"
-                android:layout_marginLeft="61dp"
-                android:text="12354"
-                android:textSize="12sp" />
-        </RelativeLayout>
+            android:layout_height="60dp" />
 
         <View
             android:layout_width="match_parent"
@@ -83,7 +46,7 @@
 
             <TextView
                 android:id="@+id/play_type"
-                style="@style/musicTitle"
+                style="@style/TitleBar"
                 android:drawableTop="@mipmap/icon_lemon_original_64"
                 android:text="@string/play_type" />
 

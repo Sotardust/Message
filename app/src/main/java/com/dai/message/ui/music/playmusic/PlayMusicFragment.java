@@ -18,6 +18,8 @@ import com.dai.message.base.BaseFragment;
 import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.bean.Music;
 import com.dai.message.databinding.FragmentPlayMusicBinding;
+import com.dai.message.repository.preferences.Config;
+import com.dai.message.ui.view.TopTitleView;
 import com.dai.message.util.Key;
 import com.dai.message.util.PlayType;
 import com.dai.message.util.ToastUtil;
@@ -58,10 +60,19 @@ public class PlayMusicFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(PlayMusicViewModel.class);
         mBinding.setPlayMusicViewModel(mViewModel);
+
         initData();
+        initViews(mBinding.getRoot());
         bindViews();
     }
 
+    @Override
+    public void initViews(View view) {
+        super.initViews(view);
+        TopTitleView topTitleView = view.findViewById(R.id.play_top_title_view);
+        topTitleView.setActivity(getActivity());
+        topTitleView.updatePlayView(Config.getInstance().getCurrentMusic());
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
@@ -69,12 +80,12 @@ public class PlayMusicFragment extends BaseFragment {
         super.initData();
         try {
             if (getArguments() != null) {
-                int index = getArguments().getInt(Key.INDEX);
                 currentMusic = getArguments().getParcelable(Key.MUSIC);
                 musicService = (IMusicAidlInterface) getArguments().getBinder(Key.IBINDER);
                 if (musicService != null) {
-                    list.addAll(musicService.getPlayList());
-                    musicService.playMusic(list.get(index));
+                    if (!currentMusic.toString().equals(Config.getInstance().getCurrentMusic().toString())) {
+                        musicService.playMusic(currentMusic);
+                    }
                 }
             }
         } catch (RemoteException e) {
@@ -86,9 +97,6 @@ public class PlayMusicFragment extends BaseFragment {
     @Override
     public void bindViews() {
         super.bindViews();
-        mBinding.songName.setText(currentMusic.name);
-        mBinding.author.setText(currentMusic.author);
-        mBinding.back.setOnClickListener(this);
         mBinding.playType.setOnClickListener(this);
         mBinding.previous.setOnClickListener(this);
         mBinding.play.setOnClickListener(this);
@@ -104,9 +112,6 @@ public class PlayMusicFragment extends BaseFragment {
         super.handlingClickEvents(view);
         try {
             switch (view.getId()) {
-                case R.id.back:
-                    getActivity().finish();
-                    break;
                 case R.id.play_type:
                     playType = ++playType > PlayType.SHUFFLE_PLAYBACK.getIndex() ? playType = 0 : playType;
                     musicService.setPlayType(playType);
@@ -117,7 +122,6 @@ public class PlayMusicFragment extends BaseFragment {
                     ToastUtil.toastCustom(getContext(), "上一首", 500);
                     break;
                 case R.id.play:
-
                     if (musicService.isPlaying()) {
                         ToastUtil.toastCustom(getContext(), "暂停", 500);
                         musicService.pause();

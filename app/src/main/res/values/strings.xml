@@ -32,5 +32,11 @@
     <string name="next">下一首</string>
     <string name="play_list">播放列表</string>
     <string name="play_type">播放类型</string>
+    <string name="play_music">播放音乐</string>
+
+    <string name="local_music">本地音乐</string>
+    <string name="search">搜索</string>
+    <string name="close_search">关闭搜索</string>
+    <string name="search_local_music">搜索本地音乐</string>
 
 </resources>

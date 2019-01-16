@@ -23,7 +23,6 @@ public class PlayMusicActivity extends BaseActivity {
             Bundle bundle = new Bundle();
             bundle.putBinder(Key.IBINDER, getIntent().getBundleExtra(Key.IBINDER).getBinder(Key.IBINDER));
             bundle.putParcelable(Key.MUSIC, getIntent().getParcelableExtra(Key.MUSIC));
-            bundle.putInt(Key.INDEX, getIntent().getIntExtra(Key.INDEX, 0));
             playMusicFragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, playMusicFragment)

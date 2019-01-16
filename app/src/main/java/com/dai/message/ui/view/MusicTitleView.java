@@ -17,11 +17,9 @@ import android.widget.TextView;
 import com.dai.message.R;
 import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.bean.Music;
+import com.dai.message.repository.preferences.Config;
 import com.dai.message.util.Key;
 import com.dai.message.util.ToastUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 音乐播放栏
@@ -41,9 +39,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
 
     private IMusicAidlInterface musicService;
     private Music currentMusic;
-    private List<Music> list = new ArrayList<>();
     private Context context;
-    private boolean isFirst = true;
 
     public MusicTitleView(Context context) {
         super(context);
@@ -106,6 +102,12 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
         this.activity = activity;
     }
 
+    /**
+     * 设置返回按钮可见
+     */
+    public void setBackViewVisitity() {
+        back.setVisibility(VISIBLE);
+    }
 
     /**
      * 更新视图View
@@ -147,6 +149,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
      * 更新视图View
      */
     public void updateResumeView() {
+        Log.d(TAG, "updateResumeView() called");
         update(false, false);
     }
 
@@ -159,9 +162,9 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
                     break;
                 case R.id.music_title_play:
                     updateView(false);
-                    if (isFirst) {
+                    if (Config.getInstance().isFirstPlay()) {
                         musicService.playCurrentMusic();
-                        isFirst = false;
+                        Config.getInstance().setIsFirstPlay(false);
                     } else if (musicService.isPlaying()) {
                         musicService.pause();
                     } else {

@@ -9,16 +9,28 @@
             type="com.dai.message.ui.music.local.LocalViewModel" />
     </data>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
+        android:orientation="vertical"
         tools:context=".ui.music.local.LocalFragment">
+
+        <com.dai.message.ui.view.TopTitleView
+            android:id="@+id/local_top_title_view"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-    </FrameLayout>
+        <com.dai.message.ui.view.MusicTitleView
+            android:id="@+id/local_music_title_view"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+
+    </LinearLayout>
 </layout>
