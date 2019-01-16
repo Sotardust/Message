@@ -84,11 +84,12 @@
 
     </style>
     <!--菜单弹窗主题样式-->
-    <style name="PlayListDialog" parent="@android:style/Theme.Holo.Dialog">
+    <style name="PlayListDialog" parent="@android:style/Theme.Holo.Light">
+    <!--<style name="PlayListDialog" parent="Theme.AppCompat.DayNight.Dialog">-->
         <!-- 是否有边框 -->
         <item name="android:windowFrame">@null</item>
         <!-- 全屏  -->
-        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowFullscreen">true</item>
         <!--是否在悬浮Activity之上  -->
         <item name="android:windowIsFloating">true</item>
         <!--标题  -->
