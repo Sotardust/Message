@@ -23,7 +23,7 @@ public class LocalAdapter extends BaseAdapter<Music> {
 
     private ArrayList<String> usernameList = new ArrayList<>();
 
-    LocalAdapter(RecycleItemClickCallBack<String> recycleItemClickCallBack) {
+    public LocalAdapter(RecycleItemClickCallBack<String> recycleItemClickCallBack) {
         this.callBack = recycleItemClickCallBack;
     }
 
@@ -55,7 +55,7 @@ public class LocalAdapter extends BaseAdapter<Music> {
         TV(0), // text文本
         IV(1); //more 图片
 
-        int index;
+        public int index;
 
         Type(int index) {
             this.index = index;

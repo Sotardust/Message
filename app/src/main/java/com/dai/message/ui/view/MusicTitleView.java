@@ -21,6 +21,7 @@ import com.dai.message.R;
 import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.bean.Music;
 import com.dai.message.repository.preferences.Config;
+import com.dai.message.ui.dialog.PlayListDialogFragment;
 import com.dai.message.ui.music.playmusic.PlayMusicActivity;
 import com.dai.message.util.Key;
 import com.dai.message.util.ToastUtil;
@@ -181,6 +182,8 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
                     }
                     break;
                 case R.id.music_title_play_list:
+                    PlayListDialogFragment playListDialogFragment = PlayListDialogFragment.newInstance();
+                    playListDialogFragment.showV4();
                     ToastUtil.toastCustom(context, R.string.play_music, 500);
                     break;
                 case R.id.music_relative:

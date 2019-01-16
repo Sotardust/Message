@@ -25,9 +25,7 @@ public class LocalViewModel extends BaseAndroidViewModel {
 
     private static final String TAG = "LocalViewModel";
 
-    private ArrayList<File> filePaths = new ArrayList<>();
 
-    private Application application;
 
     private MutableLiveData<ArrayList<Music>> musicData = new MutableLiveData<>();
 
@@ -37,7 +35,6 @@ public class LocalViewModel extends BaseAndroidViewModel {
 
     public LocalViewModel(@NonNull Application application) {
         super(application);
-        this.application = application;
         musicRepository = new MusicRepository(application);
 
         musicApi = new MusicApi();

@@ -1,6 +1,9 @@
 package com.dai.message.base;
 
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
@@ -43,37 +46,49 @@ public class BaseDialogFragment extends DialogFragment {
     /**
      * 显示菜单、选项、会议室数据列表
      */
-    public void show() {
+    public void showV4() {
         FragmentTransaction ft = weakReference.get().getSupportFragmentManager().beginTransaction();
         show(ft, getTag());
+    }
+
+    public void show() {
+//        android.app.FragmentTransaction ft1 = weakReference.get().getFragmentManager().beginTransaction();
+//
+//       show(ft1,"dfa");
     }
 
     /**
      * 设置菜单窗口属性参数
      */
-    public void setMenuWindowParams() {
+    public void setBottomWindowParams() {
         Window window = getDialog().getWindow();
         assert window != null;
-        window.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorWhite)));
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams lp = window.getAttributes();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
         lp.gravity = Gravity.BOTTOM;
         lp.dimAmount = 0.5f;
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.windowAnimations = R.style.MenuPopAnimation;
-        window.setLayout(-1, -2);
         window.setAttributes(lp);
     }
+
 
     /**
      * 设置选项、会议室窗口属性参数
      */
-    public void setWindowParams() {
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void setCenterWindowParams() {
         Window window = this.getDialog().getWindow();
         assert window != null;
-        window.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.colorWhite)));
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams lp = window.getAttributes();
-        lp.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
-//        lp.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
-        lp.gravity = Gravity.CENTER_VERTICAL | Gravity.CENTER;
+        window.setLayout(-1, -2);
+        lp.gravity = Gravity.CENTER;
+        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.windowAnimations = R.style.PopupWindowAnimation;
         lp.dimAmount = 0.5f;
         window.setAttributes(lp);
     }

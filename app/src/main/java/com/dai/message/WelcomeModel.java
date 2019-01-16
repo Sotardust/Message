@@ -1,4 +1,4 @@
-package com.dai.message.ui.home;
+package com.dai.message;
 
 import android.app.Application;
 import android.os.Environment;
@@ -14,14 +14,14 @@ import com.dai.message.util.LogUtil;
 import java.io.File;
 import java.util.ArrayList;
 
-public class HomeViewModel extends BaseAndroidViewModel {
+public class WelcomeModel extends BaseAndroidViewModel {
 
     private static final String TAG = "HomeViewModel";
 
     private MusicRepository musicRepository;
     private ArrayList<File> filePaths = new ArrayList<>();
 
-    public HomeViewModel(@NonNull Application application) {
+    public WelcomeModel(@NonNull Application application) {
         super(application);
         musicRepository = new MusicRepository(application);
     }
@@ -29,16 +29,25 @@ public class HomeViewModel extends BaseAndroidViewModel {
     /**
      * 初始化数据
      */
-    public void initDatabaseData(LocalCallback<String> localCallback) {
-        String path = Environment.getExternalStorageDirectory() + File.separator + "Music";
-        File file = new File(path);
-        if (!file.exists()) {
-            LogUtil.writeInfo(TAG, "traversalSong", path + "路径不存在");
-            Log.d(TAG, "searchSong: " + path + "路径不存在");
+    public void initDatabaseData(LocalCallback<String> pathCallback, LocalCallback<String> localCallback) {
+        String neteasePath = Environment.getExternalStorageDirectory() + File.separator + "netease";
+        String localPath = Environment.getExternalStorageDirectory() + File.separator + "Music";
+        File neteaseFile = new File(neteasePath);
+        File localFile = new File(localPath);
+        if (!neteaseFile.exists()) {
+            LogUtil.writeInfo(TAG, "traversalSong", neteasePath + "路径不存在");
+            Log.d(TAG, "searchSong: " + neteasePath + "路径不存在");
+            return;
+        }
+        if (!localFile.exists()) {
+            LogUtil.writeInfo(TAG, "traversalSong", localFile + "路径不存在");
+            Log.d(TAG, "searchSong: " + localFile + "路径不存在");
             return;
         }
         if (filePaths.size() != 0) filePaths.clear();
-        traversingMusicFile(file.getPath());
+        traversingMusicFile(neteaseFile.getPath(), pathCallback);
+        traversingMusicFile(localFile.getPath(), pathCallback);
+
         ArrayList<Music> musicList = new ArrayList<>();
         for (File file1 : filePaths) {
             Music music = new Music();
@@ -51,7 +60,7 @@ public class HomeViewModel extends BaseAndroidViewModel {
             musicList.add(music);
         }
         Log.d(TAG, "initData: musicList.size = " + musicList.size());
-        musicRepository.insertMusic(musicList,localCallback);
+        musicRepository.insertMusic(musicList, localCallback);
     }
 
     /**
@@ -59,16 +68,16 @@ public class HomeViewModel extends BaseAndroidViewModel {
      *
      * @param path 路径
      */
-    private void traversingMusicFile(String path) {
+    private void traversingMusicFile(String path, LocalCallback<String> localCallback) {
         File file1 = new File(path);
         File[] files = file1.listFiles();
-        Log.d(TAG, "searchSongFile: files.length = " + files.length);
         for (File file : files) {
             if (file.isFile() && (file.getName().contains(".mp3") && !file.getName().contains(".mp3.") || file.getName().contains(".flac"))) {
-                Log.d(TAG, "findSong: " + file.getPath());
+                localCallback.onChangeData(file.getPath());
                 filePaths.add(file);
             } else if (file.isDirectory())
-                traversingMusicFile(file.getPath());
+                traversingMusicFile(file.getPath(), localCallback);
+
         }
     }
 

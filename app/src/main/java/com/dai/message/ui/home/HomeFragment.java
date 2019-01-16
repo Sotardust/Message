@@ -5,6 +5,7 @@ import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -71,6 +72,7 @@ public class HomeFragment extends BaseFragment {
         mBinding.setHomeViewModel(mViewModel);
         initViews(mBinding.getRoot());
         bindViews();
+
     }
 
     private MusicTitleView musicTitleView;
@@ -115,13 +117,26 @@ public class HomeFragment extends BaseFragment {
         super.bindViews();
         final List<Fragment> mFragmentList = new ArrayList<>();
         MusicFragment musicFragment = MusicFragment.newInstance();
-        IMusicAidlInterface service = (IMusicAidlInterface) getArguments().getBinder(Key.IBINDER);
         musicFragment.setArguments(getArguments());
         mFragmentList.add(musicFragment);
         mFragmentList.add(NewsFragment.newInstance());
         mFragmentList.add(NewsFragment.newInstance());
         mFragmentList.add(NewsFragment.newInstance());
         setCustomTabLayout();
+
+//        final IMusicAidlInterface service = (IMusicAidlInterface) getArguments().getBinder(Key.IBINDER);
+//        mViewModel.initDatabaseData(new LocalCallback<String>() {
+//            @Override
+//            public void onChangeData(String data) {
+//                try {
+//                    if (service != null)
+//                        service.initPlayList();
+//                } catch (RemoteException e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        });
         mBinding.baseViewPager.setAdapter(new BaseFragmentPageAdapter(getChildFragmentManager(), mFragmentList, titles));
 
         mBinding.tabLayout.addOnTabSelectedListener(new TabLayoutCallback() {

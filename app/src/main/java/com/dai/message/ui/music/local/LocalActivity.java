@@ -25,13 +25,13 @@ public class LocalActivity extends BaseActivity {
             LocalFragment localFragment = LocalFragment.newInstance();
             Bundle bundle = new Bundle();
             IBinder iBinder = getIntent().getBundleExtra(Key.IBINDER).getBinder(Key.IBINDER);
-            try {
-                IMusicAidlInterface musicService = (IMusicAidlInterface) iBinder;
-                if (musicService != null)
-                    musicService.initPlayList();
-            } catch (RemoteException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                IMusicAidlInterface musicService = (IMusicAidlInterface) iBinder;
+//                if (musicService != null)
+//                    musicService.initPlayList();
+//            } catch (RemoteException e) {
+//                e.printStackTrace();
+//            }
             bundle.putBinder(Key.IBINDER, iBinder);
             localFragment.setArguments(bundle);
             getSupportFragmentManager().beginTransaction()

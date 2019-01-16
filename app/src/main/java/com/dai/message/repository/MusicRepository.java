@@ -17,6 +17,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -41,7 +42,7 @@ public class MusicRepository {
      * @param musics Music集合
      */
     @SuppressLint("CheckResult")
-    public void insertMusic(final ArrayList<Music> musics) {
+    public void insertMusic(final ArrayList<Music> musics, final LocalCallback<String> localCallback) {
         Observable.create(new ObservableCallback<List<String>>() {
             @Override
             public void subscribe(ObservableEmitter<List<String>> emitter) throws Exception {
@@ -52,6 +53,13 @@ public class MusicRepository {
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
+                .doOnNext(new Consumer<List<String>>() {
+                    @Override
+                    public void accept(List<String> strings) throws Exception {
+                        Log.d(TAG, "accept: strings = " + strings);
+                    }
+                })
+                .observeOn(Schedulers.io())
                 .flatMap(new Function<List<String>, ObservableSource<String>>() {
                     @Override
                     public ObservableSource<String> apply(final List<String> names) throws Exception {
@@ -75,6 +83,7 @@ public class MusicRepository {
                     @Override
                     public void onChangeData(String data) {
                         Log.d(TAG, "onChangeData: data" + data);
+                        localCallback.onSuccessful();
                     }
                 }));
     }

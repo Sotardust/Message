@@ -148,9 +148,10 @@ public class MusicService extends Service {
                 repository.getAllMusics(new LocalCallback<ArrayList<Music>>() {
                     @Override
                     public void onChangeData(ArrayList<Music> data) {
-                        if (Config.getInstance().getCurrentMusic() == null && musicList.size() != 0) {
+                        if (Config.getInstance().getCurrentMusic() == null) {
                             Config.getInstance().setCurrentMusic(data.get(0));
                         }
+                        Log.d(TAG, "onChangeData: musicList.size() = " + musicList.size() + "data.size() = " + data.size());
                         if (musicList.size() != data.size()) {
                             SendLocalBroadcast.getInstance().updateMusicView(getApplicationContext(), null, SendLocalBroadcast.KEY_UPDATE_VIEW);
                         }

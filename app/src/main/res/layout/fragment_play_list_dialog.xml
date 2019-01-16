@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="playListDialogViewModel"
+            type="com.dai.message.ui.dialog.PlayListDialogViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@drawable/btn_login_bg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:background="@drawable/btn_login_bg"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:paddingStart="15dp"
+                android:paddingLeft="15dp"
+                android:text="@string/play_list"
+                android:textSize="15sp"
+                tools:ignore="RtlSymmetry" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycle_play_list"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:background="@drawable/edit_login_bg"
+                android:padding="1dp" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

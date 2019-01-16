@@ -13,6 +13,7 @@ import android.util.Log;
 import com.dai.message.base.BaseActivity;
 import com.dai.message.base.BaseDialogFragment;
 import com.dai.message.bean.IMusicAidlInterface;
+import com.dai.message.callback.LocalCallback;
 import com.dai.message.repository.preferences.Config;
 import com.dai.message.service.MusicService;
 import com.dai.message.ui.dialog.MainDialogFragment;
@@ -90,7 +91,13 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
 
-        MainDialogFragment.newInstance().show();
-
+        MainDialogFragment mainDialogFragment = MainDialogFragment.newInstance();
+        mainDialogFragment.showV4();
+        mainDialogFragment.setOkCallBack(new LocalCallback<String>() {
+            @Override
+            public void onSuccessful() {
+                finish();
+            }
+        });
     }
 }

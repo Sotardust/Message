@@ -6,7 +6,16 @@ package com.dai.message.callback;
  * <p>
  * created by dht on 2018/7/5 18:35
  */
-public interface LocalCallback<T> {
+public class LocalCallback<T> implements Callback<T> {
 
-    void onChangeData(T data);
+
+    @Override
+    public void onChangeData(T data) {
+
+    }
+
+    @Override
+    public void onSuccessful() {
+
+    }
 }

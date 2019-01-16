@@ -9,6 +9,7 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 import com.dai.message.base.BaseActivity;
+import com.dai.message.callback.LocalCallback;
 import com.dai.message.ui.login.LoginActivity;
 import com.dai.message.ui.login.LoginFragment;
 import com.dai.message.util.file.FileUtil;
@@ -33,11 +34,13 @@ public class WelcomeActivity extends BaseActivity {
             Manifest.permission.SYSTEM_ALERT_WINDOW,
             Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS};
 
+    private WelcomeModel welcomeModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
+        welcomeModel = new WelcomeModel(getApplication());
         checkSelfPermission();
     }
 
@@ -50,9 +53,21 @@ public class WelcomeActivity extends BaseActivity {
             //请求权限后必须创建日志文件
             FileUtil.createLogFile();
         }
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+
+        welcomeModel.initDatabaseData(new LocalCallback<String>() {
+            @Override
+            public void onChangeData(String data) {
+                Log.d(TAG, "onChangeData: path = " + data);
+            }
+        }, new LocalCallback<String>() {
+            @Override
+            public void onSuccessful() {
+                Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
     /**
