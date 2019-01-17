@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,9 +31,8 @@ import com.dai.message.databinding.FragmentLocalBinding;
 import com.dai.message.receiver.BaseReceiver;
 import com.dai.message.receiver.SendLocalBroadcast;
 import com.dai.message.ui.music.playmusic.PlayMusicActivity;
-import com.dai.message.ui.view.MusicTitleView;
-import com.dai.message.ui.view.TopTitleView;
 import com.dai.message.util.Key;
+import com.dai.message.util.SimpleTextWatcher;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,8 +46,7 @@ public class LocalFragment extends BaseFragment {
     private FragmentLocalBinding mBinding;
     private ArrayList<Music> musicList = new ArrayList<>();
     private BaseReceiver receiver;
-    private MusicTitleView musicTitleView;
-
+    private LocalAdapter localAdapter;
 
     public static LocalFragment newInstance() {
         return new LocalFragment();
@@ -57,7 +56,7 @@ public class LocalFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_local, container, false);
-        receiver = new BaseReceiver<>(localCallback);
+        receiver = new BaseReceiver<>(receiverCallback);
         LocalBroadcastManager.getInstance(getContext().getApplicationContext()).registerReceiver(receiver,
                 new IntentFilter(SendLocalBroadcast.KEY_UPDATE_MUSIC_TITLE_VIEW));
         return mBinding.getRoot();
@@ -77,32 +76,45 @@ public class LocalFragment extends BaseFragment {
     @Override
     public void initViews(View view) {
         super.initViews(view);
-        musicTitleView = view.findViewById(R.id.local_music_title_view);
         Bundle bundle = new Bundle();
         bundle.putBinder(Key.IBINDER, getArguments().getBinder(Key.IBINDER));
-        musicTitleView.setBundleData(bundle);
-        musicTitleView.setActivity((BaseActivity) getActivity());
+        mBinding.localMusicTitleView.setBundleData(bundle);
+        mBinding.localMusicTitleView.setActivity((BaseActivity) getActivity());
 
-        TopTitleView topTitleView = view.findViewById(R.id.local_top_title_view);
-        topTitleView.setActivity(getActivity());
-        topTitleView.updateView(getString(R.string.local_music));
-        topTitleView.setViewVisibility();
+        mBinding.localTopTitleView.updateView(getActivity(),getString(R.string.local_music));
+        mBinding.localTopTitleView.setLocalTitleBar();
+        mBinding.localTopTitleView.setSearchEditTextWatcher(textWatcher);
 
     }
 
-    private LocalCallback<Integer> localCallback = new LocalCallback<Integer>() {
+    private LocalCallback<Integer> receiverCallback = new LocalCallback<Integer>() {
         @Override
         public void onChangeData(Integer data) {
             Log.d("MusicTitleView", "LocalFragment onChangeData: data = " + data);
-            musicTitleView.updateView(true);
+            mBinding.localMusicTitleView.updateView();
+        }
+    };
+
+    private SimpleTextWatcher textWatcher = new SimpleTextWatcher() {
+        @Override
+        public void afterTextChanged(Editable s) {
+            super.afterTextChanged(s);
+            Log.d(TAG, "afterTextChanged: s = " + s);
+            ArrayList<Music> list = new ArrayList<>();
+            for (Music music : musicList) {
+                if (music.name.contains(s.toString()) || music.name.contains(s.toString().toUpperCase())) {
+                    list.add(music);
+                }
+            }
+            localAdapter.setChangeList(list);
         }
     };
 
     @Override
     public void onResume() {
         super.onResume();
-        if (musicTitleView != null)
-            musicTitleView.updateResumeView();
+        if (mBinding.localMusicTitleView != null)
+            mBinding.localMusicTitleView.updateView();
     }
 
     @Override
@@ -116,7 +128,7 @@ public class LocalFragment extends BaseFragment {
     public void bindViews() {
         super.bindViews();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        final LocalAdapter localAdapter = new LocalAdapter(recycleItemClickCallBack);
+        localAdapter = new LocalAdapter(recycleItemClickCallBack);
 
         mViewModel.getMusicData().observe(this, new Observer<ArrayList<Music>>() {
             @Override
@@ -132,22 +144,20 @@ public class LocalFragment extends BaseFragment {
 
     }
 
-    private RecycleItemClickCallBack<String> recycleItemClickCallBack = new RecycleItemClickCallBack<String>() {
+    private RecycleItemClickCallBack<Music> recycleItemClickCallBack = new RecycleItemClickCallBack<Music>() {
 
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
         @Override
-        public void onItemClickListener(int type, String value, int position) {
-            super.onItemClickListener(type, value, position);
-            Log.d(TAG, "onItemClickListener: path = " + musicList.get(position).path);
-            String path = musicList.get(position).path;
+        public void onItemClickListener(int type, Music music, int position) {
+            super.onItemClickListener(type, music, position);
             if (type == LocalAdapter.Type.IV.index) {
                 List<File> files = new ArrayList<>();
-                File file = new File(path);
+                File file = new File(music.path);
                 files.add(file);
                 mViewModel.uploadFiles(files, networkCallback);
             } else {
                 Intent intent = new Intent(getContext(), PlayMusicActivity.class);
-                intent.putExtra(Key.MUSIC, musicList.get(position));
+                intent.putExtra(Key.MUSIC, music);
                 Bundle bundle = new Bundle();
                 assert getArguments() != null;
                 bundle.putBinder(Key.IBINDER, getArguments().getBinder(Key.IBINDER));

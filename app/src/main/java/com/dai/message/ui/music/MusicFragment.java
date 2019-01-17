@@ -20,9 +20,9 @@ import com.dai.message.databinding.FragmentMusicBinding;
 import com.dai.message.ui.music.cloud.CloudDiskActivity;
 import com.dai.message.ui.music.download.DownloadActivity;
 import com.dai.message.ui.music.local.LocalActivity;
+import com.dai.message.ui.music.recentplay.RecentPlayActivity;
 import com.dai.message.util.Key;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,6 +31,8 @@ public class MusicFragment extends BaseFragment {
     private MusicViewModel mViewModel;
 
     private FragmentMusicBinding mBinding;
+
+    private MusicAdapter musicAdapter;
 
     public static MusicFragment newInstance() {
         return new MusicFragment();
@@ -55,21 +57,21 @@ public class MusicFragment extends BaseFragment {
     public void bindViews() {
         super.bindViews();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        final MusicAdapter musicAdapter = new MusicAdapter(recycleItemClickCallBack);
+        musicAdapter = new MusicAdapter(recycleItemClickCallBack);
         final List<String> list = Arrays.asList(getResources().getStringArray(R.array.musicList));
         musicAdapter.setChangeList(list);
         mBinding.recyclerView.setAdapter(musicAdapter);
         mBinding.recyclerView.setLayoutManager(layoutManager);
         mBinding.recyclerView.addItemDecoration(new VerticalDecoration(3));
+    }
 
-        mViewModel.getMusicData().observe(this, new Observer<Integer>() {
+    @Override
+    public void onResume() {
+        super.onResume();
+        mViewModel.getEndListData().observe(this, new Observer<List<Integer>>() {
             @Override
-            public void onChanged(Integer total) {
-                List<Integer> integerList = new ArrayList<>();
-                for (int i = 0; i < list.size(); i++) {
-                    integerList.add(i == 0 ? total : 0);
-                }
-                musicAdapter.setEndList(integerList);
+            public void onChanged(List<Integer> totalList) {
+                musicAdapter.setEndList(totalList);
             }
         });
     }
@@ -82,6 +84,10 @@ public class MusicFragment extends BaseFragment {
             switch (position) {
                 case 0:
                     startActivity(new Intent(getActivity(), LocalActivity.class)
+                            .putExtra(Key.IBINDER, getArguments()));
+                    break;
+                case 1:
+                    startActivity(new Intent(getActivity(), RecentPlayActivity.class)
                             .putExtra(Key.IBINDER, getArguments()));
                     break;
                 case 2:

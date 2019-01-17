@@ -41,4 +41,9 @@
     <string name="close_search">关闭搜索</string>
     <string name="search_local_music">搜索本地音乐</string>
 
+
+    <string name="recent_play">最近播放</string>
+
+
+
 </resources>

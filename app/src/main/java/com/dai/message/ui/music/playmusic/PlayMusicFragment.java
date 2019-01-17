@@ -43,7 +43,6 @@ public class PlayMusicFragment extends BaseFragment {
         return new PlayMusicFragment();
     }
 
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -87,6 +86,8 @@ public class PlayMusicFragment extends BaseFragment {
             Music currentMusic = getArguments().getParcelable(Key.MUSIC);
             musicService = (IMusicAidlInterface) getArguments().getBinder(Key.IBINDER);
             if (musicService == null || currentMusic == null) return;
+            Log.d(TAG, "initData: currentMusic.toString() = isequals = "+ (currentMusic.toString().equals(Config.getInstance().getCurrentMusic().toString())));
+            Log.d(TAG, "initData: isPlaying = "+ musicService.isPlaying());
             if (!currentMusic.toString().equals(Config.getInstance().getCurrentMusic().toString()) || !musicService.isPlaying()) {
                 musicService.playMusic(currentMusic);
             }

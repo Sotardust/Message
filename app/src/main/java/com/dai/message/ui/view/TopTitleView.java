@@ -3,6 +3,7 @@ package com.dai.message.ui.view;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.EditText;
@@ -68,7 +69,6 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
         back = view.findViewById(R.id.top_title_back);
         title = view.findViewById(R.id.top_title);
 
-
         //搜索框
         searchEdit = view.findViewById(R.id.top_edit);
         searchEdit.setVisibility(GONE);
@@ -102,7 +102,7 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
      * @param textWatcher SimpleTextWatcher
      */
     public void setSearchEditTextWatcher(SimpleTextWatcher textWatcher) {
-        searchEdit.addTextChangedListener(new SimpleTextWatcher());
+        searchEdit.addTextChangedListener(textWatcher);
     }
 
     /**
@@ -120,12 +120,17 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
     }
 
     /**
-     * 更新视图View
+     * 更新视图view 设置title值
+     *
+     * @param activity Activity
+     * @param value    值
      */
-    public void updateView(final String value) {
+    public void updateView(Activity activity, final String value) {
+        this.activity = activity;
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                title.setVisibility(VISIBLE);
                 title.setText(value);
             }
         });
@@ -148,12 +153,19 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
     }
 
     /**
-     * 更新视图View是否可见
+     * 显示本地音乐页title
      */
-    public void setViewVisibility() {
+    public void setLocalTitleBar() {
         title.setVisibility(VISIBLE);
         search.setVisibility(VISIBLE);
         setting.setVisibility(VISIBLE);
+    }
+
+    /**
+     * 显示最近播放页title
+     */
+    public void showRecentPlayTitleBar() {
+        title.setVisibility(VISIBLE);
     }
 
     @Override
@@ -162,10 +174,11 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
             case R.id.top_title_back:
                 activity.finish();
                 break;
-
             case R.id.top_search:
                 boolean isSearch = context.getString(R.string.search).equals(search.getText().toString());
                 title.setVisibility(isSearch ? GONE : VISIBLE);
+                if (!isSearch && !TextUtils.isEmpty(searchEdit.getText()))
+                    searchEdit.setText(null);
                 searchEdit.setVisibility(isSearch ? VISIBLE : GONE);
                 search.setText(isSearch ? R.string.close_search : R.string.search);
                 break;

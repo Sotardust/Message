@@ -30,7 +30,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="@{() ->  callback.onItemClickListener(0,music.name,index)}"
+            android:onClick="@{() ->  callback.onItemClickListener(0,music,index)}"
             android:paddingStart="15dp"
             android:paddingLeft="15dp"
             tools:ignore="RtlSymmetry">
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:background="@mipmap/more"
-            android:onClick="@{() ->  callback.onItemClickListener(1,music.name,index)}" />
+            android:onClick="@{() ->  callback.onItemClickListener(1,music,index)}" />
 
     </LinearLayout>
 

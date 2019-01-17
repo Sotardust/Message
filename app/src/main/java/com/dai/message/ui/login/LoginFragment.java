@@ -17,6 +17,7 @@ import com.dai.message.base.BaseFragment;
 import com.dai.message.bean.BaseModel;
 import com.dai.message.callback.NetworkCallback;
 import com.dai.message.databinding.FragmentLoginBinding;
+import com.dai.message.repository.preferences.Config;
 import com.dai.message.util.ToastUtil;
 
 public class LoginFragment extends BaseFragment {
@@ -68,7 +69,7 @@ public class LoginFragment extends BaseFragment {
 //
 //
 //                if ("0".equals(name) && "0".equals(password)) {
-                    toMainActivity();
+                toMainActivity();
 //                    return;
 //                }
 //                mViewModel.logon(name, password, loginCallBack);
@@ -102,6 +103,7 @@ public class LoginFragment extends BaseFragment {
      * 跳转到主页面
      */
     private void toMainActivity() {
+        Config.getInstance().setPersonId(123);
         Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
         if (getActivity() != null) getActivity().finish();

@@ -60,7 +60,7 @@
                 android:id="@+id/play"
                 style="@style/musicBottomTitle"
                 android:drawableTop="@mipmap/icon_peach_original_64"
-                android:text="@string/playing" />
+                android:text="@string/play" />
 
             <TextView
                 android:id="@+id/next"

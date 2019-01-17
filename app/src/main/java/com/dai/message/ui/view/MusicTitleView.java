@@ -20,11 +20,16 @@ import com.dai.message.R;
 import com.dai.message.base.BaseActivity;
 import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.bean.Music;
+import com.dai.message.callback.LocalCallback;
+import com.dai.message.callback.ObservableCallback;
 import com.dai.message.repository.preferences.Config;
 import com.dai.message.ui.dialog.PlayListDialogFragment;
 import com.dai.message.ui.music.playmusic.PlayMusicActivity;
 import com.dai.message.util.Key;
 import com.dai.message.util.ToastUtil;
+import com.dai.message.util.rxjava.ObservableUtil;
+
+import io.reactivex.ObservableEmitter;
 
 /**
  * 音乐播放栏
@@ -119,46 +124,35 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
 
     /**
      * 更新视图View
-     *
-     * @param isInit 若是第一次初始化则为 play =播放
      */
-    public void updateView(final boolean isInit) {
-        update(true, isInit);
-    }
-
-    /**
-     * 更新视图View
-     *
-     * @param isUpdateView 是否是 updateView方法
-     * @param isInit       boolean
-     */
-    private void update(final boolean isUpdateView, final boolean isInit) {
-        activity.runOnUiThread(new Runnable() {
+    public void updateView() {
+        ObservableUtil.execute(new ObservableCallback<String>() {
             @Override
-            public void run() {
+            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
+                super.subscribe(emitter);
+                boolean isPlaying = musicService.isPlaying();
+                if (Config.getInstance().isFirstPlay()) {
+                    emitter.onNext(context.getString(R.string.play));
+                } else {
+                    String value = context.getString(!isPlaying ? R.string.pause : R.string.playing);
+                    emitter.onNext(value);
+                }
+            }
+        }, new LocalCallback<String>() {
+            @Override
+            public void onChangeData(String data) {
+                super.onChangeData(data);
                 try {
                     currentMusic = musicService.getCurrentMusic();
                     if (currentMusic == null) return;
                     songName.setText(currentMusic.name);
                     author.setText(currentMusic.author);
-                    if (isUpdateView) {
-                        play.setText(context.getString(isInit ? R.string.play : musicService.isPlaying() ? R.string.pause : R.string.playing));
-                    } else {
-                        play.setText(context.getString(musicService.isPlaying() ? R.string.playing : R.string.pause));
-                    }
+                    play.setText(data);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
             }
         });
-    }
-
-    /**
-     * 更新视图View
-     */
-    public void updateResumeView() {
-        Log.d(TAG, "updateResumeView() called");
-        update(false, false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -170,7 +164,6 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
                     activity.finish();
                     break;
                 case R.id.music_title_play:
-                    updateView(false);
                     if (Config.getInstance().isFirstPlay()) {
                         musicService.playCurrentMusic();
                         Config.getInstance().setIsFirstPlay(false);
@@ -179,6 +172,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
                     } else {
                         musicService.playPause();
                     }
+                    updateView();
                     break;
                 case R.id.music_title_play_list:
                     PlayListDialogFragment playListDialogFragment = PlayListDialogFragment.newInstance();

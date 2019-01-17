@@ -21,9 +21,8 @@ import java.util.List;
  */
 public class LocalAdapter extends BaseAdapter<Music> {
 
-    private ArrayList<String> usernameList = new ArrayList<>();
 
-    public LocalAdapter(RecycleItemClickCallBack<String> recycleItemClickCallBack) {
+    public LocalAdapter(RecycleItemClickCallBack<Music> recycleItemClickCallBack) {
         this.callBack = recycleItemClickCallBack;
     }
 

@@ -26,7 +26,6 @@ public class LocalViewModel extends BaseAndroidViewModel {
     private static final String TAG = "LocalViewModel";
 
 
-
     private MutableLiveData<ArrayList<Music>> musicData = new MutableLiveData<>();
 
 
@@ -44,7 +43,7 @@ public class LocalViewModel extends BaseAndroidViewModel {
         musicRepository.getAllMusics(new LocalCallback<ArrayList<Music>>() {
             @Override
             public void onChangeData(ArrayList<Music> data) {
-                musicData.postValue(data);
+                musicData.postValue(data == null ? new ArrayList<Music>() : data);
             }
         });
 

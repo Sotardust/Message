@@ -82,16 +82,13 @@ public class HomeFragment extends BaseFragment {
         musicTitleView = view.findViewById(R.id.home_music_title_view);
         musicTitleView.setBundleData(getArguments());
         musicTitleView.setActivity((BaseActivity) getActivity());
-        musicTitleView.setBackViewVisibility();
-
-
     }
 
     private LocalCallback<Integer> localCallback = new LocalCallback<Integer>() {
         @Override
         public void onChangeData(Integer data) {
             Log.d("MusicTitleView", "HomeFragment onChangeData: data = " + data);
-            musicTitleView.updateView(true);
+            musicTitleView.updateView();
         }
     };
 
@@ -99,7 +96,7 @@ public class HomeFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         if (musicTitleView != null)
-            musicTitleView.updateResumeView();
+            musicTitleView.updateView();
     }
 
     @Override

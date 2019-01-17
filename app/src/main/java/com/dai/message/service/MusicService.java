@@ -14,6 +14,7 @@ import com.dai.message.bean.Music;
 import com.dai.message.callback.LocalCallback;
 import com.dai.message.receiver.SendLocalBroadcast;
 import com.dai.message.repository.MusicRepository;
+import com.dai.message.repository.RecentPlayRepository;
 import com.dai.message.repository.preferences.Config;
 import com.dai.message.util.PlayType;
 import com.dai.message.util.ToastUtil;
@@ -45,6 +46,7 @@ public class MusicService extends Service {
     }
 
     private MusicRepository repository;
+    private RecentPlayRepository recentPlayRepository;
 
     private List<Music> musicList = new ArrayList<>();
 
@@ -58,6 +60,7 @@ public class MusicService extends Service {
     public void onCreate() {
         super.onCreate();
         repository = new MusicRepository(getApplication());
+        recentPlayRepository = new RecentPlayRepository(getApplication());
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
         }
@@ -71,6 +74,8 @@ public class MusicService extends Service {
                     --currentPlayIndex;
                 }
                 mp.start();
+                Log.d(TAG, "onPrepared: isPlaying = " + mp.isPlaying());
+                Config.getInstance().setIsPlaying(mp.isPlaying());
             }
         });
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -120,6 +125,8 @@ public class MusicService extends Service {
                     mediaPlayer.prepareAsync();
                     Log.d("MusicTitleView", "playMusic: music = " + music);
                     Config.getInstance().setCurrentMusic(music);
+                    recentPlayRepository.insertOrUpdate(music);
+                    SendLocalBroadcast.getInstance().updateMusicView(getApplicationContext(), null, SendLocalBroadcast.KEY_UPDATE_VIEW);
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("MusicTitleView", "playMusic: e", e);
@@ -174,6 +181,7 @@ public class MusicService extends Service {
         public void playPause() throws RemoteException {
             synchronized (Music.class) {
                 mediaPlayer.start();
+                Config.getInstance().setIsPlaying(true);
             }
         }
 
@@ -183,6 +191,7 @@ public class MusicService extends Service {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
                 }
+                Config.getInstance().setIsPlaying(false);
             }
         }
 
@@ -249,8 +258,7 @@ public class MusicService extends Service {
         @Override
         public boolean isPlaying() throws RemoteException {
             synchronized (Music.class) {
-                return mediaPlayer.isPlaying();
-
+                return Config.getInstance().isPlaying();
             }
         }
 

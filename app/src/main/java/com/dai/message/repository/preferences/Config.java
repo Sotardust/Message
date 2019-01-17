@@ -18,9 +18,17 @@ public class Config {
     private Gson gson = new Gson();
 
     private static final String COOKIE = "cookie";
+    /*保存当前播放音乐*/
     private static final String KEY_MUSIC = "music";
+    /*设置是否是第一次播放*/
     private static final String KEY_IS_FIRST_PLAY = "is_first_play";
+    /*设置播放类型*/
     private static final String KEY_PLAY_TYPE = "play_type";
+    /*设置用户id*/
+    private static final String KEY_PERSON_ID = "person_id";
+
+    /*保存前播放状态*/
+    private static final String KEY_IS_PLAYING = "is_playing";
 
     private Config() {
     }
@@ -80,5 +88,24 @@ public class Config {
     public boolean isFirstPlay() {
         return preferences.getBoolean(KEY_IS_FIRST_PLAY, true);
     }
+
+    public void setIsPlaying(boolean isPlaying) {
+        editor.putBoolean(KEY_IS_PLAYING, isPlaying);
+        editor.apply();
+    }
+
+    public boolean isPlaying() {
+        return preferences.getBoolean(KEY_IS_PLAYING, false);
+    }
+
+    public void setPersonId(long personId) {
+        editor.putLong(KEY_PERSON_ID, personId);
+        editor.apply();
+    }
+
+    public long getPersonId() {
+        return preferences.getLong(KEY_PERSON_ID, 123L);
+    }
+
 
 }
