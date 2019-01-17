@@ -34,19 +34,20 @@ public class WelcomeModel extends BaseAndroidViewModel {
         String localPath = Environment.getExternalStorageDirectory() + File.separator + "Music";
         File neteaseFile = new File(neteasePath);
         File localFile = new File(localPath);
+        if (filePaths.size() != 0) filePaths.clear();
         if (!neteaseFile.exists()) {
             LogUtil.writeInfo(TAG, "traversalSong", neteasePath + "路径不存在");
             Log.d(TAG, "searchSong: " + neteasePath + "路径不存在");
-            return;
+        } else {
+            traversingMusicFile(neteaseFile.getPath(), pathCallback);
         }
         if (!localFile.exists()) {
             LogUtil.writeInfo(TAG, "traversalSong", localFile + "路径不存在");
             Log.d(TAG, "searchSong: " + localFile + "路径不存在");
-            return;
+        } else {
+            traversingMusicFile(localFile.getPath(), pathCallback);
         }
-        if (filePaths.size() != 0) filePaths.clear();
-        traversingMusicFile(neteaseFile.getPath(), pathCallback);
-        traversingMusicFile(localFile.getPath(), pathCallback);
+
 
         ArrayList<Music> musicList = new ArrayList<>();
         for (File file1 : filePaths) {

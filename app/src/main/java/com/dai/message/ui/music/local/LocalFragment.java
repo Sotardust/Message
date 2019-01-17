@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 
 import com.dai.message.R;
 import com.dai.message.adapter.util.VerticalDecoration;
+import com.dai.message.base.BaseActivity;
 import com.dai.message.base.BaseFragment;
 import com.dai.message.bean.BaseModel;
 import com.dai.message.bean.Music;
@@ -80,7 +81,7 @@ public class LocalFragment extends BaseFragment {
         Bundle bundle = new Bundle();
         bundle.putBinder(Key.IBINDER, getArguments().getBinder(Key.IBINDER));
         musicTitleView.setBundleData(bundle);
-        musicTitleView.setActivity(getActivity());
+        musicTitleView.setActivity((BaseActivity) getActivity());
 
         TopTitleView topTitleView = view.findViewById(R.id.local_top_title_view);
         topTitleView.setActivity(getActivity());

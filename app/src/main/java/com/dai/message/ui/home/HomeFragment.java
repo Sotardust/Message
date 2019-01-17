@@ -5,7 +5,6 @@ import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -21,8 +20,8 @@ import android.widget.TextView;
 
 import com.dai.message.R;
 import com.dai.message.adapter.BaseFragmentPageAdapter;
+import com.dai.message.base.BaseActivity;
 import com.dai.message.base.BaseFragment;
-import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.callback.LocalCallback;
 import com.dai.message.callback.OnPageChangerCallback;
 import com.dai.message.callback.TabLayoutCallback;
@@ -32,7 +31,6 @@ import com.dai.message.receiver.SendLocalBroadcast;
 import com.dai.message.ui.music.MusicFragment;
 import com.dai.message.ui.news.NewsFragment;
 import com.dai.message.ui.view.MusicTitleView;
-import com.dai.message.util.Key;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,8 +81,8 @@ public class HomeFragment extends BaseFragment {
         super.initViews(view);
         musicTitleView = view.findViewById(R.id.home_music_title_view);
         musicTitleView.setBundleData(getArguments());
-        musicTitleView.setActivity(getActivity());
-        musicTitleView.setBackViewVisibitity();
+        musicTitleView.setActivity((BaseActivity) getActivity());
+        musicTitleView.setBackViewVisibility();
 
 
     }

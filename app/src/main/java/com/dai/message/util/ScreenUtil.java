@@ -1,10 +1,7 @@
 package com.dai.message.util;
 
-import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Point;
-import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
 

@@ -14,12 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dai.message.R;
+import com.dai.message.base.BaseActivity;
 import com.dai.message.base.BaseFragment;
 import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.bean.Music;
+import com.dai.message.callback.LocalCallback;
 import com.dai.message.databinding.FragmentPlayMusicBinding;
 import com.dai.message.repository.preferences.Config;
-import com.dai.message.ui.view.TopTitleView;
+import com.dai.message.ui.dialog.PlayListDialogFragment;
 import com.dai.message.util.Key;
 import com.dai.message.util.PlayType;
 import com.dai.message.util.ToastUtil;
@@ -32,9 +34,8 @@ public class PlayMusicFragment extends BaseFragment {
 
     private FragmentPlayMusicBinding mBinding;
 
-    private Music currentMusic;
-
     private IMusicAidlInterface musicService;
+
 
     private int playType = Config.getInstance().getPlayType().getIndex();
 
@@ -66,9 +67,15 @@ public class PlayMusicFragment extends BaseFragment {
     @Override
     public void initViews(View view) {
         super.initViews(view);
-        TopTitleView topTitleView = view.findViewById(R.id.play_top_title_view);
-        topTitleView.setActivity(getActivity());
-        topTitleView.updatePlayView(Config.getInstance().getCurrentMusic());
+        mBinding.playTopTitleView.setActivity(getActivity());
+        mBinding.playTopTitleView.updatePlayView(Config.getInstance().getCurrentMusic());
+        mBinding.playTopTitleView.setSharedCallback(new LocalCallback<Music>() {
+            @Override
+            public void onChangeData(Music data) {
+                super.onChangeData(data);
+                ToastUtil.toastCustom(getContext(), "功能开发中...", 500);
+            }
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -76,20 +83,17 @@ public class PlayMusicFragment extends BaseFragment {
     public void initData() {
         super.initData();
         try {
-            if (getArguments() != null) {
-                currentMusic = getArguments().getParcelable(Key.MUSIC);
-                musicService = (IMusicAidlInterface) getArguments().getBinder(Key.IBINDER);
-                if (musicService != null) {
-                    if (!currentMusic.toString().equals(Config.getInstance().getCurrentMusic().toString()) || !musicService.isPlaying()) {
-                        musicService.playMusic(currentMusic);
-                    }
-                    //play音乐有延迟
-                }
+            if (getArguments() == null) return;
+            Music currentMusic = getArguments().getParcelable(Key.MUSIC);
+            musicService = (IMusicAidlInterface) getArguments().getBinder(Key.IBINDER);
+            if (musicService == null || currentMusic == null) return;
+            if (!currentMusic.toString().equals(Config.getInstance().getCurrentMusic().toString()) || !musicService.isPlaying()) {
+                musicService.playMusic(currentMusic);
             }
         } catch (RemoteException e) {
             e.printStackTrace();
+            Log.e(TAG, "initData: e", e);
         }
-
     }
 
     @Override
@@ -117,6 +121,8 @@ public class PlayMusicFragment extends BaseFragment {
                     break;
                 case R.id.previous:
                     musicService.playPrevious();
+                    mBinding.playTopTitleView.updatePlayView(musicService.getCurrentMusic());
+                    mBinding.play.setText(R.string.playing);
                     ToastUtil.toastCustom(getContext(), R.string.previous, 500);
                     break;
                 case R.id.play:
@@ -131,9 +137,26 @@ public class PlayMusicFragment extends BaseFragment {
                     break;
                 case R.id.next:
                     musicService.playNext();
+                    mBinding.play.setText(R.string.playing);
+                    mBinding.playTopTitleView.updatePlayView(musicService.getCurrentMusic());
                     ToastUtil.toastCustom(getContext(), R.string.next, 500);
                     break;
                 case R.id.play_list:
+                    PlayListDialogFragment playMusicFragment = new PlayListDialogFragment();
+                    playMusicFragment.setArguments(getArguments());
+                    playMusicFragment.show((BaseActivity) getActivity(), new LocalCallback<Music>() {
+                        @Override
+                        public void onChangeData(Music data) {
+                            super.onChangeData(data);
+                            try {
+                                mBinding.playTopTitleView.updatePlayView(data);
+                                musicService.playMusic(data);
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                                Log.e(TAG, "onChangeData: e", e);
+                            }
+                        }
+                    });
                     break;
             }
         } catch (RemoteException e) {

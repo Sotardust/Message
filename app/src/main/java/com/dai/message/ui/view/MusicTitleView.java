@@ -1,6 +1,5 @@
 package com.dai.message.ui.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -18,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dai.message.R;
+import com.dai.message.base.BaseActivity;
 import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.bean.Music;
 import com.dai.message.repository.preferences.Config;
@@ -46,6 +46,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
     private IMusicAidlInterface musicService;
     private Music currentMusic;
     private Context context;
+    private Bundle bundle;
 
     public MusicTitleView(Context context) {
         super(context);
@@ -81,9 +82,6 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
 
         back.setOnClickListener(this);
         musicRelative.setOnClickListener(this);
-//        avatar.setOnClickListener(this);
-//        songName.setOnClickListener(this);
-//        author.setOnClickListener(this);
         play.setOnClickListener(this);
         playList.setOnClickListener(this);
     }
@@ -91,6 +89,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     public void setBundleData(Bundle bundle) {
         try {
+            this.bundle = bundle;
             if (bundle != null) {
                 musicService = (IMusicAidlInterface) bundle.getBinder(Key.IBINDER);
             }
@@ -100,21 +99,21 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
         }
     }
 
-    private Activity activity;
+    private BaseActivity activity;
 
     /**
      * 设置对应的Activity
      *
      * @param activity Activity
      */
-    public void setActivity(Activity activity) {
+    public void setActivity(BaseActivity activity) {
         this.activity = activity;
     }
 
     /**
      * 设置返回按钮可见
      */
-    public void setBackViewVisibitity() {
+    public void setBackViewVisibility() {
         back.setVisibility(VISIBLE);
     }
 
@@ -183,8 +182,8 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
                     break;
                 case R.id.music_title_play_list:
                     PlayListDialogFragment playListDialogFragment = PlayListDialogFragment.newInstance();
-                    playListDialogFragment.showV4();
-                    ToastUtil.toastCustom(context, R.string.play_music, 500);
+                    playListDialogFragment.setArguments(bundle);
+                    playListDialogFragment.show(activity);
                     break;
                 case R.id.music_relative:
                     Log.d(TAG, "onClick: music_relative = ");

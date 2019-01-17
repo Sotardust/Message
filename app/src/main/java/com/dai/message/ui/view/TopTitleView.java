@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.dai.message.R;
 import com.dai.message.bean.Music;
 import com.dai.message.callback.LocalCallback;
+import com.dai.message.repository.preferences.Config;
 import com.dai.message.util.SimpleTextWatcher;
 import com.dai.message.util.ToastUtil;
 
@@ -109,11 +110,11 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
      *
      * @param localCallback 本地回调接口
      */
-    public void setSharedCallback(final LocalCallback<String> localCallback) {
+    public void setSharedCallback(final LocalCallback<Music> localCallback) {
         shared.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                localCallback.onChangeData(null);
+                localCallback.onChangeData(Config.getInstance().getCurrentMusic());
             }
         });
     }

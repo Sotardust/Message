@@ -33,7 +33,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
-        BaseDialogFragment.install(this);
         Config.getInstance().setIsFirstPlay(true);
         connection = new ServiceConnection() {
             @Override
@@ -90,9 +89,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-
         MainDialogFragment mainDialogFragment = MainDialogFragment.newInstance();
-        mainDialogFragment.showV4();
+        mainDialogFragment.show(this);
         mainDialogFragment.setOkCallBack(new LocalCallback<String>() {
             @Override
             public void onSuccessful() {

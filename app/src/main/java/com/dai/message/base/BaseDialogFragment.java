@@ -10,10 +10,7 @@ import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.dai.message.MainActivity;
 import com.dai.message.R;
-
-import java.lang.ref.WeakReference;
 
 /**
  * 弹出dialog的基类
@@ -23,18 +20,6 @@ import java.lang.ref.WeakReference;
 public class BaseDialogFragment extends DialogFragment {
 
     private static final String TAG = "BaseDialogFragment";
-
-    protected static WeakReference<MainActivity> weakReference;
-
-    /**
-     * 在主界面中注册获取 MainActivity
-     *
-     * @param mainActivity MainActivity
-     */
-    public static void install(MainActivity mainActivity) {
-
-        weakReference = new WeakReference<>(mainActivity);
-    }
 
     /**
      * 绑定视图View
@@ -46,15 +31,9 @@ public class BaseDialogFragment extends DialogFragment {
     /**
      * 显示菜单、选项、会议室数据列表
      */
-    public void showV4() {
-        FragmentTransaction ft = weakReference.get().getSupportFragmentManager().beginTransaction();
+    public void show(BaseActivity activity) {
+        FragmentTransaction ft = activity.getSupportFragmentManager().beginTransaction();
         show(ft, getTag());
-    }
-
-    public void show() {
-//        android.app.FragmentTransaction ft1 = weakReference.get().getFragmentManager().beginTransaction();
-//
-//       show(ft1,"dfa");
     }
 
     /**
@@ -65,11 +44,11 @@ public class BaseDialogFragment extends DialogFragment {
         assert window != null;
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         WindowManager.LayoutParams lp = window.getAttributes();
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         lp.gravity = Gravity.BOTTOM;
         lp.dimAmount = 0.5f;
         lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.height = WindowManager.LayoutParams.MATCH_PARENT;
         lp.windowAnimations = R.style.MenuPopAnimation;
         window.setAttributes(lp);
     }

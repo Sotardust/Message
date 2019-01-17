@@ -15,7 +15,6 @@ public class PlayListDialogViewModel extends BaseAndroidViewModel {
 
     private MutableLiveData<ArrayList<Music>> musicData = new MutableLiveData<>();
 
-
     private MusicRepository musicRepository;
 
     public PlayListDialogViewModel(@NonNull Application application) {
