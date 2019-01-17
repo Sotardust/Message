@@ -19,12 +19,16 @@ import com.dai.message.base.BaseFragment;
 import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.bean.Music;
 import com.dai.message.callback.LocalCallback;
+import com.dai.message.callback.ObservableCallback;
 import com.dai.message.databinding.FragmentPlayMusicBinding;
 import com.dai.message.repository.preferences.Config;
 import com.dai.message.ui.dialog.PlayListDialogFragment;
 import com.dai.message.util.Key;
 import com.dai.message.util.PlayType;
 import com.dai.message.util.ToastUtil;
+import com.dai.message.util.rxjava.ObservableUtil;
+
+import io.reactivex.ObservableEmitter;
 
 public class PlayMusicFragment extends BaseFragment {
 
@@ -81,20 +85,33 @@ public class PlayMusicFragment extends BaseFragment {
     @Override
     public void initData() {
         super.initData();
-        try {
-            if (getArguments() == null) return;
-            Music currentMusic = getArguments().getParcelable(Key.MUSIC);
-            musicService = (IMusicAidlInterface) getArguments().getBinder(Key.IBINDER);
-            if (musicService == null || currentMusic == null) return;
-            Log.d(TAG, "initData: currentMusic.toString() = isequals = "+ (currentMusic.toString().equals(Config.getInstance().getCurrentMusic().toString())));
-            Log.d(TAG, "initData: isPlaying = "+ musicService.isPlaying());
-            if (!currentMusic.toString().equals(Config.getInstance().getCurrentMusic().toString()) || !musicService.isPlaying()) {
-                musicService.playMusic(currentMusic);
+        if (getArguments() == null) return;
+        final Music currentMusic = getArguments().getParcelable(Key.MUSIC);
+        musicService = (IMusicAidlInterface) getArguments().getBinder(Key.IBINDER);
+        if (musicService == null || currentMusic == null) return;
+        ObservableUtil.execute(new ObservableCallback<Boolean>() {
+            @Override
+            public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+                super.subscribe(emitter);
+                boolean isPlaying = musicService.isPlaying();
+                if (!currentMusic.toString().equals(Config.getInstance().getCurrentMusic().toString())) {
+                    emitter.onNext(false);
+                    return;
+                }
+                emitter.onNext(isPlaying);
             }
-        } catch (RemoteException e) {
-            e.printStackTrace();
-            Log.e(TAG, "initData: e", e);
-        }
+        }, new LocalCallback<Boolean>() {
+            @Override
+            public void onChangeData(Boolean data) {
+                super.onChangeData(data);
+                try {
+                    if (!data)
+                        musicService.playMusic(currentMusic);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     @Override

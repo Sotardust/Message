@@ -64,7 +64,7 @@ public class MusicService extends Service {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
         }
-
+        Config.getInstance().setIsPlaying(false);
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {

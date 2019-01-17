@@ -11,7 +11,6 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import com.dai.message.base.BaseActivity;
-import com.dai.message.base.BaseDialogFragment;
 import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.callback.LocalCallback;
 import com.dai.message.repository.preferences.Config;
@@ -73,8 +72,10 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
         try {
             unbindService(connection);
-            if (musicService != null)
+            if (musicService != null) {
                 musicService.release();
+            }
+            Config.getInstance().setIsPlaying(false);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
