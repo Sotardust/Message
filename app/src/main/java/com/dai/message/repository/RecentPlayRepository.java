@@ -160,6 +160,11 @@ public class RecentPlayRepository {
         });
     }
 
+    /**
+     * 获取所有时间升序排列播放音乐数据
+     *
+     * @param localCallback 回调接口
+     */
     public void getAscRecentAllTime(final LocalCallback<List<RecentPlayEntity>> localCallback) {
         ObservableUtil.execute(new ObservableCallback<List<RecentPlayEntity>>() {
             @Override
@@ -173,30 +178,17 @@ public class RecentPlayRepository {
             @Override
             public void onChangeData(List<RecentPlayEntity> data) {
                 super.onChangeData(data);
+                Log.d(TAG, "onChangeData: ");
                 localCallback.onChangeData(data == null ? new ArrayList<RecentPlayEntity>() : data);
             }
         });
     }
 
-    public void getDescRecentAllTime(final LocalCallback<List<RecentPlayEntity>> localCallback) {
-
-        ObservableUtil.execute(new ObservableCallback<List<RecentPlayEntity>>() {
-            @Override
-            public void subscribe(ObservableEmitter<List<RecentPlayEntity>> emitter) throws Exception {
-                super.subscribe(emitter);
-
-                List<RecentPlayEntity> entities = recentPlayDao.getDescRecentAllTime(Config.getInstance().getPersonId());
-                emitter.onNext(entities);
-            }
-        }, new LocalCallback<List<RecentPlayEntity>>() {
-            @Override
-            public void onChangeData(List<RecentPlayEntity> data) {
-                super.onChangeData(data);
-                localCallback.onChangeData(data == null ? new ArrayList<RecentPlayEntity>() : data);
-            }
-        });
-    }
-
+    /**
+     * 获取最近播放升序排列播放音乐数据
+     *
+     * @param localCallback 回调接口
+     */
     public void getAscRecentPlayTime(final LocalCallback<List<RecentPlayEntity>> localCallback) {
         ObservableUtil.execute(new ObservableCallback<List<RecentPlayEntity>>() {
             @Override
@@ -215,31 +207,17 @@ public class RecentPlayRepository {
         });
     }
 
-    public void getDescRecentPlayTime(final LocalCallback<List<RecentPlayEntity>> localCallback) {
 
-        ObservableUtil.execute(new ObservableCallback<List<RecentPlayEntity>>() {
-            @Override
-            public void subscribe(ObservableEmitter<List<RecentPlayEntity>> emitter) throws Exception {
-                super.subscribe(emitter);
-
-                List<RecentPlayEntity> entities = recentPlayDao.getDescRecentPlayTime(Config.getInstance().getPersonId());
-                emitter.onNext(entities);
-            }
-        }, new LocalCallback<List<RecentPlayEntity>>() {
-            @Override
-            public void onChangeData(List<RecentPlayEntity> data) {
-                super.onChangeData(data);
-                localCallback.onChangeData(data == null ? new ArrayList<RecentPlayEntity>() : data);
-            }
-        });
-    }
-
+    /**
+     * 获取最近一周升序排列播放音乐数据
+     *
+     * @param localCallback 回调接口
+     */
     public void getAscRecentOneWeek(final LocalCallback<List<RecentPlayEntity>> localCallback) {
         ObservableUtil.execute(new ObservableCallback<List<RecentPlayEntity>>() {
             @Override
             public void subscribe(ObservableEmitter<List<RecentPlayEntity>> emitter) throws Exception {
                 super.subscribe(emitter);
-
                 List<RecentPlayEntity> entities = recentPlayDao.getAscRecentOneWeek(Config.getInstance().getPersonId(), System.currentTimeMillis());
                 emitter.onNext(entities);
             }
@@ -252,21 +230,25 @@ public class RecentPlayRepository {
         });
     }
 
-    public void getDescRecentOneWeek(final LocalCallback<List<RecentPlayEntity>> localCallback) {
-
-        ObservableUtil.execute(new ObservableCallback<List<RecentPlayEntity>>() {
+    /**
+     * 根据音乐名称删除播放记录
+     *
+     * @param songName      歌曲名称
+     * @param localCallback 回调接口
+     */
+    public void deleteRecentPlayEntity(final String songName, final LocalCallback<String> localCallback) {
+        ObservableUtil.execute(new ObservableCallback<String>() {
             @Override
-            public void subscribe(ObservableEmitter<List<RecentPlayEntity>> emitter) throws Exception {
+            public void subscribe(ObservableEmitter<String> emitter) throws Exception {
                 super.subscribe(emitter);
-
-                List<RecentPlayEntity> entities = recentPlayDao.getDescRecentOneWeek(Config.getInstance().getPersonId(), System.currentTimeMillis());
-                emitter.onNext(entities);
+                recentPlayDao.deleteRecentPlayEntity(Config.getInstance().getPersonId(), songName);
+                emitter.onNext(ObservableUtil.KEY_SUCCESSFUL);
             }
-        }, new LocalCallback<List<RecentPlayEntity>>() {
+        }, new LocalCallback<String>() {
             @Override
-            public void onChangeData(List<RecentPlayEntity> data) {
+            public void onChangeData(String data) {
                 super.onChangeData(data);
-                localCallback.onChangeData(data == null ? new ArrayList<RecentPlayEntity>() : data);
+                localCallback.onSuccessful();
             }
         });
     }

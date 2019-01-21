@@ -52,6 +52,7 @@
 
     <string name="ascending">升序</string>
     <string name="descending">降序</string>
+    <string name="delete_successful">删除成功</string>
 
 
 </resources>

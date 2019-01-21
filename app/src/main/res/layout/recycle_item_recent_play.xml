@@ -13,7 +13,7 @@
             type="Integer" />
 
         <variable
-            name="dynamic_value"
+            name="dynamicValue"
             type="String" />
 
         <variable
@@ -67,11 +67,15 @@
                 android:id="@+id/item_dynamic_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/item_recent_author"
+                android:layout_alignBottom="@+id/item_recent_author"
                 android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
                 android:layout_alignParentRight="true"
                 android:paddingLeft="5dp"
-                android:paddingRight="5dp" />
+                android:paddingRight="5dp"
+                android:text="@{dynamicValue}"
+                android:textColor="@color/tabBackground"
+                android:textSize="12sp" />
 
         </RelativeLayout>
 

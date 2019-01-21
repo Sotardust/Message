@@ -25,7 +25,7 @@ import java.util.Locale;
 public class RecentPlayAdapter extends BaseAdapter<RecentPlayEntity> {
 
 
-    private DynamicType dynamicType = DynamicType.PLAY_TOTAL;
+    private DynamicType dynamicType = DynamicType.PLAY_TIME;
 
     private Context context;
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss", Locale.CHINA);
@@ -72,10 +72,10 @@ public class RecentPlayAdapter extends BaseAdapter<RecentPlayEntity> {
                     dynamicValue = context.getString(R.string.recent_play_count).replace("[value]", String.valueOf(entity.playCount));
                     break;
                 case PLAY_TIME:
-                    dynamicValue = context.getString(R.string.recent_play_count).replace("[value]", format.format(entity.playTime));
+                    dynamicValue = context.getString(R.string.recent_play_time).replace("[value]", format.format(entity.playTime));
                     break;
             }
-            ((ViewHolder<RecycleItemLocalBinding>) holder).mBinding.setDynamicValue(dynamicValue);
+            ((ViewHolder<RecycleItemRecentPlayBinding>) holder).mBinding.setDynamicValue(dynamicValue);
         }
     }
 

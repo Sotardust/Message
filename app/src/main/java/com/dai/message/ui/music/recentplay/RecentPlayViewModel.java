@@ -3,11 +3,13 @@ package com.dai.message.ui.music.recentplay;
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.dai.message.base.BaseAndroidViewModel;
 import com.dai.message.callback.LocalCallback;
 import com.dai.message.repository.RecentPlayRepository;
 import com.dai.message.repository.entity.RecentPlayEntity;
+import com.dai.message.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,18 +44,71 @@ public class RecentPlayViewModel extends BaseAndroidViewModel {
     }
 
     /**
-     * 按最近播放时间升序或降序排列
-     *
-     * @param entities RecentPlayEntity集合
-     * @return 排序后的RecentPlayEntity集合
+     * 按所有时间升序或降序排列
      */
-    public List<RecentPlayEntity> getRecentPlayAscending(List<RecentPlayEntity> entities) {
+    public void getAscRecentAllTime() {
+        recentPlayRepository.getAscRecentAllTime(new LocalCallback<List<RecentPlayEntity>>() {
+            @Override
+            public void onChangeData(List<RecentPlayEntity> data) {
+                super.onChangeData(data);
+                musicData.postValue(data);
+            }
+        });
 
-        List<RecentPlayEntity> list = new ArrayList<>();
-
-
-
-        return entities;
     }
+
+    /**
+     * 按最近播放时间升序或降序排列
+     */
+    public void getAscRecentPlayTime() {
+        recentPlayRepository.getAscRecentPlayTime(new LocalCallback<List<RecentPlayEntity>>() {
+            @Override
+            public void onChangeData(List<RecentPlayEntity> data) {
+                super.onChangeData(data);
+                musicData.postValue(data);
+            }
+        });
+
+    }
+
+    /**
+     * 按最近一周播放次数升序或降序排列
+     */
+    public void getAscRecentOneWeek() {
+        recentPlayRepository.getAscRecentOneWeek(new LocalCallback<List<RecentPlayEntity>>() {
+            @Override
+            public void onChangeData(List<RecentPlayEntity> data) {
+                super.onChangeData(data);
+                musicData.postValue(data);
+            }
+        });
+    }
+
+    /**
+     * 根据歌曲名称删除对应数据
+     *
+     * @param songName    歌曲名称
+     * @param dynamicType 选择类型
+     */
+    public void deleteCurrentRecentEntity(String songName, final RecentPlayAdapter.DynamicType dynamicType) {
+        recentPlayRepository.deleteRecentPlayEntity(songName, new LocalCallback<String>() {
+            @Override
+            public void onSuccessful() {
+                super.onSuccessful();
+                switch (dynamicType) {
+                    case PLAY_TIME:
+                        getAscRecentPlayTime();
+                        break;
+                    case PLAY_COUNT:
+                        getAscRecentOneWeek();
+                        break;
+                    case PLAY_TOTAL:
+                        getAscRecentAllTime();
+                        break;
+                }
+            }
+        });
+    }
+
 
 }

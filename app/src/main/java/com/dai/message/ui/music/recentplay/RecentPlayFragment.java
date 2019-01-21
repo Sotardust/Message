@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,13 +31,18 @@ import java.util.List;
 
 public class RecentPlayFragment extends BaseFragment {
 
+
+    private static final String TAG = "RecentPlayFragment";
+
     private RecentPlayViewModel mViewModel;
 
     private FragmentRecentPlayBinding mBinding;
 
     private RecentPlayAdapter recentPlayAdapter;
 
-    private List<RecentPlayEntity> entities = new ArrayList<>();
+
+    private LinearLayoutManager layoutManager;
+    private RecentPlayAdapter.DynamicType dynamicType = RecentPlayAdapter.DynamicType.PLAY_TIME;
 
     public static RecentPlayFragment newInstance() {
         return new RecentPlayFragment();
@@ -68,21 +74,17 @@ public class RecentPlayFragment extends BaseFragment {
     @Override
     public void bindViews() {
         super.bindViews();
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recentPlayAdapter = new RecentPlayAdapter(recycleItemClickCallBack, getContext());
-
+        layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mViewModel.getRecentPlayEntityData().observe(this, new Observer<List<RecentPlayEntity>>() {
             @Override
-            public void onChanged(@Nullable List<RecentPlayEntity> entities1) {
-                entities.clear();
-                entities.addAll(entities1);
-                recentPlayAdapter.setChangeList(entities1);
+            public void onChanged(@Nullable List<RecentPlayEntity> entities) {
+                mBinding.recentRecycler.setLayoutManager(layoutManager);
+                recentPlayAdapter.setChangeList(entities, dynamicType);
             }
         });
         mBinding.recentRecycler.setAdapter(recentPlayAdapter);
-        mBinding.recentRecycler.setLayoutManager(layoutManager);
         mBinding.recentRecycler.addItemDecoration(new VerticalDecoration(3));
-
         mBinding.recentPlay.setOnClickListener(this);
         mBinding.recentOneWeek.setOnClickListener(this);
         mBinding.recentAllTime.setOnClickListener(this);
@@ -95,7 +97,8 @@ public class RecentPlayFragment extends BaseFragment {
         public void onItemClickListener(int type, RecentPlayEntity entity, int position) {
             super.onItemClickListener(type, entity, position);
             if (type == LocalAdapter.Type.IV.index) {
-                ToastUtil.toastCustom(getContext(), "功能开发中...", 500);
+                mViewModel.deleteCurrentRecentEntity(entity.songName, dynamicType);
+                ToastUtil.toastCustom(getContext(), R.string.delete_successful, 500);
             } else {
                 Intent intent = new Intent(getContext(), PlayMusicActivity.class);
                 intent.putExtra(Key.MUSIC, entity.music);
@@ -108,17 +111,26 @@ public class RecentPlayFragment extends BaseFragment {
         }
     };
 
+    private boolean isReverse = true;
+
     @Override
     public void handlingClickEvents(View view) {
         super.handlingClickEvents(view);
+        layoutManager.setReverseLayout(isReverse);
         switch (view.getId()) {
             case R.id.recent_play:
+                dynamicType = RecentPlayAdapter.DynamicType.PLAY_TIME;
+                mViewModel.getAscRecentPlayTime();
                 break;
             case R.id.recent_one_week:
+                dynamicType = RecentPlayAdapter.DynamicType.PLAY_COUNT;
+                mViewModel.getAscRecentOneWeek();
                 break;
             case R.id.recent_all_time:
+                dynamicType = RecentPlayAdapter.DynamicType.PLAY_TOTAL;
+                mViewModel.getAscRecentAllTime();
                 break;
-
         }
+        isReverse = !isReverse;
     }
 }
