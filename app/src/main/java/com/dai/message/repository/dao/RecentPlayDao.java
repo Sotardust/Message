@@ -92,4 +92,53 @@ public interface RecentPlayDao {
      */
     @Query("select name from recent_play where person_id =:personId")
     List<String> getPersonSongNames(long personId);
+
+
+    /**
+     * 查找人员对应所有最近播放音乐数据升序
+     *
+     * @return RecentPlayEntity 实体集合
+     */
+    @Query("select * from recent_play where person_id =:personId order by play_time ASC")
+    List<RecentPlayEntity> getAscRecentPlayTime(long personId);
+
+    /**
+     * 查找人员对应所有最近播放音乐数据降序
+     *
+     * @return RecentPlayEntity 实体集合
+     */
+    @Query("select * from recent_play where person_id =:personId order by play_time DESC")
+    List<RecentPlayEntity> getDescRecentPlayTime(long personId);
+
+    /**
+     * 查找人员对应最近一周播放音乐数据升序
+     *
+     * @return RecentPlayEntity 实体集合
+     */
+    @Query("select * from recent_play where person_id =:personId and (:playTime - play_time > (7*24*3600)) order by recent_play_count ASC")
+    List<RecentPlayEntity> getAscRecentOneWeek(long personId, long playTime);
+
+    /**
+     * 查找人员对应最近一周播放音乐数据降序
+     *
+     * @return RecentPlayEntity 实体集合
+     */
+    @Query("select * from recent_play where person_id =:personId and (:playTime - play_time > (7*24*3600)) order by recent_play_count DESC")
+    List<RecentPlayEntity> getDescRecentOneWeek(long personId, long playTime);
+
+    /**
+     * 查找人员对应最近一周播放音乐数据升序
+     *
+     * @return RecentPlayEntity 实体集合
+     */
+    @Query("select * from recent_play where person_id =:personId order by play_total ASC")
+    List<RecentPlayEntity> getAscRecentAllTime(long personId);
+
+    /**
+     * 查找人员对应最近一周播放音乐数据降序
+     *
+     * @return RecentPlayEntity 实体集合
+     */
+    @Query("select * from recent_play where person_id =:personId order by play_total DESC")
+    List<RecentPlayEntity> getDescRecentAllTime(long personId);
 }

@@ -105,8 +105,10 @@ public class PlayMusicFragment extends BaseFragment {
             public void onChangeData(Boolean data) {
                 super.onChangeData(data);
                 try {
-                    if (!data)
+                    if (!data){
                         musicService.playMusic(currentMusic);
+                        mBinding.playTopTitleView.updatePlayView(currentMusic);
+                    }
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }

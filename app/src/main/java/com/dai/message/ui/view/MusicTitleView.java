@@ -180,6 +180,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
                     playListDialogFragment.show(activity);
                     break;
                 case R.id.music_relative:
+                    Config.getInstance().setIsFirstPlay(false);
                     Log.d(TAG, "onClick: music_relative = ");
                     if (Config.getInstance().getCurrentMusic() == null) {
                         ToastUtil.toastCustom(context, R.string.no_play_music, 500);

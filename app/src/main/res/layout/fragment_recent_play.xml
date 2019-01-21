@@ -19,6 +19,31 @@
             android:layout_width="match_parent"
             android:layout_height="60dp" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorWhite"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/recent_play"
+                style="@style/recentPlaySortBar"
+                android:drawableTop="@mipmap/icon_peach_original_64"
+                android:text="@string/recent_play" />
+
+            <TextView
+                android:id="@+id/recent_one_week"
+                style="@style/recentPlaySortBar"
+                android:drawableTop="@mipmap/icon_peach_original_64"
+                android:text="@string/recent_one_week" />
+
+            <TextView
+                android:id="@+id/recent_all_time"
+                style="@style/recentPlaySortBar"
+                android:drawableTop="@mipmap/icon_peach_original_64"
+                android:text="@string/recent_all_time" />
+        </LinearLayout>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recent_recycler"
             android:layout_width="match_parent"

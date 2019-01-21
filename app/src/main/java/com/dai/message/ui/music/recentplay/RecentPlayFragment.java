@@ -17,14 +17,15 @@ import android.view.ViewGroup;
 import com.dai.message.R;
 import com.dai.message.adapter.util.VerticalDecoration;
 import com.dai.message.base.BaseFragment;
-import com.dai.message.bean.Music;
 import com.dai.message.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.FragmentRecentPlayBinding;
+import com.dai.message.repository.entity.RecentPlayEntity;
 import com.dai.message.ui.music.local.LocalAdapter;
 import com.dai.message.ui.music.playmusic.PlayMusicActivity;
 import com.dai.message.util.Key;
 import com.dai.message.util.ToastUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecentPlayFragment extends BaseFragment {
@@ -33,7 +34,9 @@ public class RecentPlayFragment extends BaseFragment {
 
     private FragmentRecentPlayBinding mBinding;
 
-    private LocalAdapter localAdapter;
+    private RecentPlayAdapter recentPlayAdapter;
+
+    private List<RecentPlayEntity> entities = new ArrayList<>();
 
     public static RecentPlayFragment newInstance() {
         return new RecentPlayFragment();
@@ -59,37 +62,43 @@ public class RecentPlayFragment extends BaseFragment {
     @Override
     public void initViews(View view) {
         super.initViews(view);
-        mBinding.recentTopTitleView.updateView(getActivity(), getString(R.string.recent_play));
+        mBinding.recentTopTitleView.updateView(getActivity(), getString(R.string.listening_to_songs));
     }
 
     @Override
     public void bindViews() {
         super.bindViews();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-        localAdapter = new LocalAdapter(recycleItemClickCallBack);
+        recentPlayAdapter = new RecentPlayAdapter(recycleItemClickCallBack, getContext());
 
-        mViewModel.getMusicData().observe(this, new Observer<List<Music>>() {
+        mViewModel.getRecentPlayEntityData().observe(this, new Observer<List<RecentPlayEntity>>() {
             @Override
-            public void onChanged(@Nullable List<Music> musics) {
-                localAdapter.setChangeList(musics);
+            public void onChanged(@Nullable List<RecentPlayEntity> entities1) {
+                entities.clear();
+                entities.addAll(entities1);
+                recentPlayAdapter.setChangeList(entities1);
             }
         });
-        mBinding.recentRecycler.setAdapter(localAdapter);
+        mBinding.recentRecycler.setAdapter(recentPlayAdapter);
         mBinding.recentRecycler.setLayoutManager(layoutManager);
         mBinding.recentRecycler.addItemDecoration(new VerticalDecoration(3));
+
+        mBinding.recentPlay.setOnClickListener(this);
+        mBinding.recentOneWeek.setOnClickListener(this);
+        mBinding.recentAllTime.setOnClickListener(this);
     }
 
-    private RecycleItemClickCallBack<Music> recycleItemClickCallBack = new RecycleItemClickCallBack<Music>() {
+    private RecycleItemClickCallBack<RecentPlayEntity> recycleItemClickCallBack = new RecycleItemClickCallBack<RecentPlayEntity>() {
 
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
         @Override
-        public void onItemClickListener(int type, Music music, int position) {
-            super.onItemClickListener(type, music, position);
+        public void onItemClickListener(int type, RecentPlayEntity entity, int position) {
+            super.onItemClickListener(type, entity, position);
             if (type == LocalAdapter.Type.IV.index) {
                 ToastUtil.toastCustom(getContext(), "功能开发中...", 500);
             } else {
                 Intent intent = new Intent(getContext(), PlayMusicActivity.class);
-                intent.putExtra(Key.MUSIC, music);
+                intent.putExtra(Key.MUSIC, entity.music);
                 Bundle bundle = new Bundle();
                 assert getArguments() != null;
                 bundle.putBinder(Key.IBINDER, getArguments().getBinder(Key.IBINDER));
@@ -98,4 +107,18 @@ public class RecentPlayFragment extends BaseFragment {
             }
         }
     };
+
+    @Override
+    public void handlingClickEvents(View view) {
+        super.handlingClickEvents(view);
+        switch (view.getId()) {
+            case R.id.recent_play:
+                break;
+            case R.id.recent_one_week:
+                break;
+            case R.id.recent_all_time:
+                break;
+
+        }
+    }
 }

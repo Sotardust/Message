@@ -69,9 +69,9 @@ public class MusicRepository {
                             public void subscribe(ObservableEmitter<String> emitter) throws Exception {
                                 super.subscribe(emitter);
                                 for (Music music : musics) {
-//                                    if (!names.contains(music.name)) {
+                                    if (!names.contains(music.name)) {
                                         musicDao.addMusic(music);
-//                                    }
+                                    }
                                 }
                                 emitter.onNext(ObservableUtil.KEY_SUCCESSFUL);
                             }

@@ -120,25 +120,21 @@ public class RecentPlayRepository {
      *
      * @param musicLocalCallback LocalCallback
      */
-    public void getRecentPlayEntities(final LocalCallback<List<Music>> musicLocalCallback) {
-        ObservableUtil.execute(new ObservableCallback<List<Music>>() {
+    public void getRecentPlayEntities(final LocalCallback<List<RecentPlayEntity>> musicLocalCallback) {
+        ObservableUtil.execute(new ObservableCallback<List<RecentPlayEntity>>() {
             @Override
-            public void subscribe(ObservableEmitter<List<Music>> emitter) throws Exception {
+            public void subscribe(ObservableEmitter<List<RecentPlayEntity>> emitter) throws Exception {
                 super.subscribe(emitter);
                 List<RecentPlayEntity> entities = new ArrayList<>(
                         recentPlayDao.getPersonRecentPlayEntity(Config.getInstance().getPersonId()));
-                List<Music> musics = new ArrayList<>();
-                for (RecentPlayEntity entity : entities) {
-                    musics.add(entity.music);
-                }
-                emitter.onNext(musics);
+                emitter.onNext(entities);
 
             }
-        }, new LocalCallback<List<Music>>() {
+        }, new LocalCallback<List<RecentPlayEntity>>() {
             @Override
-            public void onChangeData(List<Music> data) {
+            public void onChangeData(List<RecentPlayEntity> data) {
                 super.onChangeData(data);
-                musicLocalCallback.onChangeData(data == null ? new ArrayList<Music>() : data);
+                musicLocalCallback.onChangeData(data == null ? new ArrayList<RecentPlayEntity>() : data);
             }
         });
     }
@@ -163,4 +159,117 @@ public class RecentPlayRepository {
             }
         });
     }
+
+    public void getAscRecentAllTime(final LocalCallback<List<RecentPlayEntity>> localCallback) {
+        ObservableUtil.execute(new ObservableCallback<List<RecentPlayEntity>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<RecentPlayEntity>> emitter) throws Exception {
+                super.subscribe(emitter);
+
+                List<RecentPlayEntity> entities = recentPlayDao.getAscRecentAllTime(Config.getInstance().getPersonId());
+                emitter.onNext(entities);
+            }
+        }, new LocalCallback<List<RecentPlayEntity>>() {
+            @Override
+            public void onChangeData(List<RecentPlayEntity> data) {
+                super.onChangeData(data);
+                localCallback.onChangeData(data == null ? new ArrayList<RecentPlayEntity>() : data);
+            }
+        });
+    }
+
+    public void getDescRecentAllTime(final LocalCallback<List<RecentPlayEntity>> localCallback) {
+
+        ObservableUtil.execute(new ObservableCallback<List<RecentPlayEntity>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<RecentPlayEntity>> emitter) throws Exception {
+                super.subscribe(emitter);
+
+                List<RecentPlayEntity> entities = recentPlayDao.getDescRecentAllTime(Config.getInstance().getPersonId());
+                emitter.onNext(entities);
+            }
+        }, new LocalCallback<List<RecentPlayEntity>>() {
+            @Override
+            public void onChangeData(List<RecentPlayEntity> data) {
+                super.onChangeData(data);
+                localCallback.onChangeData(data == null ? new ArrayList<RecentPlayEntity>() : data);
+            }
+        });
+    }
+
+    public void getAscRecentPlayTime(final LocalCallback<List<RecentPlayEntity>> localCallback) {
+        ObservableUtil.execute(new ObservableCallback<List<RecentPlayEntity>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<RecentPlayEntity>> emitter) throws Exception {
+                super.subscribe(emitter);
+
+                List<RecentPlayEntity> entities = recentPlayDao.getAscRecentPlayTime(Config.getInstance().getPersonId());
+                emitter.onNext(entities);
+            }
+        }, new LocalCallback<List<RecentPlayEntity>>() {
+            @Override
+            public void onChangeData(List<RecentPlayEntity> data) {
+                super.onChangeData(data);
+                localCallback.onChangeData(data == null ? new ArrayList<RecentPlayEntity>() : data);
+            }
+        });
+    }
+
+    public void getDescRecentPlayTime(final LocalCallback<List<RecentPlayEntity>> localCallback) {
+
+        ObservableUtil.execute(new ObservableCallback<List<RecentPlayEntity>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<RecentPlayEntity>> emitter) throws Exception {
+                super.subscribe(emitter);
+
+                List<RecentPlayEntity> entities = recentPlayDao.getDescRecentPlayTime(Config.getInstance().getPersonId());
+                emitter.onNext(entities);
+            }
+        }, new LocalCallback<List<RecentPlayEntity>>() {
+            @Override
+            public void onChangeData(List<RecentPlayEntity> data) {
+                super.onChangeData(data);
+                localCallback.onChangeData(data == null ? new ArrayList<RecentPlayEntity>() : data);
+            }
+        });
+    }
+
+    public void getAscRecentOneWeek(final LocalCallback<List<RecentPlayEntity>> localCallback) {
+        ObservableUtil.execute(new ObservableCallback<List<RecentPlayEntity>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<RecentPlayEntity>> emitter) throws Exception {
+                super.subscribe(emitter);
+
+                List<RecentPlayEntity> entities = recentPlayDao.getAscRecentOneWeek(Config.getInstance().getPersonId(), System.currentTimeMillis());
+                emitter.onNext(entities);
+            }
+        }, new LocalCallback<List<RecentPlayEntity>>() {
+            @Override
+            public void onChangeData(List<RecentPlayEntity> data) {
+                super.onChangeData(data);
+                localCallback.onChangeData(data == null ? new ArrayList<RecentPlayEntity>() : data);
+            }
+        });
+    }
+
+    public void getDescRecentOneWeek(final LocalCallback<List<RecentPlayEntity>> localCallback) {
+
+        ObservableUtil.execute(new ObservableCallback<List<RecentPlayEntity>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<RecentPlayEntity>> emitter) throws Exception {
+                super.subscribe(emitter);
+
+                List<RecentPlayEntity> entities = recentPlayDao.getDescRecentOneWeek(Config.getInstance().getPersonId(), System.currentTimeMillis());
+                emitter.onNext(entities);
+            }
+        }, new LocalCallback<List<RecentPlayEntity>>() {
+            @Override
+            public void onChangeData(List<RecentPlayEntity> data) {
+                super.onChangeData(data);
+                localCallback.onChangeData(data == null ? new ArrayList<RecentPlayEntity>() : data);
+            }
+        });
+    }
+
+
 }
