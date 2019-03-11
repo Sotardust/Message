@@ -71,4 +71,14 @@
     <color name="colorAccentDarkTheme">#ffffffff</color>
     <color name="colortest">#FF4D8DFF</color>
     <color name="colortest1">#FF37B7FB</color>
+
+
+    <color name="blue">#2095F2</color>
+    <color name="blue_light">#02A8F3</color>
+    <color name="blue_translucent_dark">#8002A8F3</color>
+    <color name="blue_translucent_light">#882095F2</color>
+
+    <color name="yellow">#FEC006</color>
+    <color name="yellow_light">#FEEA3A</color>
+    <color name="yellow_dark">#ff6200</color>
 </resources>

@@ -87,14 +87,6 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
         setting.setOnClickListener(this);
     }
 
-    /**
-     * 设置与之关联的activity
-     *
-     * @param activity Activity
-     */
-    public void setActivity(Activity activity) {
-        this.activity = activity;
-    }
 
     /**
      * 设置文本框监听回调事件
@@ -139,9 +131,11 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
     /**
      * 更新视图View
      *
-     * @param music Music实体数据
+     * @param activity Activity
+     * @param music    Music实体数据
      */
-    public void updatePlayView(final Music music) {
+    public void updatePlayView(Activity activity, final Music music) {
+        this.activity = activity;
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {

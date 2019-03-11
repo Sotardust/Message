@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="music"
+            type="com.dai.message.bean.Music" />
+
+        <variable
+            name="index"
+            type="Integer" />
+
+
+        <variable
+            name="callback"
+            type="com.dai.message.callback.RecycleItemClickCallBack" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <TextView
+            android:id="@+id/song_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@{music.songName}" />
+
+        <TextView
+            android:id="@+id/author"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/song_name"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="@{music.author}" />
+
+
+        <RelativeLayout
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp">
+
+            <com.dai.message.ui.music.download.WaveProgressView
+                android:id="@+id/wave_progress"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:second_wave_color="@color/blue"
+                app:wave_bg_color="@color/orange"
+                app:wave_color="@color/blue_light"
+                app:wave_height="8dp"
+                app:wave_width="40dp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</layout>

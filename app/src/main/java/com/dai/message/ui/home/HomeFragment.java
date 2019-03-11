@@ -132,6 +132,7 @@ public class HomeFragment extends BaseFragment {
 //
 //            }
 //        });
+
         mBinding.baseViewPager.setAdapter(new BaseFragmentPageAdapter(getChildFragmentManager(), mFragmentList, titles));
 
         mBinding.tabLayout.addOnTabSelectedListener(new TabLayoutCallback() {

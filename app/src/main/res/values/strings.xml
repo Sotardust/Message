@@ -43,6 +43,7 @@
 
 
     <string name="listening_to_songs">听歌排行</string>
+    <string name="cloud_music_list">云盘音乐列表</string>
     <string name="recent_play">最近播放</string>
     <string name="recent_one_week">最近一周</string>
     <string name="recent_all_time">所有时间</string>
@@ -53,6 +54,10 @@
     <string name="ascending">升序</string>
     <string name="descending">降序</string>
     <string name="delete_successful">删除成功</string>
+
+    <string name="no_music">暂无音乐</string>
+
+    <string name="download_manage">下载管理</string>
 
 
 </resources>

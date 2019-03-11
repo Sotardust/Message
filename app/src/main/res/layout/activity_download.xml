@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <com.dai.message.ui.view.TopTitleView
+        android:id="@+id/download_top_title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp" />
+
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"

@@ -70,8 +70,7 @@ public class PlayMusicFragment extends BaseFragment {
     @Override
     public void initViews(View view) {
         super.initViews(view);
-        mBinding.playTopTitleView.setActivity(getActivity());
-        mBinding.playTopTitleView.updatePlayView(Config.getInstance().getCurrentMusic());
+        mBinding.playTopTitleView.updatePlayView(getActivity(),Config.getInstance().getCurrentMusic());
         mBinding.playTopTitleView.setSharedCallback(new LocalCallback<Music>() {
             @Override
             public void onChangeData(Music data) {
@@ -105,9 +104,9 @@ public class PlayMusicFragment extends BaseFragment {
             public void onChangeData(Boolean data) {
                 super.onChangeData(data);
                 try {
-                    if (!data){
+                    if (!data) {
                         musicService.playMusic(currentMusic);
-                        mBinding.playTopTitleView.updatePlayView(currentMusic);
+                        mBinding.playTopTitleView.updatePlayView(getActivity(),currentMusic);
                     }
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -141,7 +140,7 @@ public class PlayMusicFragment extends BaseFragment {
                     break;
                 case R.id.previous:
                     musicService.playPrevious();
-                    mBinding.playTopTitleView.updatePlayView(musicService.getCurrentMusic());
+                    mBinding.playTopTitleView.updatePlayView(getActivity(),musicService.getCurrentMusic());
                     mBinding.play.setText(R.string.playing);
                     ToastUtil.toastCustom(getContext(), R.string.previous, 500);
                     break;
@@ -158,7 +157,7 @@ public class PlayMusicFragment extends BaseFragment {
                 case R.id.next:
                     musicService.playNext();
                     mBinding.play.setText(R.string.playing);
-                    mBinding.playTopTitleView.updatePlayView(musicService.getCurrentMusic());
+                    mBinding.playTopTitleView.updatePlayView(getActivity(),musicService.getCurrentMusic());
                     ToastUtil.toastCustom(getContext(), R.string.next, 500);
                     break;
                 case R.id.play_list:
@@ -169,7 +168,7 @@ public class PlayMusicFragment extends BaseFragment {
                         public void onChangeData(Music data) {
                             super.onChangeData(data);
                             try {
-                                mBinding.playTopTitleView.updatePlayView(data);
+                                mBinding.playTopTitleView.updatePlayView(getActivity(),data);
                                 musicService.playMusic(data);
                             } catch (RemoteException e) {
                                 e.printStackTrace();

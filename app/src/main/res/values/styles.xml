@@ -128,4 +128,14 @@
         <item name="android:windowEnterAnimation">@anim/menu_in_animation</item>
         <item name="android:windowExitAnimation">@anim/menu_out_animation</item>
     </style>
+
+    <declare-styleable name="WaveProgressView">
+        <attr name="wave_color" format="color" />
+        <attr name="wave_bg_color" format="color" />
+        <attr name="second_wave_color" format="color" />
+        <attr name="bg_color" format="color" />
+
+        <attr name="wave_width" format="dimension" />
+        <attr name="wave_height" format="dimension" />
+    </declare-styleable>
 </resources>

@@ -32,6 +32,8 @@ public class CloudDiskFragment extends BaseFragment {
 
     private FragmentCloudDiskBinding mBinding;
 
+    private CloudDiskAdapter localAdapter;
+
     public static CloudDiskFragment newInstance() {
         return new CloudDiskFragment();
     }
@@ -40,6 +42,7 @@ public class CloudDiskFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_cloud_disk, container, false);
+        initViews(mBinding.getRoot());
         return mBinding.getRoot();
     }
 
@@ -51,7 +54,12 @@ public class CloudDiskFragment extends BaseFragment {
         bindViews();
     }
 
-    private CloudDiskAdapter localAdapter;
+
+    @Override
+    public void initViews(View view) {
+        super.initViews(view);
+        mBinding.cloudTopTitleView.updateView(getActivity(), getString(R.string.cloud_music_list));
+    }
 
     @Override
     public void bindViews() {
@@ -60,6 +68,7 @@ public class CloudDiskFragment extends BaseFragment {
         localAdapter = new CloudDiskAdapter(recycleItemClickCallBack);
         mViewModel.getMusicList(callback);
         mBinding.recyclerView.setAdapter(localAdapter);
+        mBinding.recyclerView.setVisibility(View.VISIBLE);
         mBinding.recyclerView.setLayoutManager(layoutManager);
         mBinding.recyclerView.addItemDecoration(new VerticalDecoration(3));
 
@@ -69,7 +78,11 @@ public class CloudDiskFragment extends BaseFragment {
         @Override
         public void onChangeData(BaseModel<List<CloudMusicEntity>> data) {
             Log.d(TAG, "onChangeData: data = " + data);
-            if (data == null) return;
+            if (data == null) {
+                mBinding.recyclerView.setVisibility(View.GONE);
+                mBinding.cloudNoMusic.setVisibility(View.VISIBLE);
+                return;
+            }
             List<CloudMusicEntity> entities = new ArrayList<>();
             entities.addAll(data.result);
             ArrayList<String> names = new ArrayList<>();

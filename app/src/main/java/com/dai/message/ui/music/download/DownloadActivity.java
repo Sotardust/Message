@@ -8,6 +8,7 @@ import com.dai.message.R;
 import com.dai.message.adapter.BaseFragmentPageAdapter;
 import com.dai.message.base.BaseActivity;
 import com.dai.message.base.BaseViewPager;
+import com.dai.message.ui.view.TopTitleView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class DownloadActivity extends BaseActivity {
     private String[] titles = {"正在下载", "下载完成"};
 
     private TabLayout tabLayout;
+    private TopTitleView topTitleView;
 
     private BaseViewPager baseViewPager;
 
@@ -38,6 +40,8 @@ public class DownloadActivity extends BaseActivity {
     private void bindViews() {
         tabLayout = findViewById(R.id.tabLayout);
         baseViewPager = findViewById(R.id.baseViewPager);
+        topTitleView = findViewById(R.id.download_top_title);
+
     }
 
     /**
@@ -49,5 +53,7 @@ public class DownloadActivity extends BaseActivity {
         fragmentList.add(DownloadedFragment.newInstance());
         baseViewPager.setAdapter(new BaseFragmentPageAdapter(getSupportFragmentManager(), fragmentList, titles));
         tabLayout.setupWithViewPager(baseViewPager);
+
+        topTitleView.updateView(this,getString(R.string.download_manage));
     }
 }

@@ -16,10 +16,25 @@
         android:background="@color/background"
         tools:context=".ui.music.cloud.CloudDiskFragment">
 
+        <com.dai.message.ui.view.TopTitleView
+            android:id="@+id/cloud_top_title_view"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/cloud_no_music"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/no_music"
+            android:textSize="20sp"
+            android:visibility="gone" />
 
     </FrameLayout>
 </layout>

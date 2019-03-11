@@ -8,6 +8,7 @@ import android.content.Context;
 
 import com.dai.message.bean.Music;
 import com.dai.message.repository.dao.AllCallsDao;
+import com.dai.message.repository.dao.DownloadDao;
 import com.dai.message.repository.dao.MusicDao;
 import com.dai.message.repository.dao.RecentPlayDao;
 import com.dai.message.repository.entity.AllCallsEntity;
@@ -32,9 +33,13 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract MusicDao getMusicDao();
 
     /**
-     * 操作数据库MusicDao抽象接口
+     * 操作数据库RecentPlayDao抽象接口
      */
     public abstract RecentPlayDao getRecentPlayDao();
+    /**
+     * 操作数据库DownloadDao抽象接口
+     */
+    public abstract DownloadDao getDownloadDao();
 //
 //    /**
 //     * 操作数据库ContactDao抽象接口
