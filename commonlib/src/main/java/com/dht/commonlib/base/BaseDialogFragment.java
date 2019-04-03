@@ -1,4 +1,4 @@
-package com.dai.message.base;
+package com.dht.commonlib.base;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -10,7 +10,8 @@ import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.dai.message.R;
+import com.dht.commonlib.R;
+
 
 /**
  * 弹出dialog的基类

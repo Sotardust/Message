@@ -3,8 +3,7 @@ package com.dai.message.ui.music.cloud;
 import android.os.Bundle;
 
 import com.dai.message.R;
-import com.dai.message.base.BaseActivity;
-import com.dai.message.ui.music.local.LocalFragment;
+import com.dht.commonlib.base.BaseActivity;
 
 /**
  * created by Administrator on 2018/12/27 17:23

@@ -1,7 +1,5 @@
-package com.dai.message.callback;
+package com.dht.commonlib.callback;
 
-
-import com.dai.message.callback.listener.ItemClickListener;
 
 /**
  * 实现RecyclerView Item回调

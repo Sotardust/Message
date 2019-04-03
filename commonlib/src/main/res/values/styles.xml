@@ -1,0 +1,15 @@
+<resources>
+
+
+
+    <style name="PopupWindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/popup_show_anim</item>
+        <item name="android:windowExitAnimation">@anim/popup_dismiss_anim</item>
+    </style>
+
+    <!--<style name="MenuPopAnimation" parent="android:Animation">-->
+    <style name="MenuPopAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/menu_in_animation</item>
+        <item name="android:windowExitAnimation">@anim/menu_out_animation</item>
+    </style>
+</resources>

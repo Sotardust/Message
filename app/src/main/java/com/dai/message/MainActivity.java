@@ -10,7 +10,6 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.dai.message.base.BaseActivity;
 import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.callback.LocalCallback;
 import com.dai.message.repository.preferences.Config;
@@ -18,6 +17,7 @@ import com.dai.message.service.MusicService;
 import com.dai.message.ui.dialog.MainDialogFragment;
 import com.dai.message.ui.home.HomeFragment;
 import com.dai.message.util.Key;
+import com.dht.commonlib.base.BaseActivity;
 
 public class MainActivity extends BaseActivity {
 
@@ -94,7 +94,7 @@ public class MainActivity extends BaseActivity {
         mainDialogFragment.show(this);
         mainDialogFragment.setOkCallBack(new LocalCallback<String>() {
             @Override
-            public void onSuccessful() {
+            public void onChangeData() {
                 finish();
             }
         });

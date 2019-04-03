@@ -1,4 +1,4 @@
-package com.dai.message.callback.listener;
+package com.dht.commonlib.callback;
 
 /**
  * RecycleView Item点击事件回调接口

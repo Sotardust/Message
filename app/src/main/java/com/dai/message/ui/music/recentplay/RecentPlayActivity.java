@@ -6,8 +6,8 @@ import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 
 import com.dai.message.R;
-import com.dai.message.base.BaseActivity;
 import com.dai.message.util.Key;
+import com.dht.commonlib.base.BaseActivity;
 
 /**
  * created by dht on 2018/12/27 17:23

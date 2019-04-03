@@ -3,7 +3,7 @@ package com.dai.message.ui.login;
 import android.os.Bundle;
 
 import com.dai.message.R;
-import com.dai.message.base.BaseActivity;
+import com.dht.commonlib.base.BaseActivity;
 
 public class LoginActivity extends BaseActivity {
 

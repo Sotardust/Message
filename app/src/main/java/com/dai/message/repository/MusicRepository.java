@@ -83,7 +83,7 @@ public class MusicRepository {
                     @Override
                     public void onChangeData(String data) {
                         Log.d(TAG, "onChangeData: data" + data);
-                        localCallback.onSuccessful();
+                        localCallback.onChangeData();
                     }
                 }));
     }

@@ -18,16 +18,16 @@ import android.view.ViewGroup;
 import android.view.Window;
 
 import com.dai.message.R;
-import com.dai.message.adapter.util.VerticalDecoration;
-import com.dai.message.base.BaseActivity;
-import com.dai.message.base.BaseDialogFragment;
 import com.dai.message.bean.Music;
 import com.dai.message.callback.LocalCallback;
-import com.dai.message.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.FragmentPlayListDialogBinding;
 import com.dai.message.ui.music.playmusic.PlayMusicActivity;
 import com.dai.message.util.Key;
 import com.dai.message.util.ToastUtil;
+import com.dht.commonlib.base.BaseActivity;
+import com.dht.commonlib.base.BaseDialogFragment;
+import com.dht.commonlib.callback.RecycleItemClickCallBack;
+import com.dht.commonlib.util.VerticalDecoration;
 
 import java.util.ArrayList;
 

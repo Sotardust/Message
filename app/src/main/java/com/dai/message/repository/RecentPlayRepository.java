@@ -248,7 +248,7 @@ public class RecentPlayRepository {
             @Override
             public void onChangeData(String data) {
                 super.onChangeData(data);
-                localCallback.onSuccessful();
+                localCallback.onChangeData();
             }
         });
     }

@@ -8,11 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
-import com.dai.message.base.BaseActivity;
 import com.dai.message.callback.LocalCallback;
 import com.dai.message.ui.login.LoginActivity;
-import com.dai.message.ui.login.LoginFragment;
 import com.dai.message.util.file.FileUtil;
+import com.dht.commonlib.base.BaseActivity;
 
 import java.util.ArrayList;
 
@@ -61,7 +60,7 @@ public class WelcomeActivity extends BaseActivity {
             }
         }, new LocalCallback<String>() {
             @Override
-            public void onSuccessful() {
+            public void onChangeData() {
                 Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();

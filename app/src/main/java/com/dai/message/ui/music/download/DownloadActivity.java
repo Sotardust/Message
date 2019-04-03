@@ -6,8 +6,8 @@ import android.support.v4.app.Fragment;
 
 import com.dai.message.R;
 import com.dai.message.adapter.BaseFragmentPageAdapter;
-import com.dai.message.base.BaseActivity;
-import com.dai.message.base.BaseViewPager;
+import com.dht.commonlib.base.BaseActivity;
+import com.dht.commonlib.base.BaseViewPager;
 
 import java.util.ArrayList;
 import java.util.List;

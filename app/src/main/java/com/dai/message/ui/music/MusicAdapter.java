@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 
 import com.dai.message.R;
 import com.dai.message.adapter.util.ViewHolder;
-import com.dai.message.base.BaseAdapter;
-import com.dai.message.callback.RecycleItemClickCallBack;
+import com.dht.commonlib.base.BaseAdapter;
+import com.dht.commonlib.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.RecycleItemMusicBinding;
 
 import java.util.ArrayList;

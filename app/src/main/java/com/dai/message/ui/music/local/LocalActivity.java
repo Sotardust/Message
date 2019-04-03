@@ -3,13 +3,11 @@ package com.dai.message.ui.music.local;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.RemoteException;
 import android.support.annotation.RequiresApi;
 
 import com.dai.message.R;
-import com.dai.message.base.BaseActivity;
-import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.util.Key;
+import com.dht.commonlib.base.BaseActivity;
 
 /**
  * created by Administrator on 2018/12/27 17:23

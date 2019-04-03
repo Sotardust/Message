@@ -1,4 +1,4 @@
-package com.dai.message.base;
+package com.dht.commonlib.base;
 
 /**
  * created by Administrator on 2019/1/7 17:51

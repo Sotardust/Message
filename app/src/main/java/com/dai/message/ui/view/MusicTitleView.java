@@ -17,7 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dai.message.R;
-import com.dai.message.base.BaseActivity;
 import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.bean.Music;
 import com.dai.message.callback.LocalCallback;
@@ -28,6 +27,7 @@ import com.dai.message.ui.music.playmusic.PlayMusicActivity;
 import com.dai.message.util.Key;
 import com.dai.message.util.ToastUtil;
 import com.dai.message.util.rxjava.ObservableUtil;
+import com.dht.commonlib.base.BaseActivity;
 
 import io.reactivex.ObservableEmitter;
 

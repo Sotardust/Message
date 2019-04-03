@@ -1,13 +1,11 @@
-package com.dai.message.base;
+package com.dht.commonlib.base;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 
 
-import com.dai.message.callback.RecycleItemClickCallBack;
+import com.dht.commonlib.callback.RecycleItemClickCallBack;
 
 import java.util.ArrayList;
 import java.util.List;

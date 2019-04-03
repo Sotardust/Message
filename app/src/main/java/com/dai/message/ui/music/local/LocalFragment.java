@@ -19,20 +19,20 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dai.message.R;
-import com.dai.message.adapter.util.VerticalDecoration;
-import com.dai.message.base.BaseActivity;
 import com.dai.message.base.BaseFragment;
 import com.dai.message.bean.BaseModel;
 import com.dai.message.bean.Music;
 import com.dai.message.callback.LocalCallback;
 import com.dai.message.callback.NetworkCallback;
-import com.dai.message.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.FragmentLocalBinding;
 import com.dai.message.receiver.BaseReceiver;
 import com.dai.message.receiver.SendLocalBroadcast;
 import com.dai.message.ui.music.playmusic.PlayMusicActivity;
 import com.dai.message.util.Key;
 import com.dai.message.util.SimpleTextWatcher;
+import com.dht.commonlib.base.BaseActivity;
+import com.dht.commonlib.callback.RecycleItemClickCallBack;
+import com.dht.commonlib.util.VerticalDecoration;
 
 import java.io.File;
 import java.util.ArrayList;

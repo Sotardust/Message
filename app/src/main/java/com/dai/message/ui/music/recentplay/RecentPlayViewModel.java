@@ -93,8 +93,8 @@ public class RecentPlayViewModel extends BaseAndroidViewModel {
     public void deleteCurrentRecentEntity(String songName, final RecentPlayAdapter.DynamicType dynamicType) {
         recentPlayRepository.deleteRecentPlayEntity(songName, new LocalCallback<String>() {
             @Override
-            public void onSuccessful() {
-                super.onSuccessful();
+            public void onChangeData() {
+                super.onChangeData();
                 switch (dynamicType) {
                     case PLAY_TIME:
                         getAscRecentPlayTime();

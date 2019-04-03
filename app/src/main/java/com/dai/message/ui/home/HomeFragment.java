@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 import com.dai.message.R;
 import com.dai.message.adapter.BaseFragmentPageAdapter;
-import com.dai.message.base.BaseActivity;
 import com.dai.message.base.BaseFragment;
 import com.dai.message.callback.LocalCallback;
 import com.dai.message.callback.OnPageChangerCallback;
@@ -31,6 +30,7 @@ import com.dai.message.receiver.SendLocalBroadcast;
 import com.dai.message.ui.music.MusicFragment;
 import com.dai.message.ui.news.NewsFragment;
 import com.dai.message.ui.view.MusicTitleView;
+import com.dht.commonlib.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;

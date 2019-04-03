@@ -1,6 +1,8 @@
 package com.dai.message.callback;
 
 
+import com.dht.commonlib.callback.Callback;
+
 /**
  * 基础回调接口
  * <p>
@@ -15,7 +17,7 @@ public class LocalCallback<T> implements Callback<T> {
     }
 
     @Override
-    public void onSuccessful() {
+    public void onChangeData() {
 
     }
 }

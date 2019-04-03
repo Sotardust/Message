@@ -1,4 +1,4 @@
-package com.dai.message.base;
+package com.dht.commonlib.base;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

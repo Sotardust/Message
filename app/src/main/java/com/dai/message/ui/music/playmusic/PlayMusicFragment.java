@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dai.message.R;
-import com.dai.message.base.BaseActivity;
 import com.dai.message.base.BaseFragment;
 import com.dai.message.bean.IMusicAidlInterface;
 import com.dai.message.bean.Music;
@@ -27,6 +26,7 @@ import com.dai.message.util.Key;
 import com.dai.message.util.PlayType;
 import com.dai.message.util.ToastUtil;
 import com.dai.message.util.rxjava.ObservableUtil;
+import com.dht.commonlib.base.BaseActivity;
 
 import io.reactivex.ObservableEmitter;
 
