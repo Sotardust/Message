@@ -27,7 +27,7 @@ import com.dai.message.ui.music.playmusic.PlayMusicActivity;
 import com.dai.message.util.Key;
 import com.dai.message.util.ToastUtil;
 import com.dai.message.util.rxjava.ObservableUtil;
-import com.dht.commonlib.base.BaseActivity;
+import com.dht.baselib.base.BaseActivity;
 
 import io.reactivex.ObservableEmitter;
 

@@ -8,6 +8,9 @@ import com.dai.message.bean.Music;
 import com.dai.message.util.PlayType;
 import com.google.gson.Gson;
 
+/**
+ * @author Administrator
+ */
 public class Config {
 
 
@@ -30,10 +33,10 @@ public class Config {
     /*保存前播放状态*/
     private static final String KEY_IS_PLAYING = "is_playing";
 
-    private Config() {
+    private Config () {
     }
 
-    public static Config getInstance() {
+    public static Config getInstance () {
         if (config == null) {
             synchronized (Config.class) {
                 if (config == null) {
@@ -45,65 +48,65 @@ public class Config {
     }
 
     @SuppressLint("CommitPrefEdits")
-    public static void install(Context context) {
+    public static void install (Context context) {
         preferences = context.getApplicationContext().getSharedPreferences("config", Context.MODE_PRIVATE);
         editor = preferences.edit();
     }
 
-    public String getCookie() {
+    public String getCookie () {
         return preferences.getString(COOKIE, null);
     }
 
-    public void setCookie(String cookie) {
+    public void setCookie (String cookie) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(COOKIE, cookie);
         editor.apply();
     }
 
 
-    public void setCurrentMusic(Music music) {
+    public void setCurrentMusic (Music music) {
         editor.putString(KEY_MUSIC, gson.toJson(music));
         editor.apply();
     }
 
-    public Music getCurrentMusic() {
+    public Music getCurrentMusic () {
         return gson.fromJson(preferences.getString(KEY_MUSIC, null), Music.class);
     }
 
-    public void setPlayType(int playType) {
+    public void setPlayType (int playType) {
         editor.putInt(KEY_PLAY_TYPE, playType);
         editor.apply();
     }
 
-    public PlayType getPlayType() {
+    public PlayType getPlayType () {
         return PlayType.getPlayType(preferences.getInt(KEY_PLAY_TYPE, 0));
     }
 
 
-    public void setIsFirstPlay(boolean isFirstPlay) {
+    public void setIsFirstPlay (boolean isFirstPlay) {
         editor.putBoolean(KEY_IS_FIRST_PLAY, isFirstPlay);
         editor.apply();
     }
 
-    public boolean isFirstPlay() {
+    public boolean isFirstPlay () {
         return preferences.getBoolean(KEY_IS_FIRST_PLAY, true);
     }
 
-    public void setIsPlaying(boolean isPlaying) {
+    public void setIsPlaying (boolean isPlaying) {
         editor.putBoolean(KEY_IS_PLAYING, isPlaying);
         editor.apply();
     }
 
-    public boolean isPlaying() {
+    public boolean isPlaying () {
         return preferences.getBoolean(KEY_IS_PLAYING, false);
     }
 
-    public void setPersonId(long personId) {
+    public void setPersonId (long personId) {
         editor.putLong(KEY_PERSON_ID, personId);
         editor.apply();
     }
 
-    public long getPersonId() {
+    public long getPersonId () {
         return preferences.getLong(KEY_PERSON_ID, 123L);
     }
 

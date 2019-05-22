@@ -2,29 +2,31 @@ package com.dai.message.util;
 
 /**
  * created by dht on 2019/1/14 16:46
+ *
+ * @author Administrator
  */
 public enum PlayType {
-
-    PLAY_IN_ORDER(0), //顺序播放
-
-    SINGLE_CYCLE(1),//单曲循环
-
-    LIST_LOOP(2),//列表循环
-
-    SHUFFLE_PLAYBACK(3);//随机播放
+    //顺序播放
+    PLAY_IN_ORDER(0),
+    //单曲循环
+    SINGLE_CYCLE(1),
+    //列表循环
+    LIST_LOOP(2),
+    //随机播放
+    SHUFFLE_PLAYBACK(3);
 
     private int index;
 
 
-    PlayType(int index) {
+    PlayType (int index) {
         this.index = index;
     }
 
-    public int getIndex() {
+    public int getIndex () {
         return index;
     }
 
-    public static PlayType getPlayType(int index) {
+    public static PlayType getPlayType (int index) {
         switch (index) {
             case 0:
                 return PLAY_IN_ORDER;
@@ -37,7 +39,7 @@ public enum PlayType {
         }
     }
 
-    public static String getPlayTypeString(int index) {
+    public static String getPlayTypeString (int index) {
         switch (index) {
             case 0:
                 return "顺序播放";

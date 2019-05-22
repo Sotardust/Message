@@ -2,7 +2,6 @@ package com.dai.message.bean;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -11,7 +10,7 @@ import android.os.Parcelable;
  * created by Administrator on 2019/1/10 16:55
  */
 
-@Entity(tableName = "music", indices = {@Index("id")})
+@Entity(tableName = "music")
 public class Music implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)

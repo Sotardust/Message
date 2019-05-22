@@ -13,7 +13,7 @@
 
         <variable
             name="callBack"
-            type="com.dht.commonlib.callback.RecycleItemClickCallBack" />
+            type="com.dht.baselib.callback.RecycleItemClickCallBack" />
     </data>
 
     <LinearLayout

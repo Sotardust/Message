@@ -6,6 +6,8 @@ import android.view.View;
 /**
  * 处理TitleBar显示、点击等操作
  * created by dht on 2018/7/3 13:25
+ *
+ * @author Administrator
  */
 public interface ITitleBarManager extends View.OnClickListener {
 

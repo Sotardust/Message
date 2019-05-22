@@ -24,13 +24,16 @@ import com.dai.message.databinding.FragmentPlayListDialogBinding;
 import com.dai.message.ui.music.playmusic.PlayMusicActivity;
 import com.dai.message.util.Key;
 import com.dai.message.util.ToastUtil;
-import com.dht.commonlib.base.BaseActivity;
-import com.dht.commonlib.base.BaseDialogFragment;
-import com.dht.commonlib.callback.RecycleItemClickCallBack;
-import com.dht.commonlib.util.VerticalDecoration;
+import com.dht.baselib.base.BaseActivity;
+import com.dht.baselib.base.BaseDialogFragment;
+import com.dht.baselib.callback.RecycleItemClickCallBack;
+import com.dht.baselib.util.VerticalDecoration;
 
 import java.util.ArrayList;
 
+/**
+ * @author Administrator
+ */
 public class PlayListDialogFragment extends BaseDialogFragment {
 
     private static final String TAG = "PlayListDialogFragment";

@@ -30,9 +30,9 @@ import com.dai.message.receiver.SendLocalBroadcast;
 import com.dai.message.ui.music.playmusic.PlayMusicActivity;
 import com.dai.message.util.Key;
 import com.dai.message.util.SimpleTextWatcher;
-import com.dht.commonlib.base.BaseActivity;
-import com.dht.commonlib.callback.RecycleItemClickCallBack;
-import com.dht.commonlib.util.VerticalDecoration;
+import com.dht.baselib.base.BaseActivity;
+import com.dht.baselib.callback.RecycleItemClickCallBack;
+import com.dht.baselib.util.VerticalDecoration;
 
 import java.io.File;
 import java.util.ArrayList;

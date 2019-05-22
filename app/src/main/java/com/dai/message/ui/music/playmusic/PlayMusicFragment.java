@@ -26,10 +26,13 @@ import com.dai.message.util.Key;
 import com.dai.message.util.PlayType;
 import com.dai.message.util.ToastUtil;
 import com.dai.message.util.rxjava.ObservableUtil;
-import com.dht.commonlib.base.BaseActivity;
+import com.dht.baselib.base.BaseActivity;
 
 import io.reactivex.ObservableEmitter;
 
+/**
+ * @author Administrator
+ */
 public class PlayMusicFragment extends BaseFragment {
 
     private static final String TAG = "PlayMusicFragment";
@@ -43,13 +46,13 @@ public class PlayMusicFragment extends BaseFragment {
 
     private int playType = Config.getInstance().getPlayType().getIndex();
 
-    public static PlayMusicFragment newInstance() {
+    public static PlayMusicFragment newInstance () {
         return new PlayMusicFragment();
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView (@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                              @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_play_music, container, false);
         return mBinding.getRoot();
     }
@@ -57,7 +60,7 @@ public class PlayMusicFragment extends BaseFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated (@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(PlayMusicViewModel.class);
         mBinding.setPlayMusicViewModel(mViewModel);
@@ -68,13 +71,13 @@ public class PlayMusicFragment extends BaseFragment {
     }
 
     @Override
-    public void initViews(View view) {
+    public void initViews (View view) {
         super.initViews(view);
         mBinding.playTopTitleView.setActivity(getActivity());
         mBinding.playTopTitleView.updatePlayView(Config.getInstance().getCurrentMusic());
         mBinding.playTopTitleView.setSharedCallback(new LocalCallback<Music>() {
             @Override
-            public void onChangeData(Music data) {
+            public void onChangeData (Music data) {
                 super.onChangeData(data);
                 ToastUtil.toastCustom(getContext(), "功能开发中...", 500);
             }
@@ -83,15 +86,19 @@ public class PlayMusicFragment extends BaseFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
-    public void initData() {
+    public void initData () {
         super.initData();
-        if (getArguments() == null) return;
+        if (getArguments() == null) {
+            return;
+        }
         final Music currentMusic = getArguments().getParcelable(Key.MUSIC);
         musicService = (IMusicAidlInterface) getArguments().getBinder(Key.IBINDER);
-        if (musicService == null || currentMusic == null) return;
+        if (musicService == null || currentMusic == null) {
+            return;
+        }
         ObservableUtil.execute(new ObservableCallback<Boolean>() {
             @Override
-            public void subscribe(ObservableEmitter<Boolean> emitter) throws Exception {
+            public void subscribe (ObservableEmitter<Boolean> emitter) throws Exception {
                 super.subscribe(emitter);
                 boolean isPlaying = musicService.isPlaying();
                 if (!currentMusic.toString().equals(Config.getInstance().getCurrentMusic().toString())) {
@@ -102,10 +109,10 @@ public class PlayMusicFragment extends BaseFragment {
             }
         }, new LocalCallback<Boolean>() {
             @Override
-            public void onChangeData(Boolean data) {
+            public void onChangeData (Boolean data) {
                 super.onChangeData(data);
                 try {
-                    if (!data){
+                    if (!data) {
                         musicService.playMusic(currentMusic);
                         mBinding.playTopTitleView.updatePlayView(currentMusic);
                     }
@@ -117,7 +124,7 @@ public class PlayMusicFragment extends BaseFragment {
     }
 
     @Override
-    public void bindViews() {
+    public void bindViews () {
         super.bindViews();
         mBinding.playType.setOnClickListener(this);
         mBinding.previous.setOnClickListener(this);
@@ -129,7 +136,7 @@ public class PlayMusicFragment extends BaseFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void handlingClickEvents(View view) {
+    public void handlingClickEvents (View view) {
         super.handlingClickEvents(view);
         try {
             switch (view.getId()) {
@@ -166,7 +173,7 @@ public class PlayMusicFragment extends BaseFragment {
                     playMusicFragment.setArguments(getArguments());
                     playMusicFragment.show((BaseActivity) getActivity(), new LocalCallback<Music>() {
                         @Override
-                        public void onChangeData(Music data) {
+                        public void onChangeData (Music data) {
                             super.onChangeData(data);
                             try {
                                 mBinding.playTopTitleView.updatePlayView(data);
@@ -177,6 +184,8 @@ public class PlayMusicFragment extends BaseFragment {
                             }
                         }
                     });
+                    break;
+                default:
                     break;
             }
         } catch (RemoteException e) {

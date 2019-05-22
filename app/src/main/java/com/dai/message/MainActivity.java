@@ -17,8 +17,11 @@ import com.dai.message.service.MusicService;
 import com.dai.message.ui.dialog.MainDialogFragment;
 import com.dai.message.ui.home.HomeFragment;
 import com.dai.message.util.Key;
-import com.dht.commonlib.base.BaseActivity;
+import com.dht.baselib.base.BaseActivity;
 
+/**
+ * @author Administrator
+ */
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";

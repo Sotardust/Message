@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 
 import com.dai.message.R;
 import com.dai.message.adapter.util.ViewHolder;
-import com.dht.commonlib.callback.RecycleItemClickCallBack;
+import com.dht.baselib.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.RecycleItemAllCallsBinding;
 import com.dai.message.repository.entity.AllCallsEntity;
-import com.dht.commonlib.base.BaseAdapter;
+import com.dht.baselib.base.BaseAdapter;
 import java.util.List;
 
 /**

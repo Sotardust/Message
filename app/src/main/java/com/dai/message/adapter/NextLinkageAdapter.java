@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 
 import com.dai.message.R;
 import com.dai.message.adapter.util.ViewHolder;
-import com.dht.commonlib.base.BaseAdapter;
-import com.dht.commonlib.callback.RecycleItemClickCallBack;
+import com.dht.baselib.base.BaseAdapter;
+import com.dht.baselib.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.RecycleItemNextLinkageBinding;
 
 import java.util.List;

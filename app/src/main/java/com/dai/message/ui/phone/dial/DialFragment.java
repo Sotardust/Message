@@ -13,9 +13,9 @@ import android.view.ViewGroup;
 
 import com.dai.message.R;
 import com.dai.message.adapter.CallRecordAdapter;
-import com.dht.commonlib.util.VerticalDecoration;
+import com.dht.baselib.util.VerticalDecoration;
 import com.dai.message.base.BaseFragment;
-import com.dht.commonlib.callback.RecycleItemClickCallBack;
+import com.dht.baselib.callback.RecycleItemClickCallBack;
 import com.dai.message.repository.entity.AllCallsEntity;
 
 import com.dai.message.databinding.FragmentDialBinding;

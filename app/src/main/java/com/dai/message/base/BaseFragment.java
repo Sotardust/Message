@@ -17,6 +17,7 @@ import java.lang.ref.WeakReference;
  * 管理Fragment视图
  * <p>
  * created by dht on 2018/6/29 14:47
+ * @author Administrator
  */
 public class BaseFragment extends Fragment implements ITitleBarManager {
 

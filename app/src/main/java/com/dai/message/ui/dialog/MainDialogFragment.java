@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.dai.message.R;
 import com.dai.message.callback.LocalCallback;
 import com.dai.message.databinding.FragmentMainDialogBinding;
-import com.dht.commonlib.base.BaseDialogFragment;
+import com.dht.baselib.base.BaseDialogFragment;
 
 public class MainDialogFragment extends BaseDialogFragment {
 

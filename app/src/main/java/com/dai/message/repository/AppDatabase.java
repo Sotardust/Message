@@ -15,6 +15,8 @@ import com.dai.message.repository.entity.RecentPlayEntity;
 
 /**
  * created by dht on 2018/7/4 16:37
+ *
+ * @author Administrator
  */
 @Database(entities = {AllCallsEntity.class, Music.class, RecentPlayEntity.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
@@ -24,17 +26,17 @@ public abstract class AppDatabase extends RoomDatabase {
     /**
      * 操作数据库AllCallsDao抽象接口
      */
-    public abstract AllCallsDao getAllCallsDao();
+    public abstract AllCallsDao getAllCallsDao ();
 
     /**
      * 操作数据库MusicDao抽象接口
      */
-    public abstract MusicDao getMusicDao();
+    public abstract MusicDao getMusicDao ();
 
     /**
      * 操作数据库MusicDao抽象接口
      */
-    public abstract RecentPlayDao getRecentPlayDao();
+    public abstract RecentPlayDao getRecentPlayDao ();
 //
 //    /**
 //     * 操作数据库ContactDao抽象接口
@@ -46,14 +48,16 @@ public abstract class AppDatabase extends RoomDatabase {
 //     */
 //    public abstract HistoryDao historyDao();
 
-    public static AppDatabase getInstance(Context context) {
-        if (INSTANCE == null)
+    public static AppDatabase getInstance (Context context) {
+        if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
-                if (INSTANCE == null)
+                if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             AppDatabase.class, "message.db")
                             .build();
+                }
             }
+        }
         return INSTANCE;
     }
 }

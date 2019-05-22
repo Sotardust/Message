@@ -30,7 +30,7 @@ import com.dai.message.receiver.SendLocalBroadcast;
 import com.dai.message.ui.music.MusicFragment;
 import com.dai.message.ui.news.NewsFragment;
 import com.dai.message.ui.view.MusicTitleView;
-import com.dht.commonlib.base.BaseActivity;
+import com.dht.baselib.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -11,20 +11,24 @@ import android.util.Log;
 import com.dai.message.callback.LocalCallback;
 import com.dai.message.ui.login.LoginActivity;
 import com.dai.message.util.file.FileUtil;
-import com.dht.commonlib.base.BaseActivity;
+import com.dht.baselib.base.BaseActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * created by Administrator on 2018/10/29 14:44
+ *
+ * @author Administrator
  */
 public class WelcomeActivity extends BaseActivity {
 
     private static final String TAG = "WelcomeActivity";
 
     private static final int REQUEST_CODE = 1;
+    private int num = 0;
 
-    private static final String[] requestPermissions = new String[]{
+    private static final String[] REQUEST_PERMISSIONS = new String[]{
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_CALL_LOG,
             Manifest.permission.READ_CONTACTS,
@@ -36,7 +40,7 @@ public class WelcomeActivity extends BaseActivity {
     private WelcomeModel welcomeModel;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         welcomeModel = new WelcomeModel(getApplication());
@@ -45,9 +49,9 @@ public class WelcomeActivity extends BaseActivity {
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult (int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.d(TAG, " requestCode = [" + requestCode + "], permissions = [" + permissions + "], grantResults = [" + grantResults + "]");
+        Log.d(TAG, " requestCode = [" + requestCode + "], permissions = [" + Arrays.toString(permissions) + "], grantResults = [" + grantResults + "]");
         if (requestCode == REQUEST_CODE) {
             //请求权限后必须创建日志文件
             FileUtil.createLogFile();
@@ -55,12 +59,12 @@ public class WelcomeActivity extends BaseActivity {
 
         welcomeModel.initDatabaseData(new LocalCallback<String>() {
             @Override
-            public void onChangeData(String data) {
+            public void onChangeData (String data) {
                 Log.d(TAG, "onChangeData: path = " + data);
             }
         }, new LocalCallback<String>() {
             @Override
-            public void onChangeData() {
+            public void onChangeData () {
                 Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
@@ -72,9 +76,9 @@ public class WelcomeActivity extends BaseActivity {
     /**
      * 检查权限并申请
      */
-    private void checkSelfPermission() {
+    private void checkSelfPermission () {
         ArrayList<String> permissionList = new ArrayList<>();
-        for (String permission : requestPermissions) {
+        for (String permission : REQUEST_PERMISSIONS) {
             if (ActivityCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
                 permissionList.add(permission);
             }

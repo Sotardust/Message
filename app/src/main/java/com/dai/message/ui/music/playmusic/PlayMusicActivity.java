@@ -6,7 +6,7 @@ import android.support.annotation.RequiresApi;
 
 import com.dai.message.R;
 import com.dai.message.util.Key;
-import com.dht.commonlib.base.BaseActivity;
+import com.dht.baselib.base.BaseActivity;
 
 /**
  * created by dht on 2019/01/07 17:50:24

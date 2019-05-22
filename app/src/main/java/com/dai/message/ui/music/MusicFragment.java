@@ -13,9 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dai.message.R;
-import com.dht.commonlib.util.VerticalDecoration;
+import com.dht.baselib.util.VerticalDecoration;
 import com.dai.message.base.BaseFragment;
-import com.dht.commonlib.callback.RecycleItemClickCallBack;
+import com.dht.baselib.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.FragmentMusicBinding;
 import com.dai.message.ui.music.cloud.CloudDiskActivity;
 import com.dai.message.ui.music.download.DownloadActivity;

@@ -22,6 +22,8 @@ import io.reactivex.schedulers.Timed;
  * RxJava Observable 封装工具
  * <p>
  * created by dht on 2018/7/6 09:05
+ *
+ * @author Administrator
  */
 
 public class ObservableUtil {
@@ -36,13 +38,14 @@ public class ObservableUtil {
 //    public static <T> void flatMap(){
 //        Observable.create()
 //    }
+
     /**
      * 异步执行方法
      *
      * @param observableCallback 被观察者回调接口
      * @param localCallback      回调接口
      */
-    public static  <T> void execute(ObservableCallback<T> observableCallback, LocalCallback<T> localCallback) {
+    public static <T> void execute(ObservableCallback<T> observableCallback, LocalCallback<T> localCallback) {
         Observable.create(observableCallback)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
