@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 
 import com.dai.message.MainActivity;
 import com.dai.message.R;
-import com.dht.baselib.base.BaseFragment;
-import com.dht.network.BaseModel;
-import com.dht.baselib.callback.NetworkCallback;
 import com.dai.message.databinding.FragmentLoginBinding;
-import com.dai.message.repository.preferences.Config;
+import com.dht.baselib.base.BaseFragment;
+import com.dht.baselib.callback.NetworkCallback;
 import com.dht.baselib.util.ToastUtil;
+import com.dht.databaselib.preferences.MessagePreferences;
+import com.dht.network.BaseModel;
 
 /**
  * @author Administrator
@@ -111,7 +111,7 @@ public class LoginFragment extends BaseFragment {
      * 跳转到主页面
      */
     private void toMainActivity () {
-        Config.getInstance().setPersonId(123);
+        MessagePreferences.getInstance().setPersonId(123);
         Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
         if (getActivity() != null) {

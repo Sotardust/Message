@@ -16,14 +16,13 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
  * created by dht on 2019/1/14 10:18
+ *
+ * @author Administrator
  */
 public class MusicRepository {
 
@@ -44,41 +43,19 @@ public class MusicRepository {
      */
     @SuppressLint("CheckResult")
     public void insertMusic (final ArrayList<MusicBean> musics, final LocalCallback<String> localCallback) {
-        Observable.create(new ObservableCallback<List<String>>() {
+        Observable.create(new ObservableCallback<String>() {
             @Override
-            public void subscribe (ObservableEmitter<List<String>> emitter) throws Exception {
+            public void subscribe (ObservableEmitter<String> emitter) throws Exception {
                 super.subscribe(emitter);
                 List<String> list = new ArrayList<>(musicDao.getAllNames());
-                emitter.onNext(list);
+                for (MusicBean music : musics) {
+                    if (!list.contains(music.name)) {
+                        musicDao.addMusic(music);
+                    }
+                }
+                emitter.onNext(ObservableUtil.KEY_SUCCESSFUL);
             }
         }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
-                .doOnNext(new Consumer<List<String>>() {
-                    @Override
-                    public void accept (List<String> strings) throws Exception {
-                        Log.d(TAG, "accept: strings = " + strings);
-                    }
-                })
-                .observeOn(Schedulers.io())
-                .flatMap(new Function<List<String>, ObservableSource<String>>() {
-                    @Override
-                    public ObservableSource<String> apply (final List<String> names) throws Exception {
-
-                        return Observable.create(new ObservableCallback<String>() {
-                            @Override
-                            public void subscribe (ObservableEmitter<String> emitter) throws Exception {
-                                super.subscribe(emitter);
-                                for (MusicBean music : musics) {
-                                    if (!names.contains(music.name)) {
-                                        musicDao.addMusic(music);
-                                    }
-                                }
-                                emitter.onNext(ObservableUtil.KEY_SUCCESSFUL);
-                            }
-                        });
-                    }
-                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(ObservableUtil.subscriber(new LocalCallback<String>() {
                     @Override

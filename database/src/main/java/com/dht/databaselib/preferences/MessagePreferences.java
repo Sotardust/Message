@@ -1,55 +1,63 @@
-package com.dai.message.repository.preferences;
+package com.dht.databaselib.preferences;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.dht.music.util.PlayType;
 import com.dht.databaselib.bean.music.MusicBean;
 import com.google.gson.Gson;
 
 /**
  * @author Administrator
  */
-public class Config {
+public class MessagePreferences {
 
-
-    private static Config config;
+    private static MessagePreferences instance;
     private static SharedPreferences preferences;
     private static SharedPreferences.Editor editor;
 
     private Gson gson = new Gson();
 
     private static final String COOKIE = "cookie";
-    /*保存当前播放音乐*/
+    /**
+     * 保存当前播放音乐
+     */
     private static final String KEY_MUSIC = "music";
-    /*设置是否是第一次播放*/
+    /**
+     * 设置是否是第一次播放
+     */
     private static final String KEY_IS_FIRST_PLAY = "is_first_play";
-    /*设置播放类型*/
+    /**
+     * 设置播放类型
+     */
     private static final String KEY_PLAY_TYPE = "play_type";
-    /*设置用户id*/
+    /**
+     * 设置用户id
+     */
     private static final String KEY_PERSON_ID = "person_id";
 
-    /*保存前播放状态*/
+    /**
+     * 保存前播放状态
+     */
     private static final String KEY_IS_PLAYING = "is_playing";
 
-    private Config () {
+    private MessagePreferences () {
     }
 
-    public static Config getInstance () {
-        if (config == null) {
-            synchronized (Config.class) {
-                if (config == null) {
-                    return new Config();
+    public static MessagePreferences getInstance () {
+        if (instance == null) {
+            synchronized (MessagePreferences.class) {
+                if (instance == null) {
+                    return new MessagePreferences();
                 }
             }
         }
-        return config;
+        return instance;
     }
 
     @SuppressLint("CommitPrefEdits")
     public static void install (Context context) {
-        preferences = context.getApplicationContext().getSharedPreferences("config", Context.MODE_PRIVATE);
+        preferences = context.getApplicationContext().getSharedPreferences("message_preferences", Context.MODE_PRIVATE);
         editor = preferences.edit();
     }
 
@@ -78,8 +86,8 @@ public class Config {
         editor.apply();
     }
 
-    public PlayType getPlayType () {
-        return PlayType.getPlayType(preferences.getInt(KEY_PLAY_TYPE, 0));
+    public int getPlayType () {
+        return preferences.getInt(KEY_PLAY_TYPE, 0);
     }
 
 
@@ -109,6 +117,5 @@ public class Config {
     public long getPersonId () {
         return preferences.getLong(KEY_PERSON_ID, 123L);
     }
-
 
 }

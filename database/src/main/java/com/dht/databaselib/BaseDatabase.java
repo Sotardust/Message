@@ -18,7 +18,6 @@ import com.dht.databaselib.dao.RecentPlayDao;
  * @author Administrator
  */
 @Database(entities = {MusicBean.class, RecentPlayBean.class}, version = 1)
-
 public abstract class BaseDatabase extends RoomDatabase {
 
     private static BaseDatabase INSTANCE;

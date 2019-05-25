@@ -15,7 +15,9 @@ import android.widget.TextView;
 import com.dht.baselib.callback.LocalCallback;
 import com.dht.baselib.callback.ObservableCallback;
 import com.dht.baselib.util.ObservableUtil;
+import com.dht.baselib.util.ToastUtil;
 import com.dht.databaselib.bean.music.MusicBean;
+import com.dht.databaselib.preferences.MessagePreferences;
 import com.dht.music.MusicActivity;
 import com.dht.music.R;
 import com.dht.music.dialog.PlayListDialogFragment;
@@ -141,31 +143,31 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
         if (i == R.id.music_title_back) {
             activity.finish();
         } else if (i == R.id.music_title_play) {
-            //                if (Config.getInstance().isFirstPlay()) {
-//                    activity.playCurrentMusic();
-//                    Config.getInstance().setIsFirstPlay(false);
-//                } else if (activity.isPlaying()) {
-//                    activity.pause();
-//                } else {
-//                    activity.playPause();
-//                }
+            if (MessagePreferences.getInstance().isFirstPlay()) {
+                activity.playCurrentMusic();
+                MessagePreferences.getInstance().setIsFirstPlay(false);
+            } else if (activity.isPlaying()) {
+                activity.pause();
+            } else {
+                activity.playPause();
+            }
             updateView();
         } else if (i == R.id.music_title_play_list) {
             PlayListDialogFragment playListDialogFragment = PlayListDialogFragment.newInstance();
             playListDialogFragment.setArguments(bundle);
             playListDialogFragment.show(activity);
         } else if (i == R.id.music_relative) {
-            //                    Config.getInstance().setIsFirstPlay(false);
+            MessagePreferences.getInstance().setIsFirstPlay(false);
 //                    Log.d(TAG, "onClick: music_relative = ");
-//                    if (Config.getInstance().getCurrentMusic() == null) {
-//                        ToastUtil.toastCustom(context, R.string.no_play_music, 500);
-//                        return;
-//                    }
+            if (MessagePreferences.getInstance().getCurrentMusic() == null) {
+                ToastUtil.toastCustom(context, R.string.no_play_music, 500);
+                return;
+            }
 //                    Bundle bundle = new Bundle();
 //                    bundle.putBinder(Key.IBINDER, (IBinder) activity);
 //                    Intent intent = new Intent(context, PlayMusicActivity.class);
 //                    intent.putExtra(Key.IBINDER, bundle);
-//                    intent.putExtra(Key.MUSIC, Config.getInstance().getCurrentMusic());
+//                    intent.putExtra(Key.MUSIC, MessagePreferences.getInstance().getCurrentMusic());
 //                    context.startActivity(intent);
         }
     }

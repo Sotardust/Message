@@ -12,6 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dht.baselib.base.BaseFragment;
+import com.dht.baselib.callback.LocalCallback;
+import com.dht.baselib.util.ToastUtil;
+import com.dht.databaselib.bean.music.MusicBean;
+import com.dht.databaselib.preferences.MessagePreferences;
 import com.dht.music.R;
 import com.dht.music.databinding.FragmentPlayMusicBinding;
 import com.dht.music.util.PlayType;
@@ -60,15 +64,15 @@ public class PlayMusicFragment extends BaseFragment {
     @Override
     public void initViews (View view) {
         super.initViews(view);
-//        mBinding.playTopTitleView.setActivity(getActivity());
-//        mBinding.playTopTitleView.updatePlayView(Config.getInstance().getCurrentMusic());
-//        mBinding.playTopTitleView.setSharedCallback(new LocalCallback<MusicBean>() {
-//            @Override
-//            public void onChangeData (MusicBean data) {
-//                super.onChangeData(data);
-//                ToastUtil.toastCustom(getContext(), "功能开发中...", 500);
-//            }
-//        });
+        mBinding.playTopTitleView.setActivity(getActivity());
+        mBinding.playTopTitleView.updatePlayView(MessagePreferences.getInstance().getCurrentMusic());
+        mBinding.playTopTitleView.setSharedCallback(new LocalCallback<MusicBean>() {
+            @Override
+            public void onChangeData (MusicBean data) {
+                super.onChangeData(data);
+                ToastUtil.toastCustom(getContext(), "功能开发中...", 500);
+            }
+        });
     }
 //
 //    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -88,7 +92,7 @@ public class PlayMusicFragment extends BaseFragment {
 //            public void subscribe (ObservableEmitter<Boolean> emitter) throws Exception {
 //                super.subscribe(emitter);
 //                boolean isPlaying = musicService.isPlaying();
-//                if (!currentMusic.toString().equals(Config.getInstance().getCurrentMusic().toString())) {
+//                if (!currentMusic.toString().equals(MessagePreferences.getInstance().getCurrentMusic().toString())) {
 //                    emitter.onNext(false);
 //                    return;
 //                }

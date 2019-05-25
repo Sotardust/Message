@@ -10,14 +10,21 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.dht.baselib.callback.LocalCallback;
+import com.dht.baselib.util.ToastUtil;
 import com.dht.databaselib.bean.music.IMusicAidlInterface;
 import com.dht.databaselib.bean.music.MusicBean;
+import com.dht.databaselib.preferences.MessagePreferences;
 import com.dht.music.repository.MusicRepository;
 import com.dht.music.repository.RecentPlayRepository;
+import com.dht.music.util.PlayType;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.dht.music.util.PlayType.LIST_LOOP;
+import static com.dht.music.util.PlayType.PLAY_IN_ORDER;
+import static com.dht.music.util.PlayType.SHUFFLE_PLAYBACK;
 
 
 /**
@@ -63,7 +70,7 @@ public class MusicService extends Service {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
         }
-//        Config.getInstance().setIsPlaying(false);
+        MessagePreferences.getInstance().setIsPlaying(false);
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared (MediaPlayer mp) {
@@ -74,7 +81,7 @@ public class MusicService extends Service {
                 }
                 mp.start();
                 Log.d(TAG, "onPrepared: isPlaying = " + mp.isPlaying());
-//                Config.getInstance().setIsPlaying(mp.isPlaying());
+                MessagePreferences.getInstance().setIsPlaying(mp.isPlaying());
             }
         });
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -136,7 +143,7 @@ public class MusicService extends Service {
                     mediaPlayer.setDataSource(music.path);
                     mediaPlayer.prepareAsync();
                     Log.d("MusicTitleView", "playMusic: music = " + music);
-//                    Config.getInstance().setCurrentMusic(music);
+                    MessagePreferences.getInstance().setCurrentMusic(music);
                     recentPlayRepository.insertOrUpdate(music);
 //                    SendLocalBroadcast.getInstance().updateMusicView(getApplicationContext(), null, SendLocalBroadcast.KEY_UPDATE_VIEW);
                 } catch (IOException e) {
@@ -149,12 +156,12 @@ public class MusicService extends Service {
 
         @Override
         public void playCurrentMusic () throws RemoteException {
-//            MusicBean music = Config.getInstance().getCurrentMusic();
-//            if (music == null) {
-////                ToastUtil.toastCustom(getApplicationContext(), "数据初始化中", 500);
-//                return;
-//            }
-//            playMusic(music);
+            MusicBean music = MessagePreferences.getInstance().getCurrentMusic();
+            if (music == null) {
+                ToastUtil.toastCustom(getApplicationContext(), "数据初始化中", 500);
+                return;
+            }
+            playMusic(music);
         }
 
         @Override
@@ -171,9 +178,9 @@ public class MusicService extends Service {
                 repository.getAllMusics(new LocalCallback<ArrayList<MusicBean>>() {
                     @Override
                     public void onChangeData (ArrayList<MusicBean> data) {
-//                        if (Config.getInstance().getCurrentMusic() == null) {
-//                            Config.getInstance().setCurrentMusic(data.get(0));
-//                        }
+                        if (MessagePreferences.getInstance().getCurrentMusic() == null) {
+                            MessagePreferences.getInstance().setCurrentMusic(data.get(0));
+                        }
 //                        Log.d(TAG, "onChangeData: musicList.size() = " + musicList.size() + "data.size() = " + data.size());
 //                        if (musicList.size() != data.size()) {
 //                            SendLocalBroadcast.getInstance().updateMusicView(getApplicationContext(), null, SendLocalBroadcast.KEY_UPDATE_VIEW);
@@ -190,15 +197,15 @@ public class MusicService extends Service {
         @Override
         public void setPlayType (int type) throws RemoteException {
 
-//            Config.getInstance().setPlayType(type);
-//            mediaPlayer.setLooping(type == PlayType.SINGLE_CYCLE.getIndex());
+            MessagePreferences.getInstance().setPlayType(type);
+            mediaPlayer.setLooping(type == PlayType.SINGLE_CYCLE.getIndex());
         }
 
         @Override
         public void playPause () throws RemoteException {
             synchronized (MusicBean.class) {
                 mediaPlayer.start();
-//                Config.getInstance().setIsPlaying(true);
+                MessagePreferences.getInstance().setIsPlaying(true);
             }
         }
 
@@ -208,7 +215,7 @@ public class MusicService extends Service {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
                 }
-//                Config.getInstance().setIsPlaying(false);
+                MessagePreferences.getInstance().setIsPlaying(false);
             }
         }
 
@@ -225,7 +232,7 @@ public class MusicService extends Service {
         public void playPrevious () throws RemoteException {
             synchronized (MusicBean.class) {
                 isNext = false;
-//                switch (Config.getInstance().getPlayType()) {
+//                switch (MessagePreferences.getInstance().getPlayType()) {
 //                    case LIST_LOOP:
 //                    case PLAY_IN_ORDER:
 //                        if (currentPlayIndex >= musicList.size()) {
@@ -248,7 +255,7 @@ public class MusicService extends Service {
         public void playNext () throws RemoteException {
             synchronized (MusicBean.class) {
                 isNext = true;
-//                switch (Config.getInstance().getPlayType()) {
+//                switch (MessagePreferences.getInstance().getPlayType()) {
 //                    case LIST_LOOP:
 //                    case PLAY_IN_ORDER:
 //                        if (currentPlayIndex >= musicList.size()) {
@@ -286,10 +293,9 @@ public class MusicService extends Service {
 
         @Override
         public boolean isPlaying () throws RemoteException {
-//            synchronized (MusicBean.class) {
-//                return Config.getInstance().isPlaying();
-//            }
-            return false;
+            synchronized (MusicBean.class) {
+                return MessagePreferences.getInstance().isPlaying();
+            }
         }
 
         @Override
@@ -318,10 +324,9 @@ public class MusicService extends Service {
 
         @Override
         public MusicBean getCurrentMusic () throws RemoteException {
-//            synchronized (MusicBean.class) {
-//                return Config.getInstance().getCurrentMusic();
-//            }
-            return new MusicBean();
+            synchronized (MusicBean.class) {
+                return MessagePreferences.getInstance().getCurrentMusic();
+            }
         }
 
         @Override

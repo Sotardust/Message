@@ -5,6 +5,7 @@ import android.util.Log;
 import com.dht.baselib.callback.NetworkCallback;
 import com.dht.baselib.callback.ObservableCallback;
 import com.dht.baselib.callback.ObserverCallback;
+import com.dht.databaselib.preferences.MessagePreferences;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -55,7 +56,7 @@ public class BaseApi {
                 if (call.request().url().toString().contains("login")) {
                     String cookie = response.headers().get("Set-Cookie");
                     Log.d(TAG, "subscribe: cookie = " + cookie);
-//                    Config.getInstance().setCookie(cookie);
+                    MessagePreferences.getInstance().setCookie(cookie);
                 }
                 emitter.onNext(response.body());
             }

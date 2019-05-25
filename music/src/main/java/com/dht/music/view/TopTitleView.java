@@ -16,6 +16,7 @@ import com.dht.baselib.callback.LocalCallback;
 import com.dht.baselib.util.SimpleTextWatcher;
 import com.dht.baselib.util.ToastUtil;
 import com.dht.databaselib.bean.music.MusicBean;
+import com.dht.databaselib.preferences.MessagePreferences;
 import com.dht.music.R;
 
 /**
@@ -115,7 +116,7 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
         shared.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick (View v) {
-//                localCallback.onChangeData(Config.getInstance().getCurrentMusic());
+                localCallback.onChangeData(MessagePreferences.getInstance().getCurrentMusic());
             }
         });
     }

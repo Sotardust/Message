@@ -69,7 +69,9 @@ public class HomeViewModel extends BaseAndroidViewModel {
         File[] files = file1.listFiles();
         Log.d(TAG, "searchSongFile: files.length = " + files.length);
         for (File file : files) {
-            if (file.isFile() && (file.getName().contains(".mp3") && !file.getName().contains(".mp3.") || file.getName().contains(".flac"))) {
+            boolean isContains = file.isFile() &&
+                    (file.getName().contains(".mp3") && !file.getName().contains(".mp3.") || file.getName().contains(".flac"));
+            if (isContains) {
                 Log.d(TAG, "findSong: " + file.getPath());
                 filePaths.add(file);
             } else if (file.isDirectory()) {

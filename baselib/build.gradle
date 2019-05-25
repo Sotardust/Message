@@ -34,9 +34,6 @@ dependencies {
     api "com.android.support:design:$rootProject.ext.supportLibraryVersion"
     api "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
 
-    //https://github.com/google/gson
-    api "com.google.code.gson:gson:$rootProject.ext.gsonVersion"
-
     //https://github.com/ReactiveX/RxAndroid
     api "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjavaVersion"
     api "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroidVersion"

@@ -123,6 +123,7 @@ public class RetrofitClient {
      */
     private static Interceptor getRequestHeader () {
         return new Interceptor() {
+            @NonNull
             @Override
             public okhttp3.Response intercept (@NonNull Chain chain) throws IOException {
                 okhttp3.Request originalRequest = chain.request();
