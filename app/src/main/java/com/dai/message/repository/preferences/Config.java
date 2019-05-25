@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.dai.message.bean.Music;
-import com.dai.message.util.PlayType;
+import com.dht.music.util.PlayType;
+import com.dht.databaselib.bean.music.MusicBean;
 import com.google.gson.Gson;
 
 /**
@@ -64,13 +64,13 @@ public class Config {
     }
 
 
-    public void setCurrentMusic (Music music) {
+    public void setCurrentMusic (MusicBean music) {
         editor.putString(KEY_MUSIC, gson.toJson(music));
         editor.apply();
     }
 
-    public Music getCurrentMusic () {
-        return gson.fromJson(preferences.getString(KEY_MUSIC, null), Music.class);
+    public MusicBean getCurrentMusic () {
+        return gson.fromJson(preferences.getString(KEY_MUSIC, null), MusicBean.class);
     }
 
     public void setPlayType (int playType) {

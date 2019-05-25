@@ -1,13 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
-
+    compileSdkVersion 28
 
 
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
 
@@ -35,12 +34,14 @@ dependencies {
     api "com.android.support:design:$rootProject.ext.supportLibraryVersion"
     api "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
 
-    //https://github.com/square/retrofit
-    api "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
-    api "com.squareup.retrofit2:converter-gson:$rootProject.ext.converterGsonVersion"
-    api "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.adapterRxjava2Version"
+    //https://github.com/google/gson
+    api "com.google.code.gson:gson:$rootProject.ext.gsonVersion"
 
-    //https://github.com/square/okhttp
-    api "com.squareup.okhttp3:okhttp:$rootProject.ext.okHttpVersion"
-    api "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.loggingInterceptorVersion"
+    //https://github.com/ReactiveX/RxAndroid
+    api "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjavaVersion"
+    api "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroidVersion"
+
+    api project(path: ':database')
+    api project(path: ':network')
+
 }

@@ -14,6 +14,8 @@ import com.dai.message.ui.phone.allcalls.AllCallsViewModel;
  * 创建工厂传参
  * <p>
  * created by dht on 2018/8/10 11:23
+ *
+ * @author Administrator
  */
 public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
@@ -22,13 +24,12 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
 
     private final Application mApplication;
 
-    public static ViewModelFactory getInstance(Application application) {
+    public static ViewModelFactory getInstance (Application application) {
 
         if (INSTANCE == null) {
             synchronized (ViewModelFactory.class) {
                 if (INSTANCE == null) {
                     INSTANCE = new ViewModelFactory(application);
-
                 }
             }
         }
@@ -36,17 +37,17 @@ public class ViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     }
 
     @VisibleForTesting
-    public static void destroyInstance() {
+    public static void destroyInstance () {
         INSTANCE = null;
     }
 
-    private ViewModelFactory(Application application) {
+    private ViewModelFactory (Application application) {
         mApplication = application;
     }
 
     @NonNull
     @Override
-    public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+    public <T extends ViewModel> T create (@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(SecondaryLinkageViewModel.class)) {
             //noinspection unchecked
             return (T) new SecondaryLinkageViewModel(mApplication);

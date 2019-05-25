@@ -7,11 +7,13 @@ import com.dai.message.util.ScreenUtil;
 
 /**
  * created by Administrator on 2018/10/24 16:58
+ *
+ * @author Administrator
  */
 public class MessageApplication extends Application {
 
     @Override
-    public void onCreate() {
+    public void onCreate () {
         super.onCreate();
         ScreenUtil.install(getApplicationContext());
         Config.install(getApplicationContext());

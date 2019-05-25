@@ -8,10 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
-import com.dai.message.callback.LocalCallback;
 import com.dai.message.ui.login.LoginActivity;
-import com.dai.message.util.file.FileUtil;
 import com.dht.baselib.base.BaseActivity;
+import com.dht.baselib.callback.LocalCallback;
+import com.dht.baselib.util.file.FileUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,7 +46,6 @@ public class WelcomeActivity extends BaseActivity {
         welcomeModel = new WelcomeModel(getApplication());
         checkSelfPermission();
     }
-
 
     @Override
     public void onRequestPermissionsResult (int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

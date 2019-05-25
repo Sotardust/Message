@@ -1,13 +1,16 @@
 package com.dai.message.ui.login;
 
-import com.dai.message.bean.BaseModel;
-import com.dai.message.callback.NetworkCallback;
+import com.dht.baselib.callback.NetworkCallback;
+import com.dht.baselib.base.BaseApi;
 import com.dai.message.network.service.LoginService;
-import com.dai.message.network.retrofit.BaseApi;
-import com.dai.message.network.retrofit.RetrofitClient;
+import com.dht.network.BaseModel;
+import com.dht.network.RetrofitClient;
 
 import retrofit2.Call;
 
+/**
+ * @author Administrator
+ */
 public class LoginApi extends BaseApi {
 
 
@@ -23,7 +26,7 @@ public class LoginApi extends BaseApi {
      * @param password        密码
      * @param networkCallback 回调接口
      */
-    public void logon(String name, String password, NetworkCallback<BaseModel<String>> networkCallback) {
+    public void logon (String name, String password, NetworkCallback<BaseModel<String>> networkCallback) {
         Call<BaseModel<String>> call = RetrofitClient.getInstance()
                 .create(BASE_URL, LoginService.class)
                 .login(name, password);
@@ -38,7 +41,7 @@ public class LoginApi extends BaseApi {
      * @param registerTime    注册时间
      * @param networkCallback 回调接口
      */
-    public void register(String name, String password, String registerTime, NetworkCallback<BaseModel<String>> networkCallback) {
+    public void register (String name, String password, String registerTime, NetworkCallback<BaseModel<String>> networkCallback) {
         Call<BaseModel<String>> call = RetrofitClient.getInstance()
                 .create(BASE_URL, LoginService.class)
                 .register(name, password, registerTime);

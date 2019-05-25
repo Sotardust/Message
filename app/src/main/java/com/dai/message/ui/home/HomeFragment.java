@@ -19,9 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dai.message.R;
-import com.dai.message.adapter.BaseFragmentPageAdapter;
-import com.dai.message.base.BaseFragment;
-import com.dai.message.callback.LocalCallback;
+import com.dht.baselib.base.BaseFragmentPageAdapter;
 import com.dai.message.callback.OnPageChangerCallback;
 import com.dai.message.callback.TabLayoutCallback;
 import com.dai.message.databinding.FragmentHomeBinding;
@@ -29,13 +27,19 @@ import com.dai.message.receiver.BaseReceiver;
 import com.dai.message.receiver.SendLocalBroadcast;
 import com.dai.message.ui.music.MusicFragment;
 import com.dai.message.ui.news.NewsFragment;
-import com.dai.message.ui.view.MusicTitleView;
-import com.dht.baselib.base.BaseActivity;
+import com.dht.music.view.MusicTitleView;
+import com.dht.baselib.base.BaseFragment;
+import com.dht.baselib.callback.LocalCallback;
+import com.dht.databaselib.bean.music.IMusicAidlInterface;
+import com.dht.music.MusicActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Administrator
+ */
 public class HomeFragment extends BaseFragment {
 
     private static final String TAG = "HomeFragment";
@@ -47,14 +51,15 @@ public class HomeFragment extends BaseFragment {
     private int[] images = {R.drawable.tablayout_music_bg, R.drawable.tablayout_news_bg,
             R.drawable.tablayout_novel_bg, R.drawable.tablayout_setting_bg};
 
+    private IMusicAidlInterface service;
 
-    public static HomeFragment newInstance() {
+    public static HomeFragment newInstance () {
         return new HomeFragment();
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView (@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                              @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
         receiver = new BaseReceiver<>(localCallback);
         LocalBroadcastManager.getInstance(getContext().getApplicationContext()).registerReceiver(receiver,
@@ -64,7 +69,7 @@ public class HomeFragment extends BaseFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated (@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         mBinding.setHomeViewModel(mViewModel);
@@ -77,38 +82,40 @@ public class HomeFragment extends BaseFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
-    public void initViews(View view) {
+    public void initViews (View view) {
         super.initViews(view);
         musicTitleView = view.findViewById(R.id.home_music_title_view);
-        musicTitleView.setBundleData(getArguments());
-        musicTitleView.setActivity((BaseActivity) getActivity());
+        musicTitleView.setActivity((MusicActivity) getActivity());
     }
 
     private LocalCallback<Integer> localCallback = new LocalCallback<Integer>() {
         @Override
-        public void onChangeData(Integer data) {
+        public void onChangeData (Integer data) {
             Log.d("MusicTitleView", "HomeFragment onChangeData: data = " + data);
             musicTitleView.updateView();
         }
     };
 
     @Override
-    public void onResume() {
+    public void onResume () {
         super.onResume();
-        if (musicTitleView != null)
+        if (musicTitleView != null) {
             musicTitleView.updateView();
+        }
     }
 
     @Override
-    public void onDestroyView() {
+    public void onDestroyView () {
         super.onDestroyView();
-        if (getContext() == null) return;
+        if (getContext() == null) {
+            return;
+        }
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
-    public void bindViews() {
+    public void bindViews () {
         super.bindViews();
         final List<Fragment> mFragmentList = new ArrayList<>();
         MusicFragment musicFragment = MusicFragment.newInstance();
@@ -136,7 +143,7 @@ public class HomeFragment extends BaseFragment {
 
         mBinding.tabLayout.addOnTabSelectedListener(new TabLayoutCallback() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
+            public void onTabSelected (TabLayout.Tab tab) {
                 super.onTabSelected(tab);
                 Log.d(TAG, "onTabSelected: tab.position = " + tab.getPosition());
                 mBinding.baseViewPager.setCurrentItem(tab.getPosition());
@@ -145,7 +152,7 @@ public class HomeFragment extends BaseFragment {
         mBinding.baseViewPager.addOnPageChangeListener(new OnPageChangerCallback() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
-            public void onPageSelected(int position) {
+            public void onPageSelected (int position) {
                 super.onPageSelected(position);
                 Log.d(TAG, "onPageSelected: position = " + position);
                 Objects.requireNonNull(mBinding.tabLayout.getTabAt(position)).select();
@@ -156,7 +163,7 @@ public class HomeFragment extends BaseFragment {
     /**
      * 自定义布局TabLayout
      */
-    private void setCustomTabLayout() {
+    private void setCustomTabLayout () {
         for (int i = 0; i < titles.length; i++) {
             TabLayout.Tab tab = mBinding.tabLayout.newTab();
             tab.setCustomView(getTabView(i));
@@ -170,7 +177,7 @@ public class HomeFragment extends BaseFragment {
      * @param index 下标
      * @return View
      */
-    private View getTabView(int index) {
+    private View getTabView (int index) {
         View view = LayoutInflater.from(getContext()).inflate(R.layout.tablayout_home, (ViewGroup) mBinding.getRoot(), false);
         ImageView imageView = view.findViewById(R.id.tab_image);
         imageView.setImageResource(images[index]);

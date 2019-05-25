@@ -1,7 +1,7 @@
 package com.dai.message.network.service;
 
 
-import com.dai.message.bean.BaseModel;
+import com.dht.network.BaseModel;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

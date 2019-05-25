@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorWhite">#ffffffff</color>
+
+
+    <color name="orange">#FFA500</color>
+    <color name="background">#e6e6e6</color>
+    <color name="tab_background">#f3f1f1</color>
+    <color name="gray">#bfbfbf</color>
+
+    <!--水波纹或5.0以下选择器颜色-->
+    <color name="tabBackground">#777D7D7D</color>
+</resources>

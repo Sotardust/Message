@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="recentPlayEntity"
+            type="com.dht.databaselib.bean.music.RecentPlayBean" />
+
+        <variable
+            name="index"
+            type="Integer" />
+
+        <variable
+            name="dynamicValue"
+            type="String" />
+
+        <variable
+            name="callback"
+            type="com.dht.baselib.callback.RecycleItemClickCallBack" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <RelativeLayout
+            android:id="@+id/item_recent_relative"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:onClick="@{() ->  callback.onItemClickListener(0,recentPlayEntity,index)}"
+            android:paddingStart="15dp"
+            android:paddingLeft="15dp"
+            tools:ignore="RtlSymmetry">
+
+            <TextView
+                android:id="@+id/item_recent_song_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{recentPlayEntity.songName}"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/item_recent_author"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/item_recent_song_name"
+                android:layout_alignStart="@+id/item_recent_song_name"
+                android:layout_alignLeft="@+id/item_recent_song_name"
+                android:layout_toLeftOf="@+id/item_dynamic_value"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="2dp"
+                android:text="@{recentPlayEntity.music.author}"
+                android:textColor="@color/tabBackground"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/item_dynamic_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/item_recent_author"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentRight="true"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="@{dynamicValue}"
+                android:textColor="@color/tabBackground"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/item_recent_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@mipmap/icon_soy_original_64"
+            android:onClick="@{() ->  callback.onItemClickListener(1,recentPlayEntity,index)}" />
+
+    </LinearLayout>
+
+</layout>

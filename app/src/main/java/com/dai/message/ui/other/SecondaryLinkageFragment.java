@@ -16,7 +16,7 @@ import com.dai.message.R;
 import com.dai.message.adapter.LinkageAdapter;
 import com.dai.message.adapter.NextLinkageAdapter;
 import com.dht.baselib.util.VerticalDecoration;
-import com.dai.message.base.BaseFragment;
+import com.dht.baselib.base.BaseFragment;
 import com.dht.baselib.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.FragmentSecondaryLinkageBinding;
 import com.dai.message.ui.ViewModelFactory;

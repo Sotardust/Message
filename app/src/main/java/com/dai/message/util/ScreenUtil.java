@@ -7,11 +7,13 @@ import android.view.WindowManager;
 
 /**
  * created by Administrator on 2018/12/13 18:28
+ *
+ * @author Administrator
  */
 public class ScreenUtil {
 
 
-    public static void install(Context context) {
+    public static void install (Context context) {
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
         assert wm != null;
@@ -22,11 +24,11 @@ public class ScreenUtil {
         HEIGHT = point.y;
     }
 
-    public static int getWidth() {
+    public static int getWidth () {
         return WIDTH;
     }
 
-    public static int getHeight() {
+    public static int getHeight () {
         return HEIGHT;
     }
 

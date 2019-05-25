@@ -20,16 +20,18 @@ import java.util.List;
 
 /**
  * created by Administrator on 2018/12/7 11:23
+ *
+ * @author Administrator
  */
 public class LinkageAdapter extends BaseAdapter<String> {
 
 
-    public LinkageAdapter(@NonNull RecycleItemClickCallBack<String> callBack) {
+    public LinkageAdapter (@NonNull RecycleItemClickCallBack<String> callBack) {
         this.callBack = callBack;
     }
 
     @Override
-    public void setChangeList(List<String> mList) {
+    public void setChangeList (List<String> mList) {
         this.mList = mList;
         notifyDataSetChanged();
     }
@@ -37,7 +39,7 @@ public class LinkageAdapter extends BaseAdapter<String> {
     private List<List<String>> lists;
     private Context context;
 
-    public void setChangeList(Context context, List<String> mList, List<List<String>> lists) {
+    public void setChangeList (Context context, List<String> mList, List<List<String>> lists) {
         this.lists = lists;
         this.context = context;
         this.mList = mList;
@@ -45,7 +47,7 @@ public class LinkageAdapter extends BaseAdapter<String> {
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateVH(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateVH (@NonNull ViewGroup parent, int viewType) {
         RecycleItemLinkageBinding mBinding = DataBindingUtil.
                 inflate(LayoutInflater.from(parent.getContext()), R.layout.recycle_item_linkage,
                         parent, false);
@@ -54,14 +56,14 @@ public class LinkageAdapter extends BaseAdapter<String> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void onBindVH(@NonNull final RecyclerView.ViewHolder holder, final int position) {
+    public void onBindVH (@NonNull final RecyclerView.ViewHolder holder, final int position) {
         ((ViewHolder<RecycleItemLinkageBinding>) holder).mBinding.itemContent.setText(mList.get(position));
         setFlowLayout((ViewHolder<RecycleItemLinkageBinding>) holder, lists.get(position), position);
 
     }
 
     @SuppressWarnings("unchecked")
-    private void setFlowLayout(ViewHolder<RecycleItemLinkageBinding> viewHolder, final List<String> list, final int position) {
+    private void setFlowLayout (ViewHolder<RecycleItemLinkageBinding> viewHolder, final List<String> list, final int position) {
         for (final String value : list) {
             final TextView textView = (TextView) LayoutInflater.from(context).inflate(R.layout.flowlayout_textview, viewHolder.mBinding.flowLayout, false);
             textView.setText(value);
@@ -69,7 +71,7 @@ public class LinkageAdapter extends BaseAdapter<String> {
                 boolean isClick = true;
 
                 @Override
-                public void onClick(View view) {
+                public void onClick (View view) {
                     Log.d("dht", "onClick: index = " + list.indexOf(value) + ", value = " + value);
                     isClick = !isClick;
                     textView.setBackgroundResource(isClick ? R.drawable.bound_recycle_item : R.drawable.bound_recycle_item_blue);
@@ -83,7 +85,7 @@ public class LinkageAdapter extends BaseAdapter<String> {
 
     private int number = -1;
 
-    public void setShowLines(int number) {
+    public void setShowLines (int number) {
         this.number = number;
         notifyDataSetChanged();
     }

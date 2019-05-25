@@ -6,15 +6,19 @@ import android.arch.persistence.room.TypeConverter;
  * created by Administrator on 2018/11/19 15:36
  */
 public enum CallType {
-
-    ANSWER,//接听
-    DIAL,//拨打
-    MISSED,//未接
-    REJECT,//拒接
-    OTHER;//其他
+    //接听
+    ANSWER,
+    //拨打
+    DIAL,
+    //未接
+    MISSED,
+    //拒接
+    REJECT,
+    //其他
+    OTHER;
 
     @TypeConverter
-    public static CallType getCallType(int index) {
+    public static CallType getCallType (int index) {
         switch (index) {
             case 1:
                 return ANSWER;

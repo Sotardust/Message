@@ -6,11 +6,11 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 
-import com.dai.message.callback.LocalCallback;
 import com.dai.message.repository.AllCallsRepository;
 import com.dai.message.repository.entity.AllCallsEntity;
 import com.dai.message.util.AllCallsType;
 import com.dai.message.util.CallType;
+import com.dht.baselib.callback.LocalCallback;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

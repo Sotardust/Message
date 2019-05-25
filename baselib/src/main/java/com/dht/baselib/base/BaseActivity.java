@@ -9,9 +9,22 @@ import android.support.v7.app.AppCompatActivity;
  *
  * @author Administrator
  */
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
+    /**
+     * 获取布局文件 Id
+     *
+     * @return Int
+     */
+//    protected abstract int getLayoutId ();
+
+    /**
+     * 向Activity中添加 添加Fragment
+     */
+//    protected abstract void addFragmentCommitNow ();
+
 }
