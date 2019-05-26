@@ -19,9 +19,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -48,66 +46,45 @@ public class RecentPlayRepository {
      */
     public void insertOrUpdate (final MusicBean music) {
 
-        Observable.create(new ObservableCallback<List<RecentPlayBean>>() {
+        Observable.create(new ObservableCallback<String>() {
             @Override
-            public void subscribe (ObservableEmitter<List<RecentPlayBean>> emitter) throws Exception {
+            public void subscribe (ObservableEmitter<String> emitter) throws Exception {
                 super.subscribe(emitter);
-                List<RecentPlayBean> list = new ArrayList<>(recentPlayDao.getPersonRecentPlayEntity(MessagePreferences.getInstance().getPersonId()));
-                emitter.onNext(list);
+                final long personId = MessagePreferences.getInstance().getPersonId();
+                List<RecentPlayBean> entities = new ArrayList<>(recentPlayDao.getPersonRecentPlayEntity(personId));
+
+                ArrayList<String> names = new ArrayList<>();
+                for (RecentPlayBean entity : entities) {
+                    names.add(entity.songName);
+                }
+                //不包含则像数据库中插入数据
+                if (!names.contains(music.name)) {
+                    RecentPlayBean entity = new RecentPlayBean();
+                    entity.music = music;
+                    entity.songName = music.name;
+                    entity.personId = personId;
+                    entity.playCount = 1;
+                    entity.playTotal = 1;
+                    entity.playTime = System.currentTimeMillis();
+                    entity.music = music;
+                    recentPlayDao.addRecentPlayEntity(entity);
+                    emitter.onNext("insert " + ObservableUtil.KEY_SUCCESSFUL);
+                    return;
+                }
+                int index = names.lastIndexOf(music.name);
+                final RecentPlayBean entity = entities.get(index);
+                int playCount = 0;
+                long currentTime = System.currentTimeMillis();
+                //大于1周
+                if (currentTime - entity.playTime >= 7 * 24 * 3600L) {
+                    playCount = 1;
+                } else {
+                    ++playCount;
+                }
+                recentPlayDao.updateRecentPlayEntity(entity.id, currentTime, playCount, entity.playTotal + 1);
+                emitter.onNext("update " + ObservableUtil.KEY_SUCCESSFUL);
             }
         }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .observeOn(Schedulers.io())
-                .flatMap(new Function<List<RecentPlayBean>, ObservableSource<String>>() {
-                    @Override
-                    public ObservableSource<String> apply (final List<RecentPlayBean> entities) throws Exception {
-                        ArrayList<String> names = new ArrayList<>();
-                        for (RecentPlayBean entity : entities) {
-                            names.add(entity.songName);
-                        }
-                        //不包含则像数据库中插入数据
-                        final long personId = MessagePreferences.getInstance().getPersonId();
-                        if (!names.contains(music.name)) {
-                            return Observable.create(new ObservableCallback<String>() {
-                                @Override
-                                public void subscribe (ObservableEmitter<String> emitter) throws Exception {
-                                    super.subscribe(emitter);
-                                    RecentPlayBean entity = new RecentPlayBean();
-                                    entity.music = music;
-                                    entity.songName = music.name;
-                                    entity.personId = personId;
-                                    entity.playCount = 1;
-                                    entity.playTotal = 1;
-                                    entity.playTime = System.currentTimeMillis();
-                                    entity.music = music;
-                                    recentPlayDao.addRecentPlayEntity(entity);
-                                    emitter.onNext("insert " + ObservableUtil.KEY_SUCCESSFUL);
-                                }
-                            });
-                        }
-
-                        int index = names.lastIndexOf(music.name);
-                        final RecentPlayBean entity = entities.get(index);
-                        return Observable.create(new ObservableCallback<String>() {
-                            @Override
-                            public void subscribe (ObservableEmitter<String> emitter) throws Exception {
-                                super.subscribe(emitter);
-                                int playCount = 0;
-                                long currentTime = System.currentTimeMillis();
-                                //大于1周
-                                if (currentTime - entity.playTime >= 7 * 24 * 3600L) {
-                                    playCount = 1;
-                                } else {
-                                    ++playCount;
-                                }
-                                recentPlayDao.updateRecentPlayEntity(entity.id, currentTime, playCount, entity.playTotal + 1);
-                                emitter.onNext("update " + ObservableUtil.KEY_SUCCESSFUL);
-                            }
-                        });
-
-
-                    }
-                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(ObservableUtil.subscriber(new LocalCallback<String>() {
                     @Override

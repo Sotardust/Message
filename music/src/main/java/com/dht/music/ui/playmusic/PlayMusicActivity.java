@@ -4,7 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 
-import com.dht.baselib.base.BaseActivity;
+import com.dht.music.MusicActivity;
 import com.dht.music.R;
 
 /**
@@ -12,7 +12,7 @@ import com.dht.music.R;
  *
  * @author Administrator
  */
-public class PlayMusicActivity extends BaseActivity {
+public class PlayMusicActivity extends MusicActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
@@ -20,14 +20,10 @@ public class PlayMusicActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_music);
         if (savedInstanceState == null) {
-            //        PlayMusicFragment playMusicFragment = PlayMusicFragment.newInstance();
-//        Bundle bundle = new Bundle();
-//        bundle.putBinder(Key.IBINDER, getIntent().getBundleExtra(Key.IBINDER).getBinder(Key.IBINDER));
-//        bundle.putParcelable(Key.MUSIC, getIntent().getParcelableExtra(Key.MUSIC));
-//        playMusicFragment.setArguments(bundle);
-//        getSupportFragmentManager().beginTransaction()
-//                .replace(R.id.container, playMusicFragment)
-//                .commitNow();
+            PlayMusicFragment playMusicFragment = PlayMusicFragment.newInstance();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, playMusicFragment)
+                    .commitNow();
         }
 
     }

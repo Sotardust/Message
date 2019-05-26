@@ -2,6 +2,7 @@ package com.dht.music.ui.local;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,21 +17,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dht.baselib.base.BaseFragment;
-import com.dht.baselib.callback.LocalCallback;
 import com.dht.baselib.callback.NetworkCallback;
 import com.dht.baselib.callback.RecycleItemClickCallBack;
 import com.dht.baselib.util.SimpleTextWatcher;
 import com.dht.baselib.util.VerticalDecoration;
 import com.dht.databaselib.bean.music.MusicBean;
+import com.dht.databaselib.preferences.MessagePreferences;
 import com.dht.music.MusicActivity;
 import com.dht.music.R;
 import com.dht.music.databinding.FragmentLocalBinding;
+import com.dht.music.ui.playmusic.PlayMusicActivity;
 import com.dht.network.BaseModel;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Administrator
+ */
 public class LocalFragment extends BaseFragment {
 
     private static final String TAG = "LocalFragment";
@@ -38,7 +43,6 @@ public class LocalFragment extends BaseFragment {
     private LocalViewModel mViewModel;
     private FragmentLocalBinding mBinding;
     private ArrayList<MusicBean> musicList = new ArrayList<>();
-    //    private BaseReceiver receiver;
     private LocalAdapter localAdapter;
 
     public static LocalFragment newInstance () {
@@ -49,9 +53,6 @@ public class LocalFragment extends BaseFragment {
     public View onCreateView (@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                               @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_local, container, false);
-//        receiver = new BaseReceiver<>(receiverCallback);
-//        LocalBroadcastManager.getInstance(getContext().getApplicationContext()).registerReceiver(receiver,
-//                new IntentFilter(SendLocalBroadcast.KEY_UPDATE_MUSIC_TITLE_VIEW));
         return mBinding.getRoot();
     }
 
@@ -69,23 +70,12 @@ public class LocalFragment extends BaseFragment {
     @Override
     public void initViews (View view) {
         super.initViews(view);
-//        Bundle bundle = new Bundle();
-//        bundle.putBinder(Key.IBINDER, getArguments().getBinder(Key.IBINDER));
         mBinding.localMusicTitleView.setActivity((MusicActivity) getActivity());
-
         mBinding.localTopTitleView.updateView(getActivity(), getString(R.string.local_music));
         mBinding.localTopTitleView.setLocalTitleBar();
         mBinding.localTopTitleView.setSearchEditTextWatcher(textWatcher);
-
     }
 
-    private LocalCallback<Integer> receiverCallback = new LocalCallback<Integer>() {
-        @Override
-        public void onChangeData (Integer data) {
-            Log.d("MusicTitleView", "LocalFragment onChangeData: data = " + data);
-            mBinding.localMusicTitleView.updateView();
-        }
-    };
 
     private SimpleTextWatcher textWatcher = new SimpleTextWatcher() {
         @Override
@@ -113,10 +103,6 @@ public class LocalFragment extends BaseFragment {
     @Override
     public void onDestroyView () {
         super.onDestroyView();
-        if (getContext() == null) {
-            return;
-        }
-//        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
 
     @Override
@@ -127,7 +113,7 @@ public class LocalFragment extends BaseFragment {
 
         mViewModel.getMusicData().observe(this, new Observer<ArrayList<MusicBean>>() {
             @Override
-            public void onChanged (@Nullable ArrayList<MusicBean> musics) {
+            public void onChanged (ArrayList<MusicBean> musics) {
                 musicList.clear();
                 musicList.addAll(musics);
                 localAdapter.setChangeList(musics);
@@ -151,13 +137,9 @@ public class LocalFragment extends BaseFragment {
                 files.add(file);
                 mViewModel.uploadFiles(files, networkCallback);
             } else {
-//                Intent intent = new Intent(getContext(), PlayMusicActivity.class);
-//                intent.putExtra(Key.MUSIC, music);
-//                Bundle bundle = new Bundle();
-//                assert getArguments() != null;
-//                bundle.putBinder(Key.IBINDER, getArguments().getBinder(Key.IBINDER));
-//                intent.putExtra(Key.IBINDER, bundle);
-//                startActivity(intent);
+                MessagePreferences.getInstance().setCurrentMusic(music);
+                Intent intent = new Intent(getContext(), PlayMusicActivity.class);
+                startActivity(intent);
             }
         }
     };

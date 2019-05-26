@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class MusicContact {
 
-    interface MusicPresenter {
+    interface Presenter {
         void playMusic (MusicBean music);
 
         void playCurrentMusic ();

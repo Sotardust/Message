@@ -1,7 +1,6 @@
 package com.dai.message.ui.home;
 
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,19 +17,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.dai.message.R;
-import com.dht.baselib.base.BaseFragmentPageAdapter;
 import com.dai.message.callback.OnPageChangerCallback;
 import com.dai.message.callback.TabLayoutCallback;
 import com.dai.message.databinding.FragmentHomeBinding;
-import com.dai.message.receiver.BaseReceiver;
-import com.dai.message.receiver.SendLocalBroadcast;
 import com.dai.message.ui.music.MusicFragment;
 import com.dai.message.ui.news.NewsFragment;
-import com.dht.music.view.MusicTitleView;
 import com.dht.baselib.base.BaseFragment;
-import com.dht.baselib.callback.LocalCallback;
-import com.dht.databaselib.bean.music.IMusicAidlInterface;
+import com.dht.baselib.base.BaseFragmentPageAdapter;
 import com.dht.music.MusicActivity;
+import com.dht.music.view.MusicTitleView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +40,10 @@ public class HomeFragment extends BaseFragment {
     private HomeViewModel mViewModel;
     private FragmentHomeBinding mBinding;
 
-    private BaseReceiver receiver;
     private String[] titles = {"音乐", "新闻", "小说", "我的"};
     private int[] images = {R.drawable.tablayout_music_bg, R.drawable.tablayout_news_bg,
             R.drawable.tablayout_novel_bg, R.drawable.tablayout_setting_bg};
 
-    private IMusicAidlInterface service;
 
     public static HomeFragment newInstance () {
         return new HomeFragment();
@@ -61,9 +53,7 @@ public class HomeFragment extends BaseFragment {
     public View onCreateView (@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                               @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
-        receiver = new BaseReceiver<>(localCallback);
-        LocalBroadcastManager.getInstance(getContext().getApplicationContext()).registerReceiver(receiver,
-                new IntentFilter(SendLocalBroadcast.KEY_UPDATE_MUSIC_TITLE_VIEW));
+
         return mBinding.getRoot();
     }
 
@@ -88,14 +78,6 @@ public class HomeFragment extends BaseFragment {
         musicTitleView.setActivity((MusicActivity) getActivity());
     }
 
-    private LocalCallback<Integer> localCallback = new LocalCallback<Integer>() {
-        @Override
-        public void onChangeData (Integer data) {
-            Log.d("MusicTitleView", "HomeFragment onChangeData: data = " + data);
-            musicTitleView.updateView();
-        }
-    };
-
     @Override
     public void onResume () {
         super.onResume();
@@ -107,10 +89,6 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onDestroyView () {
         super.onDestroyView();
-        if (getContext() == null) {
-            return;
-        }
-        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(receiver);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)

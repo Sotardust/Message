@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:layout_gravity="center_vertical"
-    android:background="@color/colorWhite"
-    android:orientation="horizontal">
+    android:background="@color/colorWhite">
 
     <ImageView
         android:id="@+id/top_title_back"
@@ -127,9 +126,10 @@
             android:layout_alignBottom="@+id/top_edit"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_marginEnd="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="0dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="23dp"
             android:background="@mipmap/more"
             android:visibility="gone" />
 

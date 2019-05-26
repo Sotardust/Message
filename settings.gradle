@@ -1,1 +1,1 @@
-include ':app', ':baselib', ':database', ':music', ':network'
+include ':app', ':baselib', ':database', ':music', ':network', ':eventbus'

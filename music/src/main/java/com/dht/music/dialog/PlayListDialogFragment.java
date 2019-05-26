@@ -2,6 +2,7 @@ package com.dht.music.dialog;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.dht.baselib.util.VerticalDecoration;
 import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.music.R;
 import com.dht.music.databinding.FragmentPlayListDialogBinding;
+import com.dht.music.ui.playmusic.PlayMusicActivity;
 
 import java.util.ArrayList;
 
@@ -106,13 +108,8 @@ public class PlayListDialogFragment extends BaseDialogFragment {
             } else {
                 dismiss();
                 if (localCallback == null) {
-//                    Intent intent = new Intent(getContext(), PlayMusicActivity.class);
-//                    intent.putExtra(Key.MUSIC, music);
-//                    Bundle bundle = new Bundle();
-//                    assert getArguments() != null;
-//                    bundle.putBinder(Key.IBINDER, getArguments().getBinder(Key.IBINDER));
-//                    intent.putExtra(Key.IBINDER, bundle);
-//                    startActivity(intent);
+                    Intent intent = new Intent(getContext(), PlayMusicActivity.class);
+                    startActivity(intent);
                 } else {
                     localCallback.onChangeData(music);
                 }

@@ -4,7 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 
-import com.dht.baselib.base.BaseActivity;
+import com.dht.music.MusicActivity;
 import com.dht.music.R;
 
 /**
@@ -12,7 +12,7 @@ import com.dht.music.R;
  *
  * @author Administrator
  */
-public class LocalActivity extends BaseActivity {
+public class LocalActivity extends MusicActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override

@@ -2,6 +2,7 @@ package com.dht.music.ui.recentplay;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,9 +19,11 @@ import com.dht.baselib.callback.RecycleItemClickCallBack;
 import com.dht.baselib.util.ToastUtil;
 import com.dht.baselib.util.VerticalDecoration;
 import com.dht.databaselib.bean.music.RecentPlayBean;
+import com.dht.databaselib.preferences.MessagePreferences;
 import com.dht.music.R;
 import com.dht.music.databinding.FragmentRecentPlayBinding;
 import com.dht.music.ui.local.LocalAdapter;
+import com.dht.music.ui.playmusic.PlayMusicActivity;
 
 import java.util.List;
 
@@ -34,7 +37,6 @@ public class RecentPlayFragment extends BaseFragment {
     private FragmentRecentPlayBinding mBinding;
 
     private RecentPlayAdapter recentPlayAdapter;
-
 
     private LinearLayoutManager layoutManager;
     private RecentPlayAdapter.DynamicType dynamicType = RecentPlayAdapter.DynamicType.PLAY_TIME;
@@ -95,13 +97,10 @@ public class RecentPlayFragment extends BaseFragment {
                 mViewModel.deleteCurrentRecentEntity(entity.songName, dynamicType);
                 ToastUtil.toastCustom(getContext(), R.string.delete_successful, 500);
             } else {
-//                Intent intent = new Intent(getContext(), PlayMusicActivity.class);
-//                intent.putExtra(Key.MUSIC, entity.music);
-//                Bundle bundle = new Bundle();
-//                assert getArguments() != null;
-//                bundle.putBinder(Key.IBINDER, getArguments().getBinder(Key.IBINDER));
-//                intent.putExtra(Key.IBINDER, bundle);
-//                startActivity(intent);
+                MessagePreferences.getInstance().setCurrentMusic(entity.music);
+                Intent intent = new Intent(getContext(), PlayMusicActivity.class);
+                startActivity(intent);
+                onDestroy();
             }
         }
     };
