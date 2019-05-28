@@ -2,10 +2,9 @@ package com.dai.message.ui.other;
 
 
 import android.app.Application;
+import android.arch.lifecycle.ViewModel;
 
-import com.dai.message.base.BaseViewModel;
-
-public class SecondaryLinkageViewModel extends BaseViewModel {
+public class SecondaryLinkageViewModel extends ViewModel {
 
     private Application mApplication;
 

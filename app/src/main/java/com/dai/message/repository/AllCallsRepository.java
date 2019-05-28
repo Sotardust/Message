@@ -2,12 +2,13 @@ package com.dai.message.repository;
 
 import android.app.Application;
 
-import com.dai.message.callback.LocalCallback;
-import com.dai.message.callback.ObservableCallback;
 import com.dai.message.repository.dao.AllCallsDao;
 import com.dai.message.repository.entity.AllCallsEntity;
-import com.dai.message.util.LogUtil;
-import com.dai.message.util.rxjava.ObservableUtil;
+import com.dht.baselib.callback.LocalCallback;
+import com.dht.baselib.callback.ObservableCallback;
+import com.dht.baselib.util.LogUtil;
+import com.dht.baselib.util.ObservableUtil;
+import com.dht.databaselib.BaseDatabase;
 
 import java.util.List;
 
@@ -25,8 +26,8 @@ public class AllCallsRepository {
     private AllCallsDao allCallsDao;
 
     public AllCallsRepository(Application application) {
-        AppDatabase appDatabase = AppDatabase.getInstance(application.getApplicationContext());
-        allCallsDao = appDatabase.getAllCallsDao();
+        BaseDatabase appDatabase = BaseDatabase.getInstance(application.getApplicationContext());
+//        allCallsDao = appDatabase.getAllCallsDao();
     }
 
     /**

@@ -13,10 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dai.message.R;
-import com.dai.message.base.BaseDialogFragment;
-import com.dai.message.callback.LocalCallback;
 import com.dai.message.databinding.FragmentMainDialogBinding;
+import com.dht.baselib.base.BaseDialogFragment;
+import com.dht.baselib.callback.LocalCallback;
 
+/**
+ * @author Administrator
+ */
 public class MainDialogFragment extends BaseDialogFragment {
 
     private MainDialogViewModel mViewModel;
@@ -59,7 +62,7 @@ public class MainDialogFragment extends BaseDialogFragment {
             @Override
             public void onClick(View v) {
                 dismiss();
-                localCallback.onSuccessful();
+                localCallback.onChangeData();
             }
         });
         mBinding.btnCancel.setOnClickListener(new View.OnClickListener() {

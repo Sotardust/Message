@@ -4,16 +4,19 @@ import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
-import com.dai.message.base.BaseAndroidViewModel;
-import com.dai.message.callback.LocalCallback;
 import com.dai.message.repository.AllCallsRepository;
 import com.dai.message.repository.entity.AllCallsEntity;
-import com.dai.message.util.LogUtil;
+import com.dht.baselib.base.BaseAndroidViewModel;
+import com.dht.baselib.callback.LocalCallback;
+import com.dht.baselib.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * @author Administrator
+ */
 public class MissedCallsViewModel extends BaseAndroidViewModel {
 
     private static final String TAG = "MissedCallsViewModel";
@@ -21,7 +24,7 @@ public class MissedCallsViewModel extends BaseAndroidViewModel {
 
     private AllCallsRepository repository;
 
-    public MissedCallsViewModel(@NonNull Application application) {
+    public MissedCallsViewModel (@NonNull Application application) {
         super(application);
 //        iwxapi = getIwxapi(application.getApplicationContext());
         repository = new AllCallsRepository(application);
@@ -33,7 +36,7 @@ public class MissedCallsViewModel extends BaseAndroidViewModel {
     private MutableLiveData<ArrayList<AllCallsEntity>> mMissedCallsList;
 
 
-    public MutableLiveData<ArrayList<AllCallsEntity>> getMissedCallsList() {
+    public MutableLiveData<ArrayList<AllCallsEntity>> getMissedCallsList () {
         if (mMissedCallsList == null) {
             mMissedCallsList = new MutableLiveData<>();
             distinctMissedCalls();
@@ -56,10 +59,10 @@ public class MissedCallsViewModel extends BaseAndroidViewModel {
      *
      * @return AllCalls实体集合
      */
-    private void distinctMissedCalls() {
+    private void distinctMissedCalls () {
         repository.getCallsEntities(new LocalCallback<List<AllCallsEntity>>() {
             @Override
-            public void onChangeData(List<AllCallsEntity> data) {
+            public void onChangeData (List<AllCallsEntity> data) {
                 mMissedCallsList.setValue((ArrayList<AllCallsEntity>) data);
             }
         }, "3");
@@ -70,7 +73,7 @@ public class MissedCallsViewModel extends BaseAndroidViewModel {
      *
      * @param text
      */
-    public void sendMessageToWeChat(String text) {
+    public void sendMessageToWeChat (String text) {
         LogUtil.writeInfo(TAG, "", text);
 //        WXTextObject textObject = new WXTextObject();
 //        textObject.text = "测试数据分享到微信";

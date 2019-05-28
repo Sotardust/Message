@@ -5,14 +5,17 @@ import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
 import com.dai.message.R;
-import com.dai.message.base.BaseAndroidViewModel;
-import com.dai.message.callback.LocalCallback;
-import com.dai.message.repository.MusicRepository;
-import com.dai.message.repository.RecentPlayRepository;
+import com.dht.baselib.base.BaseAndroidViewModel;
+import com.dht.baselib.callback.LocalCallback;
+import com.dht.music.repository.MusicRepository;
+import com.dht.music.repository.RecentPlayRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Administrator
+ */
 public class MusicViewModel extends BaseAndroidViewModel {
 
 
@@ -24,7 +27,7 @@ public class MusicViewModel extends BaseAndroidViewModel {
 
     private MutableLiveData<List<Integer>> musicData = new MutableLiveData<>();
 
-    public MusicViewModel(@NonNull Application application) {
+    public MusicViewModel (@NonNull Application application) {
         super(application);
         repository = new MusicRepository(application);
         recentPlayRepository = new RecentPlayRepository(application);
@@ -40,11 +43,11 @@ public class MusicViewModel extends BaseAndroidViewModel {
      *
      * @return MutableLiveData
      */
-    public MutableLiveData<List<Integer>> getEndListData() {
+    public MutableLiveData<List<Integer>> getEndListData () {
 
         repository.getMusicTotal(new LocalCallback<Integer>() {
             @Override
-            public void onChangeData(Integer data) {
+            public void onChangeData (Integer data) {
                 list.set(0, data);
                 musicData.postValue(list);
             }
@@ -52,7 +55,7 @@ public class MusicViewModel extends BaseAndroidViewModel {
 
         recentPlayRepository.getPlayTotal(new LocalCallback<Integer>() {
             @Override
-            public void onChangeData(Integer data) {
+            public void onChangeData (Integer data) {
                 super.onChangeData(data);
                 list.set(1, data);
                 musicData.postValue(list);

@@ -16,12 +16,12 @@
         android:background="@color/background"
         android:orientation="vertical">
 
-        <com.dai.message.ui.view.MusicTitleView
+        <com.dht.music.view.MusicTitleView
             android:id="@+id/home_music_title_view"
             android:layout_width="match_parent"
             android:layout_height="60dp" />
 
-        <com.dai.message.base.BaseViewPager
+        <com.dht.baselib.base.BaseViewPager
             android:id="@+id/baseViewPager"
             android:layout_width="match_parent"
             android:layout_height="0dp"

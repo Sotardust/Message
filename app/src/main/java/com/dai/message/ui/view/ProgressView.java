@@ -10,24 +10,32 @@ import android.view.View;
 import com.dai.message.util.ScreenUtil;
 
 /**
- * Created by dai on 2018/1/10.
+ * @author dai
+ * @date 2018/1/10
  */
 
 public class ProgressView extends View {
 
     private Paint paint;
-    private int defaultSize;//自定义View默认的宽高
-    private float barWidth = 5;//圆弧进度条宽度
+    /**
+     * 自定义View默认的宽高
+     */
+    private int defaultSize;
+    /**
+     * 圆弧进度条宽度
+     */
+    private float barWidth = 5;
 
-    public ProgressView(Context context, @Nullable AttributeSet attrs) {
+    public ProgressView (Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         System.out.println("ProgressView.ProgressView1");
         init(context, attrs);
     }
 
-    private void init(Context context, AttributeSet attrs) {
+    private void init (Context context, AttributeSet attrs) {
         paint = new Paint();
-        paint.setStyle(Paint.Style.STROKE);//只描边，不填充
+        //只描边，不填充
+        paint.setStyle(Paint.Style.STROKE);
         paint.setAntiAlias(true);
         paint.setStrokeWidth(3);
         defaultSize = dip2px(context, ScreenUtil.WIDTH);
@@ -38,15 +46,17 @@ public class ProgressView extends View {
     private int min;
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         height = measureSize(defaultSize, heightMeasureSpec);
         width = measureSize(defaultSize, widthMeasureSpec);
-        min = Math.min(width, height);// 获取View最短边的长度
-        setMeasuredDimension(min, min);// 强制改View为以最短边为长度的正方形
+        // 获取View最短边的长度
+        min = Math.min(width, height);
+        // 强制改View为以最短边为长度的正方形
+        setMeasuredDimension(min, min);
     }
 
-    private int measureSize(int defaultSize, int measureSpec) {
+    private int measureSize (int defaultSize, int measureSpec) {
         int result = defaultSize;
         int specMode = View.MeasureSpec.getMode(measureSpec);
         int specSize = View.MeasureSpec.getSize(measureSpec);
@@ -59,13 +69,13 @@ public class ProgressView extends View {
         return result;
     }
 
-    private int dip2px(Context context, float dpValue) {
+    private int dip2px (Context context, float dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw (Canvas canvas) {
         super.onDraw(canvas);
         canvas.rotate(-30, min / 2, height / 2);
         for (int i = 0; i < 12; i++) {
@@ -79,12 +89,14 @@ public class ProgressView extends View {
 
     int[] colors = {-1, -657931, -1315861, -1973791, -2631721, -3289651, -3881788, -4539718, -5197648, -5855578, -6513508, -7829368};
 
-    private void changeColors() {
+    private void changeColors () {
         int end = colors[colors.length - 1];
         int temp = 0;
         for (int i = colors.length - 1; i > 0; i--) {
             colors[i] = colors[i - 1];
-            if (i == 1) colors[0] = end;
+            if (i == 1) {
+                colors[0] = end;
+            }
         }
     }
 

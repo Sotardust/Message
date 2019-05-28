@@ -10,7 +10,7 @@
 
         <variable
             name="callback"
-            type="com.dai.message.callback.RecycleItemClickCallBack" />
+            type="com.dht.baselib.callback.RecycleItemClickCallBack" />
     </data>
 
     <LinearLayout

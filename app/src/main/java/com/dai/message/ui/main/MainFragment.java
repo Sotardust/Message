@@ -15,8 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dai.message.R;
-import com.dai.message.adapter.BaseFragmentPageAdapter;
-import com.dai.message.base.BaseFragment;
+import com.dht.baselib.base.BaseFragmentPageAdapter;
+import com.dht.baselib.base.BaseFragment;
 import com.dai.message.ui.other.SecondaryLinkageFragment;
 import com.dai.message.ui.phone.allcalls.AllCallsFragment;
 import com.dai.message.ui.phone.answered.AnsweredFragment;

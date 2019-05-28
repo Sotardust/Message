@@ -15,7 +15,6 @@
     <string name="refuse_times"> 拒接 %1$d 次 </string>
     <string name="title_activity_welcome">interest</string>
     <string name="action_settings">Settings</string>
-    <string name="joiner"> ~ &#160; %1$s</string>
 
     <string-array name="musicList">
         <item>本地音乐</item>
@@ -47,9 +46,6 @@
     <string name="recent_play">最近播放</string>
     <string name="recent_one_week">最近一周</string>
     <string name="recent_all_time">所有时间</string>
-
-    <string name="recent_play_time">播放时间：[value]</string>
-    <string name="recent_play_count">播放次数：[value] 次</string>
 
     <string name="ascending">升序</string>
     <string name="descending">降序</string>

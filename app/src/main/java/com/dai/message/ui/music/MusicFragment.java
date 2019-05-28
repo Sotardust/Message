@@ -13,19 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dai.message.R;
-import com.dai.message.adapter.util.VerticalDecoration;
-import com.dai.message.base.BaseFragment;
-import com.dai.message.callback.RecycleItemClickCallBack;
+import com.dht.baselib.util.VerticalDecoration;
+import com.dht.baselib.base.BaseFragment;
+import com.dht.baselib.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.FragmentMusicBinding;
-import com.dai.message.ui.music.cloud.CloudDiskActivity;
-import com.dai.message.ui.music.download.DownloadActivity;
-import com.dai.message.ui.music.local.LocalActivity;
-import com.dai.message.ui.music.recentplay.RecentPlayActivity;
+import com.dht.music.ui.cloud.CloudDiskActivity;
+import com.dht.music.ui.download.DownloadActivity;
+import com.dht.music.ui.local.LocalActivity;
+import com.dht.music.ui.recentplay.RecentPlayActivity;
 import com.dai.message.util.Key;
 
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author Administrator
+ */
 public class MusicFragment extends BaseFragment {
 
     private MusicViewModel mViewModel;
@@ -34,19 +37,19 @@ public class MusicFragment extends BaseFragment {
 
     private MusicAdapter musicAdapter;
 
-    public static MusicFragment newInstance() {
+    public static MusicFragment newInstance () {
         return new MusicFragment();
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView (@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                              @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_music, container, false);
         return mBinding.getRoot();
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated (@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(MusicViewModel.class);
         mBinding.setMusicViewModel(mViewModel);
@@ -54,7 +57,7 @@ public class MusicFragment extends BaseFragment {
     }
 
     @Override
-    public void bindViews() {
+    public void bindViews () {
         super.bindViews();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         musicAdapter = new MusicAdapter(recycleItemClickCallBack);
@@ -66,11 +69,11 @@ public class MusicFragment extends BaseFragment {
     }
 
     @Override
-    public void onResume() {
+    public void onResume () {
         super.onResume();
         mViewModel.getEndListData().observe(this, new Observer<List<Integer>>() {
             @Override
-            public void onChanged(List<Integer> totalList) {
+            public void onChanged (List<Integer> totalList) {
                 musicAdapter.setEndList(totalList);
             }
         });
@@ -79,7 +82,7 @@ public class MusicFragment extends BaseFragment {
     private RecycleItemClickCallBack<String> recycleItemClickCallBack = new RecycleItemClickCallBack<String>() {
 
         @Override
-        public void onItemClickListener(String value, int position) {
+        public void onItemClickListener (String value, int position) {
             super.onItemClickListener(value, position);
             switch (position) {
                 case 0:
@@ -99,13 +102,14 @@ public class MusicFragment extends BaseFragment {
                     startActivity(new Intent(getActivity(), DownloadActivity.class)
                             .putExtra(Key.IBINDER, getArguments()));
                     break;
+                default:
             }
         }
 
     };
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
     }
 }

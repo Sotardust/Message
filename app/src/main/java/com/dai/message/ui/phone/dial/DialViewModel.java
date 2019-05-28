@@ -4,10 +4,10 @@ import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
-import com.dai.message.base.BaseAndroidViewModel;
-import com.dai.message.callback.LocalCallback;
 import com.dai.message.repository.AllCallsRepository;
 import com.dai.message.repository.entity.AllCallsEntity;
+import com.dht.baselib.base.BaseAndroidViewModel;
+import com.dht.baselib.callback.LocalCallback;
 
 import java.util.ArrayList;
 import java.util.List;

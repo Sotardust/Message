@@ -3,15 +3,16 @@ package com.dai.message.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
-import com.dai.message.callback.LocalCallback;
 import com.dai.message.util.Key;
+import com.dht.baselib.callback.LocalCallback;
 
 /**
  * service ，fragment间通讯 及时更新视图view
  * <p>
  * created by dht on 2018/7/25 15:50
+ *
+ * @author Administrator
  */
 public class BaseReceiver<T> extends BroadcastReceiver {
 
@@ -19,12 +20,12 @@ public class BaseReceiver<T> extends BroadcastReceiver {
 
     private LocalCallback<Integer> callBack;
 
-    public BaseReceiver(LocalCallback<Integer> callBack) {
+    public BaseReceiver (LocalCallback<Integer> callBack) {
         this.callBack = callBack;
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive (Context context, Intent intent) {
 
 
         int index = intent.getIntExtra(Key.INDEX, -1);
