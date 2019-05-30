@@ -29,7 +29,7 @@ public class RecentPlayAdapter extends BaseAdapter<RecentPlayBean> {
     private DynamicType dynamicType = DynamicType.PLAY_TIME;
 
     private Context context;
-    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss", Locale.CHINA);
+    private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
 
     public RecentPlayAdapter (RecycleItemClickCallBack<RecentPlayBean> recycleItemClickCallBack, Context context) {
         this.context = context;

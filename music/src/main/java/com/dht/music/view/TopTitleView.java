@@ -13,10 +13,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dht.baselib.callback.LocalCallback;
+import com.dht.baselib.callback.ObserverCallback;
 import com.dht.baselib.util.SimpleTextWatcher;
 import com.dht.baselib.util.ToastUtil;
 import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.databaselib.preferences.MessagePreferences;
+import com.dht.eventbus.RxBus;
+import com.dht.eventbus.event.UpdatePlayEvent;
 import com.dht.music.R;
 
 /**
@@ -26,6 +29,7 @@ import com.dht.music.R;
  */
 public class TopTitleView extends LinearLayout implements View.OnClickListener {
 
+    private static final String TAG = "TopTitleView";
 
     private ImageView back;
     private TextView title;
@@ -141,17 +145,20 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
     /**
      * 更新视图View
      *
-     * @param music Music实体数据
      */
-    public void updatePlayView (final MusicBean music) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run () {
-                playRelative.setVisibility(VISIBLE);
-                songName.setText(music.name);
-                author.setText(music.author);
-            }
-        });
+    public void updatePlayView () {
+        RxBus.getInstance().toObservable(UpdatePlayEvent.class)
+                .subscribe(new ObserverCallback<UpdatePlayEvent>() {
+                    @Override
+                    public void onNext (UpdatePlayEvent updatePlayEvent) {
+                        super.onNext(updatePlayEvent);
+                        final MusicBean music = MessagePreferences.getInstance().getCurrentMusic();
+                        playRelative.setVisibility(VISIBLE);
+                        songName.setText(music.name);
+                        author.setText(music.author);
+                    }
+                });
+        RxBus.getInstance().post(new UpdatePlayEvent("updatePlayView"));
     }
 
     /**

@@ -91,7 +91,7 @@ public class MessagePreferences {
     }
 
 
-    public void setIsFirstPlay (boolean isFirstPlay) {
+    public void setFirstPlay (boolean isFirstPlay) {
         editor.putBoolean(KEY_IS_FIRST_PLAY, isFirstPlay);
         editor.apply();
     }
@@ -100,7 +100,7 @@ public class MessagePreferences {
         return preferences.getBoolean(KEY_IS_FIRST_PLAY, true);
     }
 
-    public void setIsPlaying (boolean isPlaying) {
+    public void setPlaying (boolean isPlaying) {
         editor.putBoolean(KEY_IS_PLAYING, isPlaying);
         editor.apply();
     }

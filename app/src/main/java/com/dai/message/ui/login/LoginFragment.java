@@ -57,7 +57,7 @@ public class LoginFragment extends BaseFragment {
         super.bindViews();
         mBinding.login.setOnClickListener(this);
         mBinding.register.setOnClickListener(this);
-        mViewModel.initData();
+//        mViewModel.initData();
     }
 
 
@@ -68,6 +68,7 @@ public class LoginFragment extends BaseFragment {
             case R.id.login:
                 String name = mBinding.name.getText().toString();
                 String password = mBinding.password.getText().toString();
+                MessagePreferences.getInstance().setFirstPlay(true);
                 if (isEmpty(name, password)) {
                     return;
                 }

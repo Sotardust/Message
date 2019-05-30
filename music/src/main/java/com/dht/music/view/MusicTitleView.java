@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,16 +14,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dht.baselib.callback.LocalCallback;
-import com.dht.baselib.callback.ObservableCallback;
-import com.dht.baselib.util.ObservableUtil;
+import com.dht.baselib.callback.ObserverCallback;
 import com.dht.baselib.util.ToastUtil;
 import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.databaselib.preferences.MessagePreferences;
+import com.dht.eventbus.RxBus;
+import com.dht.eventbus.event.UpdateViewEvent;
 import com.dht.music.MusicActivity;
+import com.dht.music.MusicModel;
 import com.dht.music.R;
 import com.dht.music.dialog.PlayListDialogFragment;
-
-import io.reactivex.ObservableEmitter;
 
 /**
  * 音乐播放栏
@@ -83,10 +84,12 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
         musicRelative.setOnClickListener(this);
         play.setOnClickListener(this);
         playList.setOnClickListener(this);
+
     }
 
 
     private MusicActivity activity;
+    private MusicModel mModel;
 
     /**
      * 设置对应的Activity
@@ -108,32 +111,33 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
      * 更新视图View
      */
     public void updateView () {
-        ObservableUtil.execute(new ObservableCallback<String>() {
-            @Override
-            public void subscribe (ObservableEmitter<String> emitter) throws Exception {
-                super.subscribe(emitter);
-                boolean isPlaying = activity.isPlaying();
-//                if (Config.getInstance().isFirstPlay()) {
-//                    emitter.onNext(context.getString(R.string.play));
-//                } else {
-                String value = context.getString(!isPlaying ? R.string.pause : R.string.playing);
-                emitter.onNext(value);
-//                }
-            }
-        }, new LocalCallback<String>() {
-            @Override
-            public void onChangeData (String data) {
-                super.onChangeData(data);
-                currentMusic = activity.getCurrentMusic();
-                if (currentMusic == null) {
-                    return;
-                }
-                songName.setText(currentMusic.name);
-                author.setText(currentMusic.author);
-                play.setText(data);
+        Log.d(TAG, "updateView: ");
+        //定义发送和接收
+        mModel = MusicActivity.getModel();
+        RxBus.getInstance().toObservable(UpdateViewEvent.class)
+                .subscribe(new ObserverCallback<UpdateViewEvent>() {
+                    @Override
+                    public void onNext (UpdateViewEvent s) {
+                        super.onNext(s);
+                        Log.d(TAG, "onNext: s = " + s.msg);
+                        boolean isPlaying = mModel.isPlaying();
+                        boolean isFirst = MessagePreferences.getInstance().isFirstPlay();
+                        if (isFirst) {
+                            play.setText(context.getString(R.string.play));
+                        } else {
+                            String value = context.getString(isPlaying ? R.string.playing : R.string.pause);
+                            play.setText(value);
+                        }
 
-            }
-        });
+                        currentMusic = mModel.getCurrentMusic();
+                        if (currentMusic == null) {
+                            return;
+                        }
+                        songName.setText(currentMusic.name);
+                        author.setText(currentMusic.author);
+                    }
+                });
+        RxBus.getInstance().post(new UpdateViewEvent("updateView"));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -142,23 +146,36 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
         int i = v.getId();
         if (i == R.id.music_title_back) {
             activity.finish();
-        } else if (i == R.id.music_title_play) {
+            return;
+        }
+        if (i == R.id.music_title_play) {
             if (MessagePreferences.getInstance().isFirstPlay()) {
-                activity.playCurrentMusic();
-                MessagePreferences.getInstance().setIsFirstPlay(false);
-            } else if (activity.isPlaying()) {
-                activity.pause();
+                mModel.playCurrentMusic();
+                MessagePreferences.getInstance().setFirstPlay(false);
+            } else if (mModel.isPlaying()) {
+                mModel.pause();
             } else {
-                activity.playPause();
+                mModel.playPause();
             }
             updateView();
-        } else if (i == R.id.music_title_play_list) {
-            PlayListDialogFragment playListDialogFragment = PlayListDialogFragment.newInstance();
+            return;
+        }
+        if (i == R.id.music_title_play_list) {
+            final PlayListDialogFragment playListDialogFragment = PlayListDialogFragment.newInstance();
             playListDialogFragment.setArguments(bundle);
-            playListDialogFragment.show(activity);
-        } else if (i == R.id.music_relative) {
-            MessagePreferences.getInstance().setIsFirstPlay(false);
-//                    Log.d(TAG, "onClick: music_relative = ");
+            playListDialogFragment.show(activity, new LocalCallback<MusicBean>() {
+                @Override
+                public void onChangeData (MusicBean data) {
+                    super.onChangeData(data);
+                    mModel.playMusic(data);
+                    playListDialogFragment.dismiss();
+                }
+            });
+            return;
+        }
+        if (i == R.id.music_relative) {
+            MessagePreferences.getInstance().setFirstPlay(false);
+
             if (MessagePreferences.getInstance().getCurrentMusic() == null) {
                 ToastUtil.toastCustom(context, R.string.no_play_music, 500);
                 return;
