@@ -33,6 +33,16 @@ public class ExampleUnitTest {
             System.out.println("string = " + string);
         }
 
-        System.out.println("list.contains(null) = " + list.contains(null));
+        float result  = 1 - 98.96f ;
+        System.out.println("result = " + result);
+
+        double numbernumber =  18 / 1730 ;
+        System.out.println("numbernumber = " + numbernumber);
+    }
+
+
+    @Test
+    public  void  testTry(){
+
     }
 }

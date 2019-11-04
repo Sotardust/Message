@@ -27,7 +27,7 @@ public interface MusicService {
      * @param body MultipartBody
      */
     @POST("uploadMusic")
-    Call<BaseModel<ArrayList<String>>> uploadFile (@Body MultipartBody body);
+    Call<BaseModel<ArrayList<String>>> uploadFile(@Body MultipartBody body);
 
     /**
      * 获取服务端云盘音乐列表数据
@@ -35,7 +35,7 @@ public interface MusicService {
      * @return 云盘音乐数据集合
      */
     @GET("getCloudMusic")
-    Call<BaseModel<List<CloudMusicBean>>> getCloudMusicList ();
+    Call<BaseModel<List<CloudMusicBean>>> getCloudMusicList();
 
     /**
      * 下载音乐文件
@@ -45,7 +45,7 @@ public interface MusicService {
      */
     @FormUrlEncoded
     @POST("downloadMusic")
-    Call<BaseModel<String>> downloadMusic (@Field("songName") String songName);
+    Call<BaseModel<String>> downloadMusic(@Field("songName") String songName);
 
 }
 

@@ -6,11 +6,11 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.dht.network.BaseModel;
 import com.dht.baselib.callback.NetworkCallback;
 import com.dht.baselib.util.ToastUtil;
 import com.dht.baselib.util.file.FileManager;
 import com.dht.baselib.util.file.PathUtil;
+import com.dht.network.BaseModel;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,7 +31,7 @@ public class LoginViewModel extends AndroidViewModel {
 
     private LoginApi loginApi;
 
-    public LoginViewModel (@NonNull Application application) {
+    public LoginViewModel(@NonNull Application application) {
         super(application);
         this.application = application;
         loginApi = new LoginApi();
@@ -46,7 +46,7 @@ public class LoginViewModel extends AndroidViewModel {
      * @param password      密码
      * @param loginCallBack 登录回调接口
      */
-    public void logon (String name, String password, NetworkCallback<BaseModel<String>> loginCallBack) {
+    public void logon(String name, String password, NetworkCallback<BaseModel<String>> loginCallBack) {
 
         loginApi.logon(name, password, loginCallBack);
     }
@@ -58,13 +58,13 @@ public class LoginViewModel extends AndroidViewModel {
      * @param password     密码
      * @param registerTime 注册时间
      */
-    public void register (String name, String password, String registerTime) {
+    public void register(String name, String password, String registerTime) {
         loginApi.register(name, password, registerTime, registerCallBack);
     }
 
     private NetworkCallback<BaseModel<String>> registerCallBack = new NetworkCallback<BaseModel<String>>() {
         @Override
-        public void onChangeData (BaseModel<String> model) {
+        public void onChangeData(BaseModel<String> model) {
             if (model == null) {
                 ToastUtil.toastCustom(application.getApplicationContext(), "网络超时", 200);
                 return;
@@ -74,7 +74,7 @@ public class LoginViewModel extends AndroidViewModel {
     };
 
 
-    public void initData () {
+    public void initData() {
         generateDimensFile("dimens-320x480px.xml", 2, 1 / 2);
         generateDimensFile("dimens-480x800px.xml", 2, 0.88);
         generateDimensFile("dimens-1280x720px.xml", 2, 1);
@@ -88,12 +88,12 @@ public class LoginViewModel extends AndroidViewModel {
      * @param standard 以（1280x720为基准 1dp =2px
      * @param multiple 转换倍数
      */
-    private void generateDimensFile (final String fileName, final double standard, final double multiple) {
+    private void generateDimensFile(final String fileName, final double standard, final double multiple) {
 
         io.reactivex.Observable.create(new ObservableOnSubscribe<String>() {
             @SuppressLint("DefaultLocale")
             @Override
-            public void subscribe (ObservableEmitter<String> emitter) throws IOException {
+            public void subscribe(ObservableEmitter<String> emitter) throws IOException {
 
                 String path = PathUtil.MUSIC_PATH + fileName;
                 StringBuilder builder = new StringBuilder();
@@ -134,22 +134,22 @@ public class LoginViewModel extends AndroidViewModel {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<String>() {
                     @Override
-                    public void onSubscribe (Disposable d) {
+                    public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext (String s) {
+                    public void onNext(String s) {
                         Log.d(TAG, "onNext: s = " + s);
                     }
 
                     @Override
-                    public void onError (Throwable e) {
+                    public void onError(Throwable e) {
 
                     }
 
                     @Override
-                    public void onComplete () {
+                    public void onComplete() {
 
                     }
                 });

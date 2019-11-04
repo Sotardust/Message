@@ -31,13 +31,13 @@ public class LoginFragment extends BaseFragment {
 
     private FragmentLoginBinding mBinding;
 
-    public static LoginFragment newInstance () {
+    public static LoginFragment newInstance() {
         return new LoginFragment();
     }
 
     @Override
-    public View onCreateView (@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                              @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false);
 
 
@@ -45,7 +45,7 @@ public class LoginFragment extends BaseFragment {
     }
 
     @Override
-    public void onActivityCreated (@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         mBinding.setLoginViewModel(mViewModel);
@@ -53,7 +53,7 @@ public class LoginFragment extends BaseFragment {
     }
 
     @Override
-    public void bindViews () {
+    public void bindViews() {
         super.bindViews();
         mBinding.login.setOnClickListener(this);
         mBinding.register.setOnClickListener(this);
@@ -62,7 +62,7 @@ public class LoginFragment extends BaseFragment {
 
 
     @Override
-    public void handlingClickEvents (View view) {
+    public void handlingClickEvents(View view) {
         super.handlingClickEvents(view);
         switch (view.getId()) {
             case R.id.login:
@@ -96,7 +96,7 @@ public class LoginFragment extends BaseFragment {
 
     private NetworkCallback<BaseModel<String>> loginCallBack = new NetworkCallback<BaseModel<String>>() {
         @Override
-        public void onChangeData (BaseModel<String> model) {
+        public void onChangeData(BaseModel<String> model) {
             if (model == null) {
                 ToastUtil.toastCustom(getContext(), "网络超时", 200);
                 return;
@@ -111,7 +111,7 @@ public class LoginFragment extends BaseFragment {
     /**
      * 跳转到主页面
      */
-    private void toMainActivity () {
+    private void toMainActivity() {
         MessagePreferences.getInstance().setPersonId(123);
         Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
@@ -127,7 +127,7 @@ public class LoginFragment extends BaseFragment {
      * @param password 密码
      * @return 布尔型
      */
-    private boolean isEmpty (String name, String password) {
+    private boolean isEmpty(String name, String password) {
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(password)) {
             ToastUtil.toastCustom(getContext(), "用户名或密码不能为空！", 200);
             return true;

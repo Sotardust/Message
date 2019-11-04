@@ -45,7 +45,7 @@ public class LoginApi extends BaseApi {
         Call<BaseModel<String>> call = RetrofitClient.getInstance()
                 .create(BASE_URL, LoginService.class)
                 .register(name, password, registerTime);
-        ansyOperationHandle(call, networkCallback, "logon", TAG);
+        ansyOperationHandle(call, networkCallback, "register", TAG);
     }
 
 
