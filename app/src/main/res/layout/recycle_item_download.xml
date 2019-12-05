@@ -6,7 +6,7 @@
 
         <variable
             name="music"
-            type="com.dai.message.bean.Music" />
+            type="com.dht.databaselib.bean.music.MusicBean" />
 
         <variable
             name="index"
@@ -15,7 +15,7 @@
 
         <variable
             name="callback"
-            type="com.dai.message.callback.RecycleItemClickCallBack" />
+            type="com.dht.baselib.callback.RecycleItemClickCallBack" />
     </data>
 
     <RelativeLayout
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:text="@{music.songName}" />
+            android:text="@{music.name}" />
 
         <TextView
             android:id="@+id/author"

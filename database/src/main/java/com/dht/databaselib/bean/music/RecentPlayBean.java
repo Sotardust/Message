@@ -16,7 +16,7 @@ import android.arch.persistence.room.PrimaryKey;
  * @Entity(tableName = "recent_play", indices = {@Index("recent_id")})
  */
 
-@Entity(tableName = "recent_play", indices = {@Index("recent_id"), @Index("id")})
+@Entity(tableName = "recent_play", indices = {@Index("recent_id")})
 public class RecentPlayBean {
 
     @PrimaryKey(autoGenerate = true)

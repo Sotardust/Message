@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.dai.message.ui.view.TopTitleView
+    <com.dht.music.view.TopTitleView
         android:id="@+id/download_top_title"
         android:layout_width="match_parent"
         android:layout_height="60dp" />

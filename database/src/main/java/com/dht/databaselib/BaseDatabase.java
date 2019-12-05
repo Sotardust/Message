@@ -6,8 +6,10 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.dht.databaselib.bean.app.DownloadBean;
 import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.databaselib.bean.music.RecentPlayBean;
+import com.dht.databaselib.dao.DownloadDao;
 import com.dht.databaselib.dao.MusicDao;
 import com.dht.databaselib.dao.RecentPlayDao;
 
@@ -17,7 +19,7 @@ import com.dht.databaselib.dao.RecentPlayDao;
  *
  * @author Administrator
  */
-@Database(entities = {MusicBean.class, RecentPlayBean.class}, version = 1)
+@Database(entities = {MusicBean.class, RecentPlayBean.class, DownloadBean.class}, version = 2 ,exportSchema = false)
 public abstract class BaseDatabase extends RoomDatabase {
 
     private static BaseDatabase INSTANCE;
@@ -46,6 +48,8 @@ public abstract class BaseDatabase extends RoomDatabase {
 //     * 操作数据库HistoryDao抽象接口
 //     */
 //    public abstract HistoryDao historyDao();
+
+    public abstract DownloadDao getDownloadDao();
 
     public static BaseDatabase getInstance (Context context) {
         if (INSTANCE == null) {

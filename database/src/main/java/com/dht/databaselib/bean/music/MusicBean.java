@@ -16,9 +16,9 @@ import android.os.Parcelable;
 @Entity(tableName = "music")
 public class MusicBean implements Parcelable {
 
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    public int id;
+    @PrimaryKey()
+    @ColumnInfo(name = "code")
+    public int code;
 
     /**
      * 歌名
@@ -61,8 +61,8 @@ public class MusicBean implements Parcelable {
 
     }
 
-    private MusicBean (Parcel in) {
-        id = in.readInt();
+    protected MusicBean(Parcel in) {
+        code = in.readInt();
         name = in.readString();
         path = in.readString();
         author = in.readString();
@@ -71,26 +71,9 @@ public class MusicBean implements Parcelable {
         type = in.readString();
     }
 
-    public static final Creator<MusicBean> CREATOR = new Creator<MusicBean>() {
-        @Override
-        public MusicBean createFromParcel (Parcel in) {
-            return new MusicBean(in);
-        }
-
-        @Override
-        public MusicBean[] newArray (int size) {
-            return new MusicBean[size];
-        }
-    };
-
     @Override
-    public int describeContents () {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel (Parcel dest, int flags) {
-        dest.writeInt(id);
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(code);
         dest.writeString(name);
         dest.writeString(path);
         dest.writeString(author);
@@ -100,13 +83,19 @@ public class MusicBean implements Parcelable {
     }
 
     @Override
-    public String toString () {
-        return "id = " + id +
-                "name = " + name +
-                "author = " + author +
-                "path = " + path +
-//                "avatar = " + avatar +
-//                "lyrics = " + lyrics +
-                "type = " + type;
+    public int describeContents() {
+        return 0;
     }
+
+    public static final Creator<MusicBean> CREATOR = new Creator<MusicBean>() {
+        @Override
+        public MusicBean createFromParcel(Parcel in) {
+            return new MusicBean(in);
+        }
+
+        @Override
+        public MusicBean[] newArray(int size) {
+            return new MusicBean[size];
+        }
+    };
 }

@@ -1,11 +1,12 @@
-package com.dai.message.repository.dao;
+package com.dht.databaselib.dao;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 
-import com.dai.message.bean.Music;
+import com.dht.databaselib.bean.app.DownloadBean;
+import com.dht.databaselib.bean.music.MusicBean;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface DownloadDao {
      * @param entities Music实体集合
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void addDownloadEntities(List<Music> entities);
+    void addDownloadEntities(List<DownloadBean> entities);
 
     /**
      * 像数据表中插入Music数据
@@ -29,7 +30,7 @@ public interface DownloadDao {
      * @param entity Music实体
      */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void addDownloadEntity(Music entity);
+    void addDownloadEntity(DownloadBean entity);
 
 
     /**
@@ -44,19 +45,19 @@ public interface DownloadDao {
     /**
      * 查找正在下载的数据音乐数据
      *
-     * @return Music 实体集合
+     * @return MusicBean 实体集合
      */
     @Query("select * from download where state != 2  ")
-    List<Music> getDownloadingList();
+    List<DownloadBean> getDownloadingList();
 
 
     /**
      * 查找下载完成的音乐数据
      *
-     * @return Music 实体集合
+     * @return MusicBean 实体集合
      */
     @Query("select * from download where state = 2 ")
-    List<Music> getDownloadedList();
+    List<DownloadBean> getDownloadedList();
 
 
 }

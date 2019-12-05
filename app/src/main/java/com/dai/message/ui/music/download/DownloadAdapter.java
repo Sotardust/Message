@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 
 import com.dai.message.R;
 import com.dai.message.adapter.util.ViewHolder;
-import com.dai.message.base.BaseAdapter;
-import com.dai.message.bean.Music;
-import com.dai.message.callback.RecycleItemClickCallBack;
 import com.dai.message.databinding.RecycleItemDownloadBinding;
+import com.dht.baselib.base.BaseAdapter;
+import com.dht.baselib.callback.RecycleItemClickCallBack;
+import com.dht.databaselib.bean.music.MusicBean;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -19,14 +19,14 @@ import java.util.List;
 /**
  * created by dht on 2019/3/11 17:43
  */
-public class DownloadAdapter extends BaseAdapter<Music> {
+public class DownloadAdapter extends BaseAdapter<MusicBean> {
 
-    public DownloadAdapter(RecycleItemClickCallBack<Music> clickCallBack) {
+    public DownloadAdapter(RecycleItemClickCallBack<MusicBean> clickCallBack) {
         this.callBack = clickCallBack;
     }
 
     @Override
-    public void setChangeList(List<Music> mList) {
+    public void setChangeList(List<MusicBean> mList) {
         this.mList = mList;
         notifyDataSetChanged();
     }
@@ -42,7 +42,7 @@ public class DownloadAdapter extends BaseAdapter<Music> {
     @Override
     public void onBindVH(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolder) {
-            Music music = mList.get(position);
+            MusicBean music = mList.get(position);
             ((ViewHolder<RecycleItemDownloadBinding>) holder).mBinding.songName.setText(music.name);
             ((ViewHolder<RecycleItemDownloadBinding>) holder).mBinding.author.setText(music.author);
             ((ViewHolder<RecycleItemDownloadBinding>) holder).mBinding.setIndex(position);

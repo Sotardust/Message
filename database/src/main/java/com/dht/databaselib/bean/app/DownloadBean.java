@@ -1,4 +1,4 @@
-package com.dai.message.repository.entity;
+package com.dht.databaselib.bean.app;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
@@ -8,7 +8,7 @@ import android.arch.persistence.room.PrimaryKey;
  * created by dht on 2019/3/11 18:27
  */
 @Entity(tableName = "download")
-public class DownloadEntity {
+public class DownloadBean {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")

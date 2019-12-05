@@ -25,7 +25,7 @@ public class BaseViewPager extends ViewPager {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
 
-        int result = (int) Math.abs(ev.getX() - 1080.f);
+        int result = (int) Math.abs(ev.getX() - 1080f);
         return (result >= 50) && super.onInterceptTouchEvent(ev);
     }
 }

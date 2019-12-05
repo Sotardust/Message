@@ -4,16 +4,17 @@ import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
-import com.dai.message.base.BaseAndroidViewModel;
-import com.dai.message.bean.Music;
-import com.dai.message.repository.RecentPlayRepository;
+
+import com.dht.baselib.base.BaseAndroidViewModel;
+import com.dht.databaselib.bean.music.MusicBean;
+import com.dht.music.repository.RecentPlayRepository;
 
 import java.util.List;
 
 public class DownloadedViewModel extends BaseAndroidViewModel {
 
 
-    private MutableLiveData<List<Music>> musicData;
+    private MutableLiveData<List<MusicBean>> musicData;
 
     private RecentPlayRepository recentPlayRepository;
 
@@ -22,7 +23,7 @@ public class DownloadedViewModel extends BaseAndroidViewModel {
         recentPlayRepository = new RecentPlayRepository(application);
     }
 
-    public MutableLiveData<List<Music>> getDownloadedEntityData() {
+    public MutableLiveData<List<MusicBean>> getDownloadedEntityData() {
 
         if (musicData == null) {
             musicData = new MutableLiveData<>();
