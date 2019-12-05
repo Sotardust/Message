@@ -8,7 +8,7 @@
 
         <variable
             name="loginViewModel"
-            type="com.dai.message.ui.login.LoginViewModel" />
+            type="com.dht.message.ui.login.LoginViewModel" />
     </data>
 
     <LinearLayout

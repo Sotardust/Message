@@ -6,7 +6,7 @@
 
         <variable
             name="refuseViewModel"
-            type="com.dai.message.ui.phone.refuse.RefuseViewModel" />
+            type="com.dht.message.ui.phone.refuse.RefuseViewModel" />
     </data>
 
     <LinearLayout

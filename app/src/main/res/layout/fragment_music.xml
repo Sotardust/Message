@@ -6,7 +6,7 @@
 
         <variable
             name="musicViewModel"
-            type="com.dai.message.ui.music.MusicViewModel" />
+            type="com.dht.message.ui.music.MusicViewModel" />
     </data>
 
     <FrameLayout

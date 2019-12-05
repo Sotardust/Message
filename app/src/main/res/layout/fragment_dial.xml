@@ -7,7 +7,7 @@
 
         <variable
             name="dialViewModel"
-            type="com.dai.message.ui.phone.dial.DialViewModel" />
+            type="com.dht.message.ui.phone.dial.DialViewModel" />
     </data>
 
     <LinearLayout

@@ -7,7 +7,7 @@
 
         <variable
             name="answeredViewModel"
-            type="com.dai.message.ui.phone.answered.AnsweredViewModel" />
+            type="com.dht.message.ui.phone.answered.AnsweredViewModel" />
     </data>
 
     <LinearLayout

@@ -48,7 +48,7 @@
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp">
 
-            <com.dai.message.ui.music.download.WaveProgressView
+            <com.dht.message.ui.music.download.WaveProgressView
                 android:id="@+id/wave_progress"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

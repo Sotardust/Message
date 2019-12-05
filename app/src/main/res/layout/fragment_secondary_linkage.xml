@@ -6,7 +6,7 @@
 
         <variable
             name="secondaryLinkageViewModel"
-            type="com.dai.message.ui.other.SecondaryLinkageViewModel" />
+            type="com.dht.message.ui.other.SecondaryLinkageViewModel" />
     </data>
 
     <LinearLayout
@@ -20,12 +20,12 @@
             android:layout_height="match_parent"
             android:visibility="gone" />
 
-        <com.dai.message.ui.other.FlowLayoutTwo
+        <com.dht.message.ui.other.FlowLayoutTwo
             android:id="@+id/flowLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        </com.dai.message.ui.other.FlowLayoutTwo>
+        </com.dht.message.ui.other.FlowLayoutTwo>
 
         <!--<LinearLayout-->
         <!--android:layout_width="match_parent"-->

@@ -5,7 +5,7 @@
 
         <variable
             name="mainDialogViewModel"
-            type="com.dai.message.ui.dialog.MainDialogViewModel" />
+            type="com.dht.message.ui.dialog.MainDialogViewModel" />
     </data>
 
     <LinearLayout

@@ -6,7 +6,7 @@
 
         <variable
             name="allCallsEntity"
-            type="com.dai.message.repository.entity.AllCallsEntity" />
+            type="com.dht.message.repository.entity.AllCallsEntity" />
 
         <variable
             name="index"

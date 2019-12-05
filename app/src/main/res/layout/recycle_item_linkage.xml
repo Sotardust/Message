@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <com.dai.message.ui.other.FlowLayout
+        <com.dht.message.ui.other.FlowLayout
             android:id="@+id/flowLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
