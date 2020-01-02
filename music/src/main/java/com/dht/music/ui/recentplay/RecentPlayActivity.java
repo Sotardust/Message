@@ -18,7 +18,7 @@ public class RecentPlayActivity extends BaseActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_music);
+        setContentView(R.layout.activity_base);
         if (savedInstanceState == null) {
             RecentPlayFragment recentPlayFragment = RecentPlayFragment.newInstance();
             getSupportFragmentManager().beginTransaction()

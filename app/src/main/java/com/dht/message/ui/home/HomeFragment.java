@@ -75,7 +75,7 @@ public class HomeFragment extends BaseFragment {
     public void initViews (View view) {
         super.initViews(view);
         musicTitleView = view.findViewById(R.id.home_music_title_view);
-        musicTitleView.setActivity((MusicActivity) getActivity());
+        musicTitleView.setActivity((MusicActivity) getActivity(),mModel);
     }
 
     @Override

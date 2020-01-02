@@ -1,4 +1,4 @@
-package com.dht.music;
+package com.dht.baselib.music;
 
 import android.os.RemoteException;
 
@@ -16,7 +16,7 @@ public class MusicModel implements MusicContact.Presenter {
 
     private IMusicAidlInterface iBinder;
 
-    public MusicModel (IMusicAidlInterface iBinder) {
+    public MusicModel(IMusicAidlInterface iBinder) {
         this.iBinder = iBinder;
     }
 

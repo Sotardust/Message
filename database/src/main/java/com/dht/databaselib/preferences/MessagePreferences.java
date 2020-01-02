@@ -10,11 +10,12 @@ import com.google.gson.Gson;
 /**
  * @author Administrator
  */
-public class MessagePreferences {
+public enum MessagePreferences {
 
-    private static MessagePreferences instance;
-    private static SharedPreferences preferences;
-    private static SharedPreferences.Editor editor;
+    INSTANCE;
+
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     private Gson gson = new Gson();
 
@@ -41,80 +42,70 @@ public class MessagePreferences {
      */
     private static final String KEY_IS_PLAYING = "is_playing";
 
-    private MessagePreferences () {
+    private MessagePreferences() {
     }
 
-    public static MessagePreferences getInstance () {
-        if (instance == null) {
-            synchronized (MessagePreferences.class) {
-                if (instance == null) {
-                    return new MessagePreferences();
-                }
-            }
-        }
-        return instance;
-    }
 
     @SuppressLint("CommitPrefEdits")
-    public static void install (Context context) {
+    public void install(Context context) {
         preferences = context.getApplicationContext().getSharedPreferences("message_preferences", Context.MODE_PRIVATE);
         editor = preferences.edit();
     }
 
-    public String getCookie () {
+    public String getCookie() {
         return preferences.getString(COOKIE, null);
     }
 
-    public void setCookie (String cookie) {
+    public void setCookie(String cookie) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(COOKIE, cookie);
         editor.apply();
     }
 
 
-    public void setCurrentMusic (MusicBean music) {
+    public void setCurrentMusic(MusicBean music) {
         editor.putString(KEY_MUSIC, gson.toJson(music));
         editor.apply();
     }
 
-    public MusicBean getCurrentMusic () {
+    public MusicBean getCurrentMusic() {
         return gson.fromJson(preferences.getString(KEY_MUSIC, null), MusicBean.class);
     }
 
-    public void setPlayType (int playType) {
+    public void setPlayType(int playType) {
         editor.putInt(KEY_PLAY_TYPE, playType);
         editor.apply();
     }
 
-    public int getPlayType () {
+    public int getPlayType() {
         return preferences.getInt(KEY_PLAY_TYPE, 0);
     }
 
 
-    public void setFirstPlay (boolean isFirstPlay) {
+    public void setFirstPlay(boolean isFirstPlay) {
         editor.putBoolean(KEY_IS_FIRST_PLAY, isFirstPlay);
         editor.apply();
     }
 
-    public boolean isFirstPlay () {
+    public boolean isFirstPlay() {
         return preferences.getBoolean(KEY_IS_FIRST_PLAY, true);
     }
 
-    public void setPlaying (boolean isPlaying) {
+    public void setPlaying(boolean isPlaying) {
         editor.putBoolean(KEY_IS_PLAYING, isPlaying);
         editor.apply();
     }
 
-    public boolean isPlaying () {
+    public boolean isPlaying() {
         return preferences.getBoolean(KEY_IS_PLAYING, false);
     }
 
-    public void setPersonId (long personId) {
+    public void setPersonId(long personId) {
         editor.putLong(KEY_PERSON_ID, personId);
         editor.apply();
     }
 
-    public long getPersonId () {
+    public long getPersonId() {
         return preferences.getLong(KEY_PERSON_ID, 123L);
     }
 

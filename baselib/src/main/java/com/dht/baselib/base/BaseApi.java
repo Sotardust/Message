@@ -56,7 +56,7 @@ public class BaseApi {
                 if (call.request().url().toString().contains("login")) {
                     String cookie = response.headers().get("Set-Cookie");
                     Log.d(TAG, "subscribe: cookie = " + cookie);
-                    MessagePreferences.getInstance().setCookie(cookie);
+                    MessagePreferences.INSTANCE.setCookie(cookie);
                 }
                 emitter.onNext(response.body());
             }

@@ -15,13 +15,13 @@ import android.widget.TextView;
 
 import com.dht.baselib.callback.LocalCallback;
 import com.dht.baselib.callback.ObserverCallback;
+import com.dht.baselib.music.MusicModel;
 import com.dht.baselib.util.ToastUtil;
 import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.databaselib.preferences.MessagePreferences;
 import com.dht.eventbus.RxBus;
 import com.dht.eventbus.event.UpdateViewEvent;
 import com.dht.music.MusicActivity;
-import com.dht.music.MusicModel;
 import com.dht.music.R;
 import com.dht.music.dialog.PlayListDialogFragment;
 
@@ -96,8 +96,9 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
      *
      * @param activity Activity
      */
-    public void setActivity (MusicActivity activity) {
+    public void setActivity (MusicActivity activity,MusicModel mModel) {
         this.activity = activity;
+        this.mModel =mModel;
     }
 
     /**
@@ -113,7 +114,6 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
     public void updateView () {
         Log.d(TAG, "updateView: ");
         //定义发送和接收
-        mModel = MusicActivity.getModel();
         RxBus.getInstance().toObservable(UpdateViewEvent.class)
                 .subscribe(new ObserverCallback<UpdateViewEvent>() {
                     @Override
@@ -121,7 +121,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
                         super.onNext(s);
                         Log.d(TAG, "onNext: s = " + s.msg);
                         boolean isPlaying = mModel.isPlaying();
-                        boolean isFirst = MessagePreferences.getInstance().isFirstPlay();
+                        boolean isFirst = MessagePreferences.INSTANCE.isFirstPlay();
                         if (isFirst) {
                             play.setText(context.getString(R.string.play));
                         } else {
@@ -137,7 +137,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
                         author.setText(currentMusic.author);
                     }
                 });
-        RxBus.getInstance().post(new UpdateViewEvent("updateView"));
+//        RxBus.getInstance().post(new UpdateViewEvent("updateView"));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -149,9 +149,9 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
             return;
         }
         if (i == R.id.music_title_play) {
-            if (MessagePreferences.getInstance().isFirstPlay()) {
+            if (MessagePreferences.INSTANCE.isFirstPlay()) {
                 mModel.playCurrentMusic();
-                MessagePreferences.getInstance().setFirstPlay(false);
+                MessagePreferences.INSTANCE.setFirstPlay(false);
             } else if (mModel.isPlaying()) {
                 mModel.pause();
             } else {
@@ -174,9 +174,9 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
             return;
         }
         if (i == R.id.music_relative) {
-            MessagePreferences.getInstance().setFirstPlay(false);
+            MessagePreferences.INSTANCE.setFirstPlay(false);
 
-            if (MessagePreferences.getInstance().getCurrentMusic() == null) {
+            if (MessagePreferences.INSTANCE.getCurrentMusic() == null) {
                 ToastUtil.toastCustom(context, R.string.no_play_music, 500);
                 return;
             }
@@ -184,7 +184,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
 //                    bundle.putBinder(Key.IBINDER, (IBinder) activity);
 //                    Intent intent = new Intent(context, PlayMusicActivity.class);
 //                    intent.putExtra(Key.IBINDER, bundle);
-//                    intent.putExtra(Key.MUSIC, MessagePreferences.getInstance().getCurrentMusic());
+//                    intent.putExtra(Key.MUSIC, MessagePreferences.INSTANCE.getCurrentMusic());
 //                    context.startActivity(intent);
         }
     }

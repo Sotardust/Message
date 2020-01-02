@@ -18,7 +18,7 @@ public class PlayMusicActivity extends MusicActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_music);
+        setContentView(R.layout.activity_base);
         if (savedInstanceState == null) {
             PlayMusicFragment playMusicFragment = PlayMusicFragment.newInstance();
             getSupportFragmentManager().beginTransaction()

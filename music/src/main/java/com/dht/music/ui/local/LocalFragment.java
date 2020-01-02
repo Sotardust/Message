@@ -70,7 +70,7 @@ public class LocalFragment extends BaseFragment {
     @Override
     public void initViews (View view) {
         super.initViews(view);
-        mBinding.localMusicTitleView.setActivity((MusicActivity) getActivity());
+        mBinding.localMusicTitleView.setActivity((MusicActivity) getActivity(),mModel);
         mBinding.localTopTitleView.updateView(getActivity(), getString(R.string.local_music));
         mBinding.localTopTitleView.setLocalTitleBar();
         mBinding.localTopTitleView.setSearchEditTextWatcher(textWatcher);
@@ -137,7 +137,7 @@ public class LocalFragment extends BaseFragment {
                 files.add(file);
                 mViewModel.uploadFiles(files, networkCallback);
             } else {
-                MessagePreferences.getInstance().setCurrentMusic(music);
+                MessagePreferences.INSTANCE.setCurrentMusic(music);
                 Intent intent = new Intent(getContext(), PlayMusicActivity.class);
                 startActivity(intent);
             }

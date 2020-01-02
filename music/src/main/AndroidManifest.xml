@@ -2,7 +2,7 @@
     package="com.dht.music">
 
     <application>
-        <service android:name=".service.MusicService" />
+        <service android:name="com.dht.baselib.service.MusicService" />
 
         <activity android:name="com.dht.music.ui.cloud.CloudDiskActivity" />
         <activity android:name="com.dht.music.ui.download.DownloadActivity" />

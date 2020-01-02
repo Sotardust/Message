@@ -16,7 +16,7 @@ public class MessageApplication extends Application {
     public void onCreate () {
         super.onCreate();
         ScreenUtil.install(getApplicationContext());
-        MessagePreferences.install(getApplicationContext());
+        MessagePreferences.INSTANCE.install(getApplicationContext());
 
     }
 }

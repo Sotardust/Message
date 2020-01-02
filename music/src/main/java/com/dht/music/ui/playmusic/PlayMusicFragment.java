@@ -19,12 +19,10 @@ import com.dht.baselib.util.ObservableUtil;
 import com.dht.baselib.util.ToastUtil;
 import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.databaselib.preferences.MessagePreferences;
-import com.dht.music.MusicActivity;
-import com.dht.music.MusicModel;
 import com.dht.music.R;
 import com.dht.music.databinding.FragmentPlayMusicBinding;
 import com.dht.music.dialog.PlayListDialogFragment;
-import com.dht.music.util.PlayType;
+import com.dht.baselib.util.PlayType;
 
 import io.reactivex.ObservableEmitter;
 
@@ -42,7 +40,7 @@ public class PlayMusicFragment extends BaseFragment {
 
 
     private int playType = 0;
-    private MusicModel mModel;
+
 
     public static PlayMusicFragment newInstance () {
         return new PlayMusicFragment();
@@ -85,15 +83,14 @@ public class PlayMusicFragment extends BaseFragment {
     @Override
     public void initData () {
         super.initData();
-        mModel = MusicActivity.getModel();
-        final MusicBean currentMusic = MessagePreferences.getInstance().getCurrentMusic();
+        final MusicBean currentMusic = MessagePreferences.INSTANCE.getCurrentMusic();
         ObservableUtil.execute(new ObservableCallback<Boolean>() {
             @Override
             public void subscribe (ObservableEmitter<Boolean> emitter) throws Exception {
                 super.subscribe(emitter);
 
                 boolean isPlaying = mModel.isPlaying();
-                if (!currentMusic.toString().equals(MessagePreferences.getInstance().getCurrentMusic().toString())) {
+                if (!currentMusic.toString().equals(MessagePreferences.INSTANCE.getCurrentMusic().toString())) {
                     emitter.onNext(false);
                     return;
                 }

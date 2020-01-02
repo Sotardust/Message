@@ -68,7 +68,7 @@ public class LoginFragment extends BaseFragment {
             case R.id.login:
                 String name = mBinding.name.getText().toString();
                 String password = mBinding.password.getText().toString();
-                MessagePreferences.getInstance().setFirstPlay(true);
+                MessagePreferences.INSTANCE.setFirstPlay(true);
                 if (isEmpty(name, password)) {
                     return;
                 }
@@ -112,7 +112,7 @@ public class LoginFragment extends BaseFragment {
      * 跳转到主页面
      */
     private void toMainActivity() {
-        MessagePreferences.getInstance().setPersonId(123);
+        MessagePreferences.INSTANCE.setPersonId(123);
         Intent intent = new Intent(getContext(), MainActivity.class);
         startActivity(intent);
         if (getActivity() != null) {

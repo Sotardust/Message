@@ -50,7 +50,7 @@ public class RecentPlayRepository {
             @Override
             public void subscribe (ObservableEmitter<String> emitter) throws Exception {
                 super.subscribe(emitter);
-                final long personId = MessagePreferences.getInstance().getPersonId();
+                final long personId = MessagePreferences.INSTANCE.getPersonId();
                 List<RecentPlayBean> entities = new ArrayList<>(recentPlayDao.getPersonRecentPlayEntity(personId));
 
                 ArrayList<String> names = new ArrayList<>();
@@ -110,7 +110,7 @@ public class RecentPlayRepository {
             public void subscribe (ObservableEmitter<List<RecentPlayBean>> emitter) throws Exception {
                 super.subscribe(emitter);
                 List<RecentPlayBean> entities = new ArrayList<>(
-                        recentPlayDao.getPersonRecentPlayEntity(MessagePreferences.getInstance().getPersonId()));
+                        recentPlayDao.getPersonRecentPlayEntity(MessagePreferences.INSTANCE.getPersonId()));
                 emitter.onNext(entities);
 
             }
@@ -133,7 +133,7 @@ public class RecentPlayRepository {
             @Override
             public void subscribe (ObservableEmitter<Integer> emitter) throws Exception {
                 super.subscribe(emitter);
-                int total = recentPlayDao.getRecentPlayTotal(MessagePreferences.getInstance().getPersonId());
+                int total = recentPlayDao.getRecentPlayTotal(MessagePreferences.INSTANCE.getPersonId());
                 emitter.onNext(total);
             }
         }, new LocalCallback<Integer>() {
@@ -155,7 +155,7 @@ public class RecentPlayRepository {
             public void subscribe (ObservableEmitter<List<RecentPlayBean>> emitter) throws Exception {
                 super.subscribe(emitter);
 
-                List<RecentPlayBean> entities = recentPlayDao.getAscRecentAllTime(MessagePreferences.getInstance().getPersonId());
+                List<RecentPlayBean> entities = recentPlayDao.getAscRecentAllTime(MessagePreferences.INSTANCE.getPersonId());
                 emitter.onNext(entities);
             }
         }, new LocalCallback<List<RecentPlayBean>>() {
@@ -179,7 +179,7 @@ public class RecentPlayRepository {
             public void subscribe (ObservableEmitter<List<RecentPlayBean>> emitter) throws Exception {
                 super.subscribe(emitter);
 
-                List<RecentPlayBean> entities = recentPlayDao.getAscRecentPlayTime(MessagePreferences.getInstance().getPersonId());
+                List<RecentPlayBean> entities = recentPlayDao.getAscRecentPlayTime(MessagePreferences.INSTANCE.getPersonId());
                 emitter.onNext(entities);
             }
         }, new LocalCallback<List<RecentPlayBean>>() {
@@ -202,7 +202,7 @@ public class RecentPlayRepository {
             @Override
             public void subscribe (ObservableEmitter<List<RecentPlayBean>> emitter) throws Exception {
                 super.subscribe(emitter);
-                List<RecentPlayBean> entities = recentPlayDao.getAscRecentOneWeek(MessagePreferences.getInstance().getPersonId(), System.currentTimeMillis());
+                List<RecentPlayBean> entities = recentPlayDao.getAscRecentOneWeek(MessagePreferences.INSTANCE.getPersonId(), System.currentTimeMillis());
                 emitter.onNext(entities);
             }
         }, new LocalCallback<List<RecentPlayBean>>() {
@@ -225,7 +225,7 @@ public class RecentPlayRepository {
             @Override
             public void subscribe (ObservableEmitter<String> emitter) throws Exception {
                 super.subscribe(emitter);
-                recentPlayDao.deleteRecentPlayEntity(MessagePreferences.getInstance().getPersonId(), songName);
+                recentPlayDao.deleteRecentPlayEntity(MessagePreferences.INSTANCE.getPersonId(), songName);
                 emitter.onNext(ObservableUtil.KEY_SUCCESSFUL);
             }
         }, new LocalCallback<String>() {

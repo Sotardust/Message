@@ -1,4 +1,4 @@
-package com.dht.music;
+package com.dht.baselib.music;
 
 import com.dht.databaselib.bean.music.MusicBean;
 

@@ -97,7 +97,7 @@ public class RecentPlayFragment extends BaseFragment {
                 mViewModel.deleteCurrentRecentEntity(entity.songName, dynamicType);
                 ToastUtil.toastCustom(getContext(), R.string.delete_successful, 500);
             } else {
-                MessagePreferences.getInstance().setCurrentMusic(entity.music);
+                MessagePreferences.INSTANCE.setCurrentMusic(entity.music);
                 Intent intent = new Intent(getContext(), PlayMusicActivity.class);
                 startActivity(intent);
                 onDestroy();

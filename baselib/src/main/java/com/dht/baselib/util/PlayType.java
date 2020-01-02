@@ -1,4 +1,4 @@
-package com.dht.music.util;
+package com.dht.baselib.util;
 
 /**
  * created by dht on 2019/1/14 16:46
@@ -24,19 +24,6 @@ public enum PlayType {
 
     public int getIndex () {
         return index;
-    }
-
-    public static PlayType getPlayType (int index) {
-        switch (index) {
-            case 0:
-                return PLAY_IN_ORDER;
-            case 1:
-                return SINGLE_CYCLE;
-            case 2:
-                return LIST_LOOP;
-            default:
-                return SHUFFLE_PLAYBACK;
-        }
     }
 
     public static String getPlayTypeString (int index) {

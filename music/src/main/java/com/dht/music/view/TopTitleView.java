@@ -120,7 +120,7 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
         shared.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick (View v) {
-                localCallback.onChangeData(MessagePreferences.getInstance().getCurrentMusic());
+                localCallback.onChangeData(MessagePreferences.INSTANCE.getCurrentMusic());
             }
         });
     }
@@ -152,7 +152,7 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
                     @Override
                     public void onNext (UpdatePlayEvent updatePlayEvent) {
                         super.onNext(updatePlayEvent);
-                        final MusicBean music = MessagePreferences.getInstance().getCurrentMusic();
+                        final MusicBean music = MessagePreferences.INSTANCE.getCurrentMusic();
                         playRelative.setVisibility(VISIBLE);
                         songName.setText(music.name);
                         author.setText(music.author);
