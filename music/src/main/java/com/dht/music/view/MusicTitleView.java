@@ -119,7 +119,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
                     @Override
                     public void onNext (UpdateViewEvent s) {
                         super.onNext(s);
-                        Log.d(TAG, "onNext: s = " + s.msg);
+
                         boolean isPlaying = mModel.isPlaying();
                         boolean isFirst = MessagePreferences.INSTANCE.isFirstPlay();
                         if (isFirst) {

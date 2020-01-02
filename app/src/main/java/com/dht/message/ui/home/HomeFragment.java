@@ -104,20 +104,6 @@ public class HomeFragment extends BaseFragment {
         mFragmentList.add(NewsFragment.newInstance());
         setCustomTabLayout();
 
-//        final IMusicAidlInterface service = (IMusicAidlInterface) getArguments().getBinder(Key.IBINDER);
-//        mViewModel.initDatabaseData(new LocalCallback<String>() {
-//            @Override
-//            public void onChangeData(String data) {
-//                try {
-//                    if (service != null)
-//                        service.initPlayList();
-//                } catch (RemoteException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        });
-
         mBinding.baseViewPager.setAdapter(new BaseFragmentPageAdapter(getChildFragmentManager(), mFragmentList, titles));
 
         mBinding.tabLayout.addOnTabSelectedListener(new TabLayoutCallback() {

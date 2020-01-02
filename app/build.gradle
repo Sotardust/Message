@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -37,6 +38,9 @@ dependencies {
 
 
     implementation "com.android.support.constraint:constraint-layout:$rootProject.ext.constraintVersion"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.ext.kotlinCoroutineVersion"
 
     //给出使用地址方便更新第三方库版本
     //https://github.com/greenrobot/EventBus

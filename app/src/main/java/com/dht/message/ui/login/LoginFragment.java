@@ -11,6 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dht.eventbus.RxBus;
+import com.dht.eventbus.RxCallBack;
+import com.dht.eventbus.event.InitPlayListEvent;
 import com.dht.message.MainActivity;
 import com.dht.message.R;
 import com.dht.message.databinding.FragmentLoginBinding;
@@ -58,8 +61,8 @@ public class LoginFragment extends BaseFragment {
         mBinding.login.setOnClickListener(this);
         mBinding.register.setOnClickListener(this);
 //        mViewModel.initData();
+        initRxEvent();
     }
-
 
     @Override
     public void handlingClickEvents(View view) {
@@ -101,6 +104,7 @@ public class LoginFragment extends BaseFragment {
                 ToastUtil.toastCustom(getContext(), "网络超时", 200);
                 return;
             }
+            mModel.initPlayList();
             if (model.code == 0) {
                 toMainActivity();
             }
@@ -108,6 +112,16 @@ public class LoginFragment extends BaseFragment {
         }
     };
 
+
+    private void initRxEvent(){
+        RxBus.getInstance().toRxBusResult(InitPlayListEvent.class, new RxCallBack<InitPlayListEvent>(){
+            @Override
+            public void onCallBack(InitPlayListEvent data) {
+                super.onCallBack(data);
+            }
+        });
+
+    }
     /**
      * 跳转到主页面
      */

@@ -9,13 +9,13 @@ import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
-import com.dht.baselib.callback.LocalCallback;
 import com.dht.baselib.util.PlayType;
 import com.dht.baselib.util.ToastUtil;
 import com.dht.databaselib.bean.music.IMusicAidlInterface;
 import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.databaselib.preferences.MessagePreferences;
 import com.dht.eventbus.RxBus;
+import com.dht.eventbus.event.InitPlayListEvent;
 import com.dht.eventbus.event.UpdateViewEvent;
 
 import java.io.IOException;
@@ -170,6 +170,8 @@ public class MusicService extends Service {
                     attrBuilder.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC);
                     mediaPlayer.setAudioAttributes(attrBuilder.build());
                 }
+
+                RxBus.getInstance().post(new InitPlayListEvent());
 //                repository.getAllMusics(new LocalCallback<ArrayList<MusicBean>>() {
 //                    @Override
 //                    public void onChangeData(ArrayList<MusicBean> data) {
