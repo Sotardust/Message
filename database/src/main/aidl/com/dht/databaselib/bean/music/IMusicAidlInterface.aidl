@@ -38,6 +38,8 @@ interface IMusicAidlInterface {
 
          List<MusicBean> getPlayList();
 
+         void setPlayList(in List<MusicBean> musics);
+
          MusicBean getCurrentMusic();
 
          void removeFromQueue(int position);

@@ -19,6 +19,8 @@ import com.dht.baselib.util.ObservableUtil;
 import com.dht.baselib.util.ToastUtil;
 import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.databaselib.preferences.MessagePreferences;
+import com.dht.eventbus.RxBus;
+import com.dht.eventbus.event.UpdateTopPlayEvent;
 import com.dht.music.R;
 import com.dht.music.databinding.FragmentPlayMusicBinding;
 import com.dht.music.dialog.PlayListDialogFragment;
@@ -68,7 +70,7 @@ public class PlayMusicFragment extends BaseFragment {
     @Override
     public void initViews (View view) {
         super.initViews(view);
-        mBinding.playTopTitleView.setActivity(getActivity());
+        mBinding.playTopTitleView.setActivity(getActivity(),mModel);
         mBinding.playTopTitleView.updatePlayView();
         mBinding.playTopTitleView.setSharedCallback(new LocalCallback<MusicBean>() {
             @Override
@@ -90,7 +92,7 @@ public class PlayMusicFragment extends BaseFragment {
                 super.subscribe(emitter);
 
                 boolean isPlaying = mModel.isPlaying();
-                if (!currentMusic.toString().equals(MessagePreferences.INSTANCE.getCurrentMusic().toString())) {
+                if (!currentMusic.toString().equals(mModel.getCurrentMusic().toString())) {
                     emitter.onNext(false);
                     return;
                 }
@@ -105,6 +107,13 @@ public class PlayMusicFragment extends BaseFragment {
                 }
             }
         });
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        RxBus.getInstance().post(new UpdateTopPlayEvent());
     }
 
     @Override

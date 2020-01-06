@@ -16,7 +16,6 @@ import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.databaselib.preferences.MessagePreferences;
 import com.dht.eventbus.RxBus;
 import com.dht.eventbus.event.InitPlayListEvent;
-import com.dht.eventbus.event.UpdateViewEvent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,6 +54,8 @@ public class MusicService extends Service {
 
     private boolean isFirst = true;
 
+    private MusicBean currentMusic;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -62,7 +63,6 @@ public class MusicService extends Service {
         if (mediaPlayer == null) {
             mediaPlayer = new MediaPlayer();
         }
-        MessagePreferences.INSTANCE.setPlaying(false);
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
@@ -73,9 +73,7 @@ public class MusicService extends Service {
                     --currentPlayIndex;
                 }
                 mp.start();
-                RxBus.getInstance().post(new UpdateViewEvent("playMusic"));
                 Log.d(TAG, "onPrepared: isPlaying = " + mp.isPlaying());
-                MessagePreferences.INSTANCE.setPlaying(mp.isPlaying());
             }
         });
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -139,8 +137,7 @@ public class MusicService extends Service {
                     mediaPlayer.setDataSource(music.path);
                     mediaPlayer.prepare();
                     Log.d("MusicTitleView", "playMusic: music = " + music);
-                    MessagePreferences.INSTANCE.setCurrentMusic(music);
-//                    recentPlayRepository.insertOrUpdate(music);
+                    currentMusic = music;
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("MusicTitleView", "playMusic: e", e);
@@ -151,42 +148,26 @@ public class MusicService extends Service {
 
         @Override
         public void playCurrentMusic() {
-            MusicBean music = MessagePreferences.INSTANCE.getCurrentMusic();
-            if (music == null) {
+            if (currentMusic == null) {
                 ToastUtil.toastCustom(getApplicationContext(), "数据初始化中", 500);
                 return;
             }
-            playMusic(music);
+            playMusic(currentMusic);
         }
 
         @Override
         public void initPlayList() {
-            synchronized (MusicBean.class) {
-                if (!isFirstInit) {
-                    return;
-                }
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-                    AudioAttributes.Builder attrBuilder = new AudioAttributes.Builder();
-                    attrBuilder.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC);
-                    mediaPlayer.setAudioAttributes(attrBuilder.build());
-                }
-
-                RxBus.getInstance().post(new InitPlayListEvent());
-//                repository.getAllMusics(new LocalCallback<ArrayList<MusicBean>>() {
-//                    @Override
-//                    public void onChangeData(ArrayList<MusicBean> data) {
-//                        if (MessagePreferences.INSTANCE.getCurrentMusic() == null && data.size() != 0) {
-//                            MessagePreferences.INSTANCE.setCurrentMusic(data.get(0));
-//                        }
-//                        Log.d(TAG, "onChangeData: musicList.size() = " + musicList.size() + "data.size() = " + data.size());
-//                        RxBus.getInstance().post(new UpdateViewEvent("initPlayList"));
-//                        musicList.clear();
-//                        musicList.addAll(data);
-//
-//                    }
-//                });
-                isFirstInit = false;
+            Log.d(TAG, "initPlayList: ");
+            if (!isFirstInit) {
+                return;
             }
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                AudioAttributes.Builder attrBuilder = new AudioAttributes.Builder();
+                attrBuilder.setContentType(AudioAttributes.CONTENT_TYPE_MUSIC);
+                mediaPlayer.setAudioAttributes(attrBuilder.build());
+            }
+            RxBus.getInstance().post(new InitPlayListEvent());
+            isFirstInit = false;
         }
 
         @Override
@@ -198,8 +179,11 @@ public class MusicService extends Service {
         @Override
         public void playPause() {
             synchronized (MusicBean.class) {
-                mediaPlayer.start();
-                MessagePreferences.INSTANCE.setPlaying(true);
+                if (currentMusic == null) {
+                    playMusic(MessagePreferences.INSTANCE.getCurrentMusic());
+                } else {
+                    mediaPlayer.start();
+                }
             }
         }
 
@@ -209,7 +193,6 @@ public class MusicService extends Service {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.pause();
                 }
-                MessagePreferences.INSTANCE.setPlaying(false);
             }
         }
 
@@ -275,23 +258,17 @@ public class MusicService extends Service {
 
         @Override
         public void seekTo(int msec) {
-            synchronized (MusicBean.class) {
-                mediaPlayer.seekTo(msec);
-            }
+            mediaPlayer.seekTo(msec);
         }
 
         @Override
         public boolean isLooping() {
-            synchronized (MusicBean.class) {
-                return mediaPlayer.isLooping();
-            }
+            return mediaPlayer.isLooping();
         }
 
         @Override
         public boolean isPlaying() {
-            synchronized (MusicBean.class) {
-                return mediaPlayer.isPlaying();
-            }
+            return mediaPlayer.isPlaying();
         }
 
         @Override
@@ -301,9 +278,7 @@ public class MusicService extends Service {
 
         @Override
         public int getDuration() {
-            synchronized (MusicBean.class) {
-                return mediaPlayer.getDuration();
-            }
+            return mediaPlayer.getDuration();
         }
 
         @Override
@@ -313,16 +288,21 @@ public class MusicService extends Service {
 
         @Override
         public List<MusicBean> getPlayList() {
-            synchronized (MusicBean.class) {
-                return musicList;
-            }
+            return musicList;
+        }
+
+        @Override
+        public void setPlayList(List<MusicBean> musics) {
+            musicList = musics;
         }
 
         @Override
         public MusicBean getCurrentMusic() {
-            synchronized (MusicBean.class) {
+
+            if (currentMusic == null)
                 return MessagePreferences.INSTANCE.getCurrentMusic();
-            }
+
+            return currentMusic;
         }
 
         @Override

@@ -20,14 +20,14 @@ import com.dht.baselib.callback.LocalCallback;
 /**
  * @author Administrator
  */
-public class MainDialogFragment extends BaseDialogFragment {
+public class ExitDialog extends BaseDialogFragment {
 
     private MainDialogViewModel mViewModel;
     private FragmentMainDialogBinding mBinding;
     private LocalCallback<String> localCallback;
 
-    public static MainDialogFragment newInstance() {
-        return new MainDialogFragment();
+    public static ExitDialog newInstance() {
+        return new ExitDialog();
     }
 
     @Override

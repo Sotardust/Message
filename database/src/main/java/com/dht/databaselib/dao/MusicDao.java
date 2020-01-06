@@ -67,7 +67,7 @@ public interface MusicDao {
      *
      * @return 本地音乐个数
      */
-    @Query("select count(code) from music ")
+    @Query("select count(*) from music ")
     int getMusicTotal ();
 
     /**

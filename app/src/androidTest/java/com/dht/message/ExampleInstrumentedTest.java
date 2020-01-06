@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.dai.message", appContext.getPackageName());
+        assertEquals("com.dht.message", appContext.getPackageName());
     }
 }

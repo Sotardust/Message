@@ -13,15 +13,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.dht.baselib.base.BaseActivity;
 import com.dht.baselib.callback.LocalCallback;
-import com.dht.baselib.callback.ObserverCallback;
 import com.dht.baselib.music.MusicModel;
 import com.dht.baselib.util.ToastUtil;
 import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.databaselib.preferences.MessagePreferences;
-import com.dht.eventbus.RxBus;
-import com.dht.eventbus.event.UpdateViewEvent;
-import com.dht.music.MusicActivity;
 import com.dht.music.R;
 import com.dht.music.dialog.PlayListDialogFragment;
 
@@ -48,28 +45,28 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
     private Context context;
     private Bundle bundle;
 
-    public MusicTitleView (Context context) {
+    public MusicTitleView(Context context) {
         super(context);
         this.context = context;
         setOrientation(VERTICAL);
         initView();
     }
 
-    public MusicTitleView (Context context, @Nullable AttributeSet attrs) {
+    public MusicTitleView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         setOrientation(VERTICAL);
         initView();
     }
 
-    public MusicTitleView (Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public MusicTitleView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
         setOrientation(VERTICAL);
         initView();
     }
 
-    private void initView () {
+    private void initView() {
         View view = inflate(context, R.layout.view_title_music, this);
         back = view.findViewById(R.id.music_title_back);
 
@@ -88,7 +85,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
     }
 
 
-    private MusicActivity activity;
+    private BaseActivity activity;
     private MusicModel mModel;
 
     /**
@@ -96,63 +93,46 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
      *
      * @param activity Activity
      */
-    public void setActivity (MusicActivity activity,MusicModel mModel) {
+    public void setActivity(BaseActivity activity, MusicModel mModel) {
         this.activity = activity;
-        this.mModel =mModel;
+        this.mModel = mModel;
     }
 
     /**
      * 设置返回按钮可见
      */
-    public void setBackViewVisibility () {
+    public void setBackViewVisibility() {
         back.setVisibility(VISIBLE);
     }
 
     /**
      * 更新视图View
      */
-    public void updateView () {
+    public void updateView() {
         Log.d(TAG, "updateView: ");
-        //定义发送和接收
-        RxBus.getInstance().toObservable(UpdateViewEvent.class)
-                .subscribe(new ObserverCallback<UpdateViewEvent>() {
-                    @Override
-                    public void onNext (UpdateViewEvent s) {
-                        super.onNext(s);
-
-                        boolean isPlaying = mModel.isPlaying();
-                        boolean isFirst = MessagePreferences.INSTANCE.isFirstPlay();
-                        if (isFirst) {
-                            play.setText(context.getString(R.string.play));
-                        } else {
-                            String value = context.getString(isPlaying ? R.string.playing : R.string.pause);
-                            play.setText(value);
-                        }
-
-                        currentMusic = mModel.getCurrentMusic();
-                        if (currentMusic == null) {
-                            return;
-                        }
-                        songName.setText(currentMusic.name);
-                        author.setText(currentMusic.author);
-                    }
-                });
-//        RxBus.getInstance().post(new UpdateViewEvent("updateView"));
+        boolean isPlaying = mModel.isPlaying();
+        String value = context.getString(isPlaying ? R.string.playing : R.string.pause);
+        play.setText(value);
+        currentMusic = mModel.getCurrentMusic();
+        if (currentMusic == null) {
+            return;
+        }
+        songName.setText(currentMusic.name);
+        author.setText(currentMusic.author);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
-    public void onClick (View v) {
+    public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.music_title_back) {
             activity.finish();
             return;
         }
         if (i == R.id.music_title_play) {
-            if (MessagePreferences.INSTANCE.isFirstPlay()) {
-                mModel.playCurrentMusic();
-                MessagePreferences.INSTANCE.setFirstPlay(false);
-            } else if (mModel.isPlaying()) {
+
+
+            if (mModel.isPlaying()) {
                 mModel.pause();
             } else {
                 mModel.playPause();
@@ -165,7 +145,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
             playListDialogFragment.setArguments(bundle);
             playListDialogFragment.show(activity, new LocalCallback<MusicBean>() {
                 @Override
-                public void onChangeData (MusicBean data) {
+                public void onChangeData(MusicBean data) {
                     super.onChangeData(data);
                     mModel.playMusic(data);
                     playListDialogFragment.dismiss();

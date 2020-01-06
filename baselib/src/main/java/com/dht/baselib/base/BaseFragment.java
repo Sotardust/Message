@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -35,9 +36,9 @@ public class BaseFragment extends Fragment implements ITitleBarManager {
     private static final String TAG = "BaseFragment";
 
     protected static WeakReference<Application> weakReference;
-    private ServiceConnection connection;
+    private static ServiceConnection connection;
     private IMusicAidlInterface iBinder;
-    protected MusicModel mModel;
+    protected static MusicModel mModel;
 
     /**
      * 在主界面中注册获取 Application
@@ -52,27 +53,30 @@ public class BaseFragment extends Fragment implements ITitleBarManager {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        connection = new ServiceConnection() {
-            @Override
-            public void onServiceConnected(ComponentName name, IBinder service) {
-                iBinder = IMusicAidlInterface.Stub.asInterface(service);
-                if (mModel == null) {
-                    mModel = new MusicModel(iBinder);
-                    mModel.initPlayList();
+        if (connection ==null){
+            connection = new ServiceConnection() {
+                @Override
+                public void onServiceConnected(ComponentName name, IBinder service) {
+                    iBinder = IMusicAidlInterface.Stub.asInterface(service);
+                    Log.d(TAG, "onServiceConnected: ");
+                    if (mModel == null) {
+                        mModel = new MusicModel(iBinder);
+                        mModel.initPlayList();
+                    }
                 }
-            }
 
-            @Override
-            public void onServiceDisconnected(ComponentName name) {
-                Toast.makeText(getContext(), "音乐服务启动失败！", Toast.LENGTH_SHORT).show();
-            }
-        };
-
+                @Override
+                public void onServiceDisconnected(ComponentName name) {
+                    Toast.makeText(getContext(), "音乐服务启动失败！", Toast.LENGTH_SHORT).show();
+                }
+            };
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume() called");
         if (getContext() != null) {
             getContext().bindService(new Intent(getActivity(), MusicService.class), connection, Context.BIND_AUTO_CREATE);
         }

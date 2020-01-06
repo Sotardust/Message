@@ -63,6 +63,8 @@ public class MusicContact {
 
         List<MusicBean> getPlayList ();
 
+        void setPlayList(List<MusicBean> musics) ;
+
         MusicBean getCurrentMusic ();
 
         void removeFromQueue (int position);

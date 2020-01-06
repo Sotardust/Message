@@ -3,7 +3,7 @@ package com.dht.message;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
-import com.dht.message.ui.dialog.MainDialogFragment;
+import com.dht.message.ui.dialog.ExitDialog;
 import com.dht.message.ui.home.HomeFragment;
 import com.dht.baselib.callback.LocalCallback;
 import com.dht.music.MusicActivity;
@@ -29,9 +29,9 @@ public class MainActivity extends MusicActivity {
 
     @Override
     public void onBackPressed () {
-        MainDialogFragment mainDialogFragment = MainDialogFragment.newInstance();
-        mainDialogFragment.show(this);
-        mainDialogFragment.setOkCallBack(new LocalCallback<String>() {
+        ExitDialog exitDialog = ExitDialog.newInstance();
+        exitDialog.show(this);
+        exitDialog.setOkCallBack(new LocalCallback<String>() {
             @Override
             public void onChangeData () {
                 finish();

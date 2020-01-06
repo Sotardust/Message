@@ -7,21 +7,27 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dht.baselib.base.BaseFragment;
+import com.dht.baselib.callback.LocalCallback;
+import com.dht.baselib.callback.NetworkCallback;
+import com.dht.baselib.util.ToastUtil;
+import com.dht.databaselib.bean.music.MusicBean;
+import com.dht.databaselib.preferences.MessagePreferences;
 import com.dht.eventbus.RxBus;
 import com.dht.eventbus.RxCallBack;
 import com.dht.eventbus.event.InitPlayListEvent;
 import com.dht.message.MainActivity;
 import com.dht.message.R;
 import com.dht.message.databinding.FragmentLoginBinding;
-import com.dht.baselib.base.BaseFragment;
-import com.dht.baselib.callback.NetworkCallback;
-import com.dht.baselib.util.ToastUtil;
-import com.dht.databaselib.preferences.MessagePreferences;
+import com.dht.music.repository.MusicRepository;
 import com.dht.network.BaseModel;
+
+import java.util.ArrayList;
 
 /**
  * @author Administrator
@@ -33,6 +39,7 @@ public class LoginFragment extends BaseFragment {
     private LoginViewModel mViewModel;
 
     private FragmentLoginBinding mBinding;
+    private MusicRepository repository;
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -50,6 +57,7 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        repository = new MusicRepository(weakReference.get());
         mViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         mBinding.setLoginViewModel(mViewModel);
         bindViews();
@@ -113,15 +121,26 @@ public class LoginFragment extends BaseFragment {
     };
 
 
-    private void initRxEvent(){
-        RxBus.getInstance().toRxBusResult(InitPlayListEvent.class, new RxCallBack<InitPlayListEvent>(){
+    private void initRxEvent() {
+        RxBus.getInstance().toRxBusResult(InitPlayListEvent.class, new RxCallBack<InitPlayListEvent>() {
             @Override
             public void onCallBack(InitPlayListEvent data) {
                 super.onCallBack(data);
+                Log.d(TAG, "onCallBack: initRxEvent ");
+                repository.getAllMusics(new LocalCallback<ArrayList<MusicBean>>() {
+                    @Override
+                    public void onChangeData(ArrayList<MusicBean> data) {
+                        super.onChangeData(data);
+                        mModel.setPlayList(data);
+                        if (MessagePreferences.INSTANCE.getCurrentMusic() == null && data.size() != 0) {
+                            MessagePreferences.INSTANCE.setCurrentMusic(data.get(0));
+                        }
+                    }
+                });
             }
         });
-
     }
+
     /**
      * 跳转到主页面
      */

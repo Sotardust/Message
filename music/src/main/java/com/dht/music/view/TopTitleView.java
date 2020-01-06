@@ -13,13 +13,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.dht.baselib.callback.LocalCallback;
-import com.dht.baselib.callback.ObserverCallback;
+import com.dht.baselib.music.MusicModel;
 import com.dht.baselib.util.SimpleTextWatcher;
 import com.dht.baselib.util.ToastUtil;
 import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.databaselib.preferences.MessagePreferences;
 import com.dht.eventbus.RxBus;
-import com.dht.eventbus.event.UpdatePlayEvent;
+import com.dht.eventbus.RxCallBack;
+import com.dht.eventbus.event.UpdateTopPlayEvent;
 import com.dht.music.R;
 
 /**
@@ -44,22 +45,23 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
 
     private Context context;
     private Activity activity;
+    private MusicModel mModel;
 
-    public TopTitleView (Context context) {
+    public TopTitleView(Context context) {
         super(context);
         this.context = context;
         setOrientation(VERTICAL);
         initView();
     }
 
-    public TopTitleView (Context context, @Nullable AttributeSet attrs) {
+    public TopTitleView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         setOrientation(VERTICAL);
         initView();
     }
 
-    public TopTitleView (Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public TopTitleView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
         setOrientation(VERTICAL);
@@ -69,7 +71,7 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
     /**
      * 初始化视图View
      */
-    private void initView () {
+    private void initView() {
         View view = inflate(context, R.layout.view_title_top, this);
 
         back = view.findViewById(R.id.top_title_back);
@@ -98,8 +100,9 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
      *
      * @param activity Activity
      */
-    public void setActivity (Activity activity) {
+    public void setActivity(Activity activity,MusicModel mModel) {
         this.activity = activity;
+        this.mModel = mModel ;
     }
 
     /**
@@ -107,7 +110,7 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
      *
      * @param textWatcher SimpleTextWatcher
      */
-    public void setSearchEditTextWatcher (SimpleTextWatcher textWatcher) {
+    public void setSearchEditTextWatcher(SimpleTextWatcher textWatcher) {
         searchEdit.addTextChangedListener(textWatcher);
     }
 
@@ -116,11 +119,11 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
      *
      * @param localCallback 本地回调接口
      */
-    public void setSharedCallback (final LocalCallback<MusicBean> localCallback) {
+    public void setSharedCallback(final LocalCallback<MusicBean> localCallback) {
         shared.setOnClickListener(new OnClickListener() {
             @Override
-            public void onClick (View v) {
-                localCallback.onChangeData(MessagePreferences.INSTANCE.getCurrentMusic());
+            public void onClick(View v) {
+                localCallback.onChangeData(mModel.getCurrentMusic());
             }
         });
     }
@@ -131,11 +134,11 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
      * @param activity Activity
      * @param value    值
      */
-    public void updateView (Activity activity, final String value) {
+    public void updateView(Activity activity, final String value) {
         this.activity = activity;
         activity.runOnUiThread(new Runnable() {
             @Override
-            public void run () {
+            public void run() {
                 title.setVisibility(VISIBLE);
                 title.setText(value);
             }
@@ -144,27 +147,24 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
 
     /**
      * 更新视图View
-     *
      */
-    public void updatePlayView () {
-        RxBus.getInstance().toObservable(UpdatePlayEvent.class)
-                .subscribe(new ObserverCallback<UpdatePlayEvent>() {
-                    @Override
-                    public void onNext (UpdatePlayEvent updatePlayEvent) {
-                        super.onNext(updatePlayEvent);
-                        final MusicBean music = MessagePreferences.INSTANCE.getCurrentMusic();
-                        playRelative.setVisibility(VISIBLE);
-                        songName.setText(music.name);
-                        author.setText(music.author);
-                    }
-                });
-        RxBus.getInstance().post(new UpdatePlayEvent("updatePlayView"));
+    public void updatePlayView() {
+        RxBus.getInstance().toRxBusResult(UpdateTopPlayEvent.class, new RxCallBack<UpdateTopPlayEvent>() {
+            @Override
+            public void onCallBack(UpdateTopPlayEvent data) {
+                super.onCallBack(data);
+                final MusicBean music = mModel.getCurrentMusic();
+                playRelative.setVisibility(VISIBLE);
+                songName.setText(music.name);
+                author.setText(music.author);
+            }
+        });
     }
 
     /**
      * 显示本地音乐页title
      */
-    public void setLocalTitleBar () {
+    public void setLocalTitleBar() {
         title.setVisibility(VISIBLE);
         search.setVisibility(VISIBLE);
         setting.setVisibility(VISIBLE);
@@ -173,12 +173,12 @@ public class TopTitleView extends LinearLayout implements View.OnClickListener {
     /**
      * 显示最近播放页title
      */
-    public void showRecentPlayTitleBar () {
+    public void showRecentPlayTitleBar() {
         title.setVisibility(VISIBLE);
     }
 
     @Override
-    public void onClick (View v) {
+    public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.top_title_back) {
             activity.finish();

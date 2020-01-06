@@ -16,9 +16,9 @@ import android.os.Parcelable;
 @Entity(tableName = "music")
 public class MusicBean implements Parcelable {
 
-    @PrimaryKey()
-    @ColumnInfo(name = "code")
-    public int code;
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
+    public int id;
 
     /**
      * 歌名
@@ -62,7 +62,7 @@ public class MusicBean implements Parcelable {
     }
 
     protected MusicBean(Parcel in) {
-        code = in.readInt();
+        id = in.readInt();
         name = in.readString();
         path = in.readString();
         author = in.readString();
@@ -73,7 +73,7 @@ public class MusicBean implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(code);
+        dest.writeInt(id);
         dest.writeString(name);
         dest.writeString(path);
         dest.writeString(author);

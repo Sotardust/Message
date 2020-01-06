@@ -23,7 +23,7 @@ import java.util.Arrays;
  */
 public class WelcomeActivity extends BaseActivity {
 
-    private static final String TAG = "WelcomeActivity";
+    private static final String TAG = "dht_welcome";
 
     private static final int REQUEST_CODE = 1;
     private int num = 0;

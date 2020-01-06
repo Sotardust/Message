@@ -59,6 +59,18 @@ public class MusicModel implements MusicContact.Presenter {
     }
 
     /**
+     * 更改播放列表
+     */
+    @Override
+    public void setPlayList(List<MusicBean> musics) {
+        try {
+            iBinder.setPlayList(musics);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 设置播放类型
      *
      * @param type 类型

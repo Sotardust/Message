@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dht.baselib.base.BaseActivity;
 import com.dht.baselib.base.BaseFragment;
 import com.dht.baselib.callback.NetworkCallback;
 import com.dht.baselib.callback.RecycleItemClickCallBack;
@@ -70,7 +71,7 @@ public class LocalFragment extends BaseFragment {
     @Override
     public void initViews (View view) {
         super.initViews(view);
-        mBinding.localMusicTitleView.setActivity((MusicActivity) getActivity(),mModel);
+        mBinding.localMusicTitleView.setActivity((BaseActivity) getActivity(),mModel);
         mBinding.localTopTitleView.updateView(getActivity(), getString(R.string.local_music));
         mBinding.localTopTitleView.setLocalTitleBar();
         mBinding.localTopTitleView.setSearchEditTextWatcher(textWatcher);
