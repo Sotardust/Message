@@ -1,0 +1,22 @@
+{
+  "code": 100,
+  "msg": "",
+  "result": [
+    {
+      "personId": 321273,
+      "musicId": 1578302222206,
+      "name": "Taylor Swift - You Belong With Me (1).mp3",
+      "path": "E:\\novelData\\music\\Taylor Swift - You Belong With Me (1).mp3",
+      "type": "mp3",
+      "duration": 0
+    },
+    {
+      "personId": 321273,
+      "musicId": 1578303081011,
+      "name": "叶里,苑舍 - 葬仙-记狠人大帝（Cover 张杰）.mp3",
+      "path": "E:\\novelData\\music\\叶里,苑舍 - 葬仙-记狠人大帝（Cover 张杰）.mp3",
+      "type": "mp3",
+      "duration": 0
+    }
+  ]
+}

@@ -8,6 +8,7 @@ import android.util.Log;
 import com.dht.baselib.base.BaseAndroidViewModel;
 import com.dht.baselib.callback.LocalCallback;
 import com.dht.baselib.util.LogUtil;
+import com.dht.baselib.util.ParseUtil;
 import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.music.repository.MusicRepository;
 
@@ -56,9 +57,9 @@ public class WelcomeModel extends BaseAndroidViewModel {
         ArrayList<MusicBean> musicList = new ArrayList<>();
         for (File file1 : filePaths) {
             MusicBean music = new MusicBean();
-            music.name = parseSongName(file1.getName());
-            music.author = parseAuthor(file1.getName());
-            music.type = parseType(file1.getName());
+            music.name = ParseUtil.parseSongName(file1.getName());
+            music.author = ParseUtil.parseAuthor(file1.getName());
+            music.type = ParseUtil.parseType(file1.getName());
             music.path = file1.getPath();
             music.avatar = null;
             music.lyrics = null;
@@ -89,46 +90,5 @@ public class WelcomeModel extends BaseAndroidViewModel {
         }
     }
 
-    /**
-     * 解析歌曲名称
-     *
-     * @param name 文件名
-     * @return 歌名
-     */
-    private String parseSongName (String name) {
-        if (name == null) {
-            return null;
-        }
-        String[] strings = name.split("-");
-        String[] songName = strings[strings.length - 1].split("\\.");
-        return songName[0];
-    }
 
-    /**
-     * 解析歌手名
-     *
-     * @param name 文件名
-     * @return 歌手名
-     */
-    private String parseAuthor (String name) {
-        if (name == null) {
-            return null;
-        }
-        String[] username = name.split("-");
-        return username[0];
-    }
-
-    /**
-     * 解析歌曲类型
-     *
-     * @param name 文件名
-     * @return 歌曲类型
-     */
-    private String parseType (String name) {
-        if (name == null) {
-            return null;
-        }
-        String[] type = name.split("\\.");
-        return type[1];
-    }
 }

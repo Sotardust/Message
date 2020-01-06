@@ -24,7 +24,6 @@ import com.dht.baselib.util.SimpleTextWatcher;
 import com.dht.baselib.util.VerticalDecoration;
 import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.databaselib.preferences.MessagePreferences;
-import com.dht.music.MusicActivity;
 import com.dht.music.R;
 import com.dht.music.databinding.FragmentLocalBinding;
 import com.dht.music.ui.playmusic.PlayMusicActivity;
@@ -46,20 +45,20 @@ public class LocalFragment extends BaseFragment {
     private ArrayList<MusicBean> musicList = new ArrayList<>();
     private LocalAdapter localAdapter;
 
-    public static LocalFragment newInstance () {
+    public static LocalFragment newInstance() {
         return new LocalFragment();
     }
 
     @Override
-    public View onCreateView (@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                              @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_local, container, false);
         return mBinding.getRoot();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
-    public void onActivityCreated (@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(LocalViewModel.class);
         mBinding.setLocalViewModel(mViewModel);
@@ -69,9 +68,9 @@ public class LocalFragment extends BaseFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
-    public void initViews (View view) {
+    public void initViews(View view) {
         super.initViews(view);
-        mBinding.localMusicTitleView.setActivity((BaseActivity) getActivity(),mModel);
+        mBinding.localMusicTitleView.setActivity((BaseActivity) getActivity(), mModel);
         mBinding.localTopTitleView.updateView(getActivity(), getString(R.string.local_music));
         mBinding.localTopTitleView.setLocalTitleBar();
         mBinding.localTopTitleView.setSearchEditTextWatcher(textWatcher);
@@ -80,7 +79,7 @@ public class LocalFragment extends BaseFragment {
 
     private SimpleTextWatcher textWatcher = new SimpleTextWatcher() {
         @Override
-        public void afterTextChanged (Editable s) {
+        public void afterTextChanged(Editable s) {
             super.afterTextChanged(s);
             Log.d(TAG, "afterTextChanged: s = " + s);
             ArrayList<MusicBean> list = new ArrayList<>();
@@ -94,7 +93,7 @@ public class LocalFragment extends BaseFragment {
     };
 
     @Override
-    public void onResume () {
+    public void onResume() {
         super.onResume();
         if (mBinding.localMusicTitleView != null) {
             mBinding.localMusicTitleView.updateView();
@@ -102,19 +101,19 @@ public class LocalFragment extends BaseFragment {
     }
 
     @Override
-    public void onDestroyView () {
+    public void onDestroyView() {
         super.onDestroyView();
     }
 
     @Override
-    public void bindViews () {
+    public void bindViews() {
         super.bindViews();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         localAdapter = new LocalAdapter(recycleItemClickCallBack);
 
         mViewModel.getMusicData().observe(this, new Observer<ArrayList<MusicBean>>() {
             @Override
-            public void onChanged (ArrayList<MusicBean> musics) {
+            public void onChanged(ArrayList<MusicBean> musics) {
                 musicList.clear();
                 musicList.addAll(musics);
                 localAdapter.setChangeList(musics);
@@ -130,7 +129,7 @@ public class LocalFragment extends BaseFragment {
 
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
         @Override
-        public void onItemClickListener (int type, MusicBean music, int position) {
+        public void onItemClickListener(int type, MusicBean music, int position) {
             super.onItemClickListener(type, music, position);
             if (type == LocalAdapter.Type.IV.index) {
                 List<File> files = new ArrayList<>();
@@ -138,6 +137,7 @@ public class LocalFragment extends BaseFragment {
                 files.add(file);
                 mViewModel.uploadFiles(files, networkCallback);
             } else {
+                mViewModel.insertOrUpdate(music);
                 MessagePreferences.INSTANCE.setCurrentMusic(music);
                 Intent intent = new Intent(getContext(), PlayMusicActivity.class);
                 startActivity(intent);
@@ -147,7 +147,7 @@ public class LocalFragment extends BaseFragment {
 
     private NetworkCallback<BaseModel<ArrayList<String>>> networkCallback = new NetworkCallback<BaseModel<ArrayList<String>>>() {
         @Override
-        public void onChangeData (BaseModel<ArrayList<String>> data) {
+        public void onChangeData(BaseModel<ArrayList<String>> data) {
 
             Log.d(TAG, "onChangeData: data = " + data);
         }

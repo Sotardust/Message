@@ -11,10 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.dht.baselib.music.MusicModel;
@@ -53,7 +49,7 @@ public class BaseFragment extends Fragment implements ITitleBarManager {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (connection ==null){
+        if (connection == null) {
             connection = new ServiceConnection() {
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service) {
@@ -85,8 +81,13 @@ public class BaseFragment extends Fragment implements ITitleBarManager {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (getContext() != null) {
-            getContext().unbindService(connection);
+        try {
+            if (getContext() != null) {
+                getContext().unbindService(connection);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

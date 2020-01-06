@@ -1,8 +1,11 @@
 package com.dht.databaselib.bean.music;
 
+import android.arch.persistence.room.Entity;
+
 /**
  * @author Administrator
  */
+@Entity(tableName = "cloud_music")
 public class CloudMusicBean {
 
     /**

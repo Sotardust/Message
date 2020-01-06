@@ -5,13 +5,16 @@ package com.dht.network;
  */
 public class BaseModel<T> {
 
+
+
     /**
-     * -2 : 服务器未设置返回结果（默认返回值）
-     * -1 : 服务器程序异常
-     * 0 : 返回成功
-     * 1 : 返回失败
+     * 103 : sessionId 会话超时
+     * 102 : 服务器未设置返回结果（默认返回值）
+     * 101 : 服务器程序异常
+     * 100 : 返回成功
+     * 99 : 返回失败
      */
-    public int code = -2;
+    public int code = HttpStatusCode.CODE_102;
 
     public String msg = null;
 

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="0.8"
-    android:background="@mipmap/icon_login_bg"
+    android:background="@color/colorWhite"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".WelcomeActivity">

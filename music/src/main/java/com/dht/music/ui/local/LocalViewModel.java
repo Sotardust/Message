@@ -10,6 +10,7 @@ import com.dht.baselib.callback.NetworkCallback;
 import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.music.api.MusicApi;
 import com.dht.music.repository.MusicRepository;
+import com.dht.music.repository.RecentPlayRepository;
 import com.dht.network.BaseModel;
 
 import java.io.File;
@@ -34,18 +35,20 @@ public class LocalViewModel extends BaseAndroidViewModel {
 
     private MusicApi musicApi;
     private MusicRepository musicRepository;
+    private RecentPlayRepository playRepository;
 
-    public LocalViewModel (@NonNull Application application) {
+    public LocalViewModel(@NonNull Application application) {
         super(application);
         musicRepository = new MusicRepository(application);
+        playRepository = new RecentPlayRepository(application);
 
         musicApi = new MusicApi();
     }
 
-    MutableLiveData<ArrayList<MusicBean>> getMusicData () {
+    MutableLiveData<ArrayList<MusicBean>> getMusicData() {
         musicRepository.getAllMusics(new LocalCallback<ArrayList<MusicBean>>() {
             @Override
-            public void onChangeData (ArrayList<MusicBean> data) {
+            public void onChangeData(ArrayList<MusicBean> data) {
                 musicData.postValue(data == null ? new ArrayList<MusicBean>() : data);
             }
         });
@@ -55,12 +58,21 @@ public class LocalViewModel extends BaseAndroidViewModel {
 
 
     /**
+     * 插入或者更新播放历史记录
+     *
+     * @param musicBean MusicBean
+     */
+    public void insertOrUpdate(MusicBean musicBean) {
+        playRepository.insertOrUpdate(musicBean);
+    }
+
+    /**
      * 上传音乐文件
      *
      * @param fileList        文件集合
      * @param networkCallback 回调接口
      */
-    public void uploadFiles (List<File> fileList, NetworkCallback<BaseModel<ArrayList<String>>> networkCallback) {
+    public void uploadFiles(List<File> fileList, NetworkCallback<BaseModel<ArrayList<String>>> networkCallback) {
         MultipartBody.Builder builder = new MultipartBody.Builder();
 
         for (File file : fileList) {

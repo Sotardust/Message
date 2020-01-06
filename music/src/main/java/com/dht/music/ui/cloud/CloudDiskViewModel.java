@@ -11,6 +11,7 @@ import com.dht.baselib.util.file.PathUtil;
 import com.dht.databaselib.bean.music.CloudMusicBean;
 import com.dht.music.api.MusicApi;
 import com.dht.network.BaseModel;
+import com.dht.network.HttpStatusCode;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class CloudDiskViewModel extends ViewModel {
             if (data == null) {
                 return;
             }
-            if (data.code != 0) {
+            if (data.code != HttpStatusCode.CODE_100) {
                 return;
             }
             musicApi.ansyObtainData(new ObservableCallback<String>() {

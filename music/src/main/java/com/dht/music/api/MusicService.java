@@ -34,7 +34,7 @@ public interface MusicService {
      *
      * @return 云盘音乐数据集合
      */
-    @GET("getCloudMusic")
+    @GET("getCloudMusics")
     Call<BaseModel<List<CloudMusicBean>>> getCloudMusicList();
 
     /**

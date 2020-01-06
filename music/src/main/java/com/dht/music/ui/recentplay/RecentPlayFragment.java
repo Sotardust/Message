@@ -41,20 +41,20 @@ public class RecentPlayFragment extends BaseFragment {
     private LinearLayoutManager layoutManager;
     private RecentPlayAdapter.DynamicType dynamicType = RecentPlayAdapter.DynamicType.PLAY_TIME;
 
-    public static RecentPlayFragment newInstance () {
+    public static RecentPlayFragment newInstance() {
         return new RecentPlayFragment();
     }
 
     @Override
-    public View onCreateView (@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                              @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_recent_play, container, false);
 
         return mBinding.getRoot();
     }
 
     @Override
-    public void onActivityCreated (@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(RecentPlayViewModel.class);
         mBinding.setRecentPlayViewModel(mViewModel);
@@ -63,19 +63,19 @@ public class RecentPlayFragment extends BaseFragment {
     }
 
     @Override
-    public void initViews (View view) {
+    public void initViews(View view) {
         super.initViews(view);
         mBinding.recentTopTitleView.updateView(getActivity(), getString(R.string.listening_to_songs));
     }
 
     @Override
-    public void bindViews () {
+    public void bindViews() {
         super.bindViews();
         recentPlayAdapter = new RecentPlayAdapter(recycleItemClickCallBack, getContext());
         layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         mViewModel.getRecentPlayEntityData().observe(this, new Observer<List<RecentPlayBean>>() {
             @Override
-            public void onChanged (@Nullable List<RecentPlayBean> entities) {
+            public void onChanged(@Nullable List<RecentPlayBean> entities) {
                 mBinding.recentRecycler.setLayoutManager(layoutManager);
                 recentPlayAdapter.setChangeList(entities, dynamicType);
             }
@@ -91,12 +91,13 @@ public class RecentPlayFragment extends BaseFragment {
 
         @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
         @Override
-        public void onItemClickListener (int type, RecentPlayBean entity, int position) {
+        public void onItemClickListener(int type, RecentPlayBean entity, int position) {
             super.onItemClickListener(type, entity, position);
             if (type == LocalAdapter.Type.IV.index) {
                 mViewModel.deleteCurrentRecentEntity(entity.songName, dynamicType);
                 ToastUtil.toastCustom(getContext(), R.string.delete_successful, 500);
             } else {
+                mViewModel.insertOrUpdate(entity.music);
                 MessagePreferences.INSTANCE.setCurrentMusic(entity.music);
                 Intent intent = new Intent(getContext(), PlayMusicActivity.class);
                 startActivity(intent);
@@ -108,7 +109,7 @@ public class RecentPlayFragment extends BaseFragment {
     private boolean isReverse = true;
 
     @Override
-    public void handlingClickEvents (View view) {
+    public void handlingClickEvents(View view) {
         super.handlingClickEvents(view);
         layoutManager.setReverseLayout(isReverse);
         int i = view.getId();

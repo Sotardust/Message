@@ -3,6 +3,7 @@ package com.dht.music.ui.cloud;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -21,6 +22,8 @@ import java.util.List;
  * @author Administrator
  */
 public class CloudDiskAdapter extends BaseAdapter<String> {
+
+    private static final String TAG = "dht";
 
     private ArrayList<String> usernameList = new ArrayList<>();
 

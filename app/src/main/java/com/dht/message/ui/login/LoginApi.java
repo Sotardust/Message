@@ -16,8 +16,9 @@ public class LoginApi extends BaseApi {
 
     private static final String TAG = "BaseModel";
 
-//    // 使用本机iP地址 不能使用 127.0.0.1（虚拟机把其作为自身IP）
-//    private static final String BASE_URL = "http://192.168.199.192:8080/message/";
+    // 使用本机iP地址 不能使用 127.0.0.1（虚拟机把其作为自身IP）
+//    private static final String BASE_URL = "http://192.168.1.71:8080/message/";
+//    private static final String BASE_URL = "http://47.104.197.255:8080/message/";
 
     /**
      * 登录

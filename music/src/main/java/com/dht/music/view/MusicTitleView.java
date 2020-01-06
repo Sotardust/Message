@@ -21,6 +21,7 @@ import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.databaselib.preferences.MessagePreferences;
 import com.dht.music.R;
 import com.dht.music.dialog.PlayListDialogFragment;
+import com.dht.music.repository.RecentPlayRepository;
 
 /**
  * 音乐播放栏
@@ -43,7 +44,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
 
     private MusicBean currentMusic;
     private Context context;
-    private Bundle bundle;
+    private RecentPlayRepository repository ;
 
     public MusicTitleView(Context context) {
         super(context);
@@ -96,6 +97,7 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
     public void setActivity(BaseActivity activity, MusicModel mModel) {
         this.activity = activity;
         this.mModel = mModel;
+        repository = new RecentPlayRepository(activity.getApplication());
     }
 
     /**
@@ -117,8 +119,10 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
         if (currentMusic == null) {
             return;
         }
+        repository.insertOrUpdate(currentMusic);
         songName.setText(currentMusic.name);
         author.setText(currentMusic.author);
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
@@ -142,7 +146,6 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
         }
         if (i == R.id.music_title_play_list) {
             final PlayListDialogFragment playListDialogFragment = PlayListDialogFragment.newInstance();
-            playListDialogFragment.setArguments(bundle);
             playListDialogFragment.show(activity, new LocalCallback<MusicBean>() {
                 @Override
                 public void onChangeData(MusicBean data) {
@@ -154,7 +157,6 @@ public class MusicTitleView extends LinearLayout implements View.OnClickListener
             return;
         }
         if (i == R.id.music_relative) {
-            MessagePreferences.INSTANCE.setFirstPlay(false);
 
             if (MessagePreferences.INSTANCE.getCurrentMusic() == null) {
                 ToastUtil.toastCustom(context, R.string.no_play_music, 500);

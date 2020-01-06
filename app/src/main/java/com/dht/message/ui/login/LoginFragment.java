@@ -26,6 +26,7 @@ import com.dht.message.R;
 import com.dht.message.databinding.FragmentLoginBinding;
 import com.dht.music.repository.MusicRepository;
 import com.dht.network.BaseModel;
+import com.dht.network.HttpStatusCode;
 
 import java.util.ArrayList;
 
@@ -79,7 +80,6 @@ public class LoginFragment extends BaseFragment {
             case R.id.login:
                 String name = mBinding.name.getText().toString();
                 String password = mBinding.password.getText().toString();
-                MessagePreferences.INSTANCE.setFirstPlay(true);
                 if (isEmpty(name, password)) {
                     return;
                 }
@@ -113,7 +113,7 @@ public class LoginFragment extends BaseFragment {
                 return;
             }
             mModel.initPlayList();
-            if (model.code == 0) {
+            if (model.code == HttpStatusCode.CODE_100) {
                 toMainActivity();
             }
             ToastUtil.toastCustom(getContext(), model.msg, 200);
