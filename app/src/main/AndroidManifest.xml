@@ -48,7 +48,7 @@
         </provider>
 
         <activity
-            android:name="com.dht.music.ui.local.LocalActivity"
+            android:name="com.dht.music.local.LocalActivity"
             android:windowSoftInputMode="adjustPan|adjustResize" />
         <activity android:name="com.dht.message.ui.login.LoginActivity" />
 

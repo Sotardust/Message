@@ -4,9 +4,9 @@
     <application>
         <service android:name="com.dht.baselib.service.MusicService" />
 
-        <activity android:name="com.dht.music.ui.cloud.CloudDiskActivity" />
-        <activity android:name="com.dht.music.ui.download.DownloadActivity" />
-        <activity android:name="com.dht.music.ui.playmusic.PlayMusicActivity" />
-        <activity android:name="com.dht.music.ui.recentplay.RecentPlayActivity" />
+        <activity android:name="com.dht.music.cloud.CloudDiskActivity" />
+        <activity android:name=".download.DownloadActivity" />
+        <activity android:name=".playmusic.PlayMusicActivity" />
+        <activity android:name=".recentplay.RecentPlayActivity" />
     </application>
 </manifest>

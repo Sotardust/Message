@@ -6,7 +6,7 @@
 
         <variable
             name="localViewModel"
-            type="com.dht.music.ui.local.LocalViewModel" />
+            type="com.dht.music.local.LocalViewModel" />
     </data>
 
     <LinearLayout
@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:background="@color/background"
         android:orientation="vertical"
-        tools:context="com.dht.music.ui.local.LocalFragment">
+        tools:context=".local.LocalFragment">
 
         <com.dht.music.view.TopTitleView
             android:id="@+id/local_top_title_view"

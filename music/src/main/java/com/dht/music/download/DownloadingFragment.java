@@ -1,4 +1,4 @@
-package com.dht.music.ui.download;
+package com.dht.music.download;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
@@ -11,33 +11,33 @@ import android.view.ViewGroup;
 
 import com.dht.baselib.base.BaseFragment;
 import com.dht.music.R;
-import com.dht.music.databinding.FragmentDownloadedBinding;
+import com.dht.music.databinding.FragmentDownloadingBinding;
 
 /**
  * @author Administrator
  */
-public class DownloadedFragment extends BaseFragment {
+public class DownloadingFragment extends BaseFragment {
 
-    private DownloadedViewModel mViewModel;
+    private DownloadingViewModel mViewModel;
 
-    private FragmentDownloadedBinding mBinding;
+    private FragmentDownloadingBinding mBinding;
 
-    public static DownloadedFragment newInstance () {
-        return new DownloadedFragment();
+    public static DownloadingFragment newInstance () {
+        return new DownloadingFragment();
     }
 
     @Override
     public View onCreateView (@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                               @Nullable Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_downloaded, container, false);
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_downloading, container, false);
         return mBinding.getRoot();
     }
 
     @Override
     public void onActivityCreated (@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(DownloadedViewModel.class);
-        mBinding.setDownloadedViewModel(mViewModel);
+        mViewModel = ViewModelProviders.of(this).get(DownloadingViewModel.class);
+        mBinding.setDownloadingViewModel(mViewModel);
     }
 
 }

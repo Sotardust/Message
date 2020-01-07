@@ -1,4 +1,4 @@
-package com.dht.music.ui.recentplay;
+package com.dht.music.recentplay;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -22,8 +22,8 @@ import com.dht.databaselib.bean.music.RecentPlayBean;
 import com.dht.databaselib.preferences.MessagePreferences;
 import com.dht.music.R;
 import com.dht.music.databinding.FragmentRecentPlayBinding;
-import com.dht.music.ui.local.LocalAdapter;
-import com.dht.music.ui.playmusic.PlayMusicActivity;
+import com.dht.music.local.LocalAdapter;
+import com.dht.music.playmusic.PlayMusicActivity;
 
 import java.util.List;
 

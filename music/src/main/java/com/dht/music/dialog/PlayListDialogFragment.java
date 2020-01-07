@@ -26,7 +26,7 @@ import com.dht.baselib.util.VerticalDecoration;
 import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.music.R;
 import com.dht.music.databinding.FragmentPlayListDialogBinding;
-import com.dht.music.ui.playmusic.PlayMusicActivity;
+import com.dht.music.playmusic.PlayMusicActivity;
 
 import java.util.ArrayList;
 

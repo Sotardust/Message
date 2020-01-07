@@ -1,4 +1,7 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
@@ -36,5 +39,11 @@ dependencies {
     
     //https://developer.android.com/topic/libraries/architecture/adding-components#room
     api "android.arch.persistence.room:runtime:$rootProject.ext.roomVersion"
-    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.ext.roomVersion"
+    kapt "android.arch.persistence.room:compiler:$rootProject.ext.roomVersion"
+//    annotationProcessor "android.arch.persistence.room:compiler:$rootProject.ext.roomVersion"
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    kapt "com.android.databinding:compiler:3.1.4"
+}
+repositories {
+    mavenCentral()
 }

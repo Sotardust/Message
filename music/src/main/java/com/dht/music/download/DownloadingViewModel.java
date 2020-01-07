@@ -1,4 +1,4 @@
-package com.dht.music.ui.download;
+package com.dht.music.download;
 
 import android.arch.lifecycle.ViewModel;
 

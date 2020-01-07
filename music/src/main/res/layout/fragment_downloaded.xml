@@ -6,14 +6,14 @@
 
         <variable
             name="downloadedViewModel"
-            type="com.dht.music.ui.download.DownloadedViewModel" />
+            type="com.dht.music.download.DownloadedViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        tools:context="com.dht.music.ui.download.DownloadedFragment">
+        tools:context=".download.DownloadedFragment">
 
 
         <android.support.v7.widget.RecyclerView

@@ -1,4 +1,4 @@
-package com.dht.music.ui.playmusic;
+package com.dht.music.playmusic;
 
 import android.app.Application;
 import android.media.AudioAttributes;

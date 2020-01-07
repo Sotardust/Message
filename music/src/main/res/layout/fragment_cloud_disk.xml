@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
-            name="cloudDiskViewModel"
-            type="com.dht.music.ui.cloud.CloudDiskViewModel" />
+            name="cloudDisk"
+            type="com.dht.music.cloud.CloudDiskViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background"
-        tools:context="com.dht.music.ui.cloud.CloudDiskFragment">
+        android:background="@color/background">
 
         <com.dht.music.view.TopTitleView
             android:id="@+id/cloud_top_title_view"

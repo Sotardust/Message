@@ -6,7 +6,7 @@
 
         <variable
             name="playMusicViewModel"
-            type="com.dht.music.ui.playmusic.PlayMusicViewModel" />
+            type="com.dht.music.playmusic.PlayMusicViewModel" />
     </data>
 
     <LinearLayout
@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:background="@color/background"
         android:orientation="vertical"
-        tools:context="com.dht.music.ui.playmusic.PlayMusicFragment">
+        tools:context=".playmusic.PlayMusicFragment">
 
         <com.dht.music.view.TopTitleView
             android:id="@+id/play_top_title_view"

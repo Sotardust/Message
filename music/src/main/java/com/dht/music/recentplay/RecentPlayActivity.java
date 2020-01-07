@@ -1,18 +1,18 @@
-package com.dht.music.ui.local;
+package com.dht.music.recentplay;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 
-import com.dht.music.MusicActivity;
+import com.dht.baselib.base.BaseActivity;
 import com.dht.music.R;
 
 /**
- * created by Administrator on 2018/12/27 17:23
+ * created by dht on 2018/12/27 17:23
  *
  * @author Administrator
  */
-public class LocalActivity extends MusicActivity {
+public class RecentPlayActivity extends BaseActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
     @Override
@@ -20,11 +20,10 @@ public class LocalActivity extends MusicActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
         if (savedInstanceState == null) {
+            RecentPlayFragment recentPlayFragment = RecentPlayFragment.newInstance();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, LocalFragment.newInstance())
+                    .replace(R.id.container, recentPlayFragment)
                     .commitNow();
         }
     }
-
-
 }

@@ -1,4 +1,4 @@
-package com.dht.music.ui.local;
+package com.dht.music.local;
 
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;

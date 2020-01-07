@@ -17,10 +17,10 @@ import com.dht.baselib.util.VerticalDecoration;
 import com.dht.baselib.base.BaseFragment;
 import com.dht.baselib.callback.RecycleItemClickCallBack;
 import com.dht.message.databinding.FragmentMusicBinding;
-import com.dht.music.ui.cloud.CloudDiskActivity;
-import com.dht.music.ui.download.DownloadActivity;
-import com.dht.music.ui.local.LocalActivity;
-import com.dht.music.ui.recentplay.RecentPlayActivity;
+import com.dht.music.cloud.CloudDiskActivity;
+import com.dht.music.download.DownloadActivity;
+import com.dht.music.local.LocalActivity;
+import com.dht.music.recentplay.RecentPlayActivity;
 import com.dht.message.util.Key;
 
 import java.util.Arrays;

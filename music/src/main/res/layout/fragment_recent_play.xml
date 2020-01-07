@@ -5,7 +5,7 @@
 
         <variable
             name="recentPlayViewModel"
-            type="com.dht.music.ui.recentplay.RecentPlayViewModel" />
+            type="com.dht.music.recentplay.RecentPlayViewModel" />
     </data>
 
     <LinearLayout

@@ -1,4 +1,4 @@
-package com.dht.music.ui.local;
+package com.dht.music.local;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -26,7 +26,7 @@ import com.dht.databaselib.bean.music.MusicBean;
 import com.dht.databaselib.preferences.MessagePreferences;
 import com.dht.music.R;
 import com.dht.music.databinding.FragmentLocalBinding;
-import com.dht.music.ui.playmusic.PlayMusicActivity;
+import com.dht.music.playmusic.PlayMusicActivity;
 import com.dht.network.BaseModel;
 
 import java.io.File;

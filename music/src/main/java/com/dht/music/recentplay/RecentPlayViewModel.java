@@ -1,4 +1,4 @@
-package com.dht.music.ui.recentplay;
+package com.dht.music.recentplay;
 
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;

@@ -6,14 +6,14 @@
 
         <variable
             name="downloadingViewModel"
-            type="com.dht.music.ui.download.DownloadingViewModel" />
+            type="com.dht.music.download.DownloadingViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/background"
-        tools:context="com.dht.music.ui.download.DownloadingFragment">
+        tools:context=".download.DownloadingFragment">
 
 
 

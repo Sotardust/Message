@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 
+
 android {
     compileSdkVersion 28
 
@@ -21,6 +22,9 @@ android {
         }
     }
 
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -34,8 +38,12 @@ dependencies {
     api "com.android.support:design:$rootProject.ext.supportLibraryVersion"
     api "com.android.support:recyclerview-v7:$rootProject.ext.supportLibraryVersion"
 
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.ext.kotlinCoroutineVersion"
+    api 'androidx.core:core-ktx:1.1.0'
     api project(path: ':database')
     api project(path: ':network')
     api project(path: ':eventbus')
-
+}
+repositories {
+    mavenCentral()
 }
